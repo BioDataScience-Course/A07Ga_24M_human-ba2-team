@@ -1,6 +1,10 @@
 ---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
+<<<<<<< HEAD
 author: "___, ___, Baseka Manzabe Christelle, ___"
+=======
+author: "Nefise TERCAN, ___, ___, ___"
+>>>>>>> 9d84e47beddedceb4a5c5f90c1af335ad886c40a
 date: "`r Sys.Date()`"
 format:
   html:
@@ -20,7 +24,7 @@ if (!"tools:tests" %in% search())
   source(here::here("tests/tools_tests.R"), attach(NULL, name = "tools:tests"))
 
 # Configuration de l'environnement SciViews::R
-SciViews::R(___, lang = "fr")
+SciViews::R("infer",lang = "fr")
 ```
 
 # Introduction et but
