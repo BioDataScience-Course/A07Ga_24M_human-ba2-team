@@ -1,6 +1,5 @@
 ---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
-
 author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
 format:
