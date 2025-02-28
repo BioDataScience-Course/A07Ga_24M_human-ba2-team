@@ -48,31 +48,27 @@ skimr::skim (biometry)
 
 <!--% Ensuite vous décrirez graphiquement (avec `chart()`) et numériquement (tableaux avec `tabularise()`, `skimr::skim()`, etc.) vos données. Chaque étudiant ajoute deux éléments descriptifs pertinents. -->
 
+### Description par l'étudiant 1
+
 ```{r_nefise}
 
 ```
-
-```{r_ide}
-
-```
-
-```{r_christelle}
-
-```
-
-### Description par l'étudiant 1
 
 ...Vos deux descriptions ici...
 
 ### Description par l'étudiant 2
 
+```{r_ide}
+
+```
+
 ...Vos deux descriptions ici...
 
 ### Description par l'étudiant 3
 
-...Vos deux descriptions ici...
+```{r_christelle}
 
-### Description par l'étudiant 4
+```
 
 ...Vos deux descriptions ici...
 
@@ -86,14 +82,14 @@ skimr::skim (biometry)
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice1}
+```{r indice1_nefise}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice1}
+```{r plot_indice1_nefise}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
@@ -110,14 +106,14 @@ skimr::skim (biometry)
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice2}
+```{r indice2_ide}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice2}
+```{r plot_indice2_ide}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
@@ -134,38 +130,14 @@ skimr::skim (biometry)
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice3}
+```{r indice3_christelle}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice3}
-# Graphique ou tableau utilisant l'indice calculé.
-
-```
-
-<!--% Interprétation en quelques points du graphique ou tableau. -->
-
--   ...
-
--   ...
-
--   ...
-
-### Indice 4
-
-<!--% Description et formule ci-dessous. -->
-
-```{r indice4}
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-
-```
-
-<!--% Graphique ou tableau utilisant l'indice calculé.-->
-
-```{r plot_indice4}
+```{r plot_indice3_christelle}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
