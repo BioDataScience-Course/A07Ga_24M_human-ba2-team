@@ -1,10 +1,7 @@
 ---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
-<<<<<<< HEAD
-author: "___, ___, Baseka Manzabe Christelle, ___"
-=======
-author: "Nefise TERCAN, ___, ___, ___"
->>>>>>> 9d84e47beddedceb4a5c5f90c1af335ad886c40a
+
+author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
 format:
   html:
