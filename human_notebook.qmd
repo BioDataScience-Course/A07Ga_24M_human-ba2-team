@@ -60,7 +60,20 @@ skimr::skim (biometry)
 
 ### Description par l'étudiant 3
 
-...Vos deux descriptions ici...
+```{r} 
+chart(data = biometry, taille ~ masse %col=% genre ) +
+geom_point(na.rm = TRUE) +
+  labs(title = "Relation entre la taille et la masse",
+       x = "taille (cm)",
+       y = "masse (kg)")
+```
+
+
+
+```{r}
+
+       
+```
 
 ### Description par l'étudiant 4
 
