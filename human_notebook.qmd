@@ -51,11 +51,12 @@ skimr::skim(biometry)
 ### Description par l'étudiant 1
 
 ```{r}
-chart(data = biometry, sommeil ~ fast_food) +
+chart(data = biometry, eau ~ alimentation) +
   geom_violin()
 ```
+D'aprés le graphique, les personnes ayant un régime carnivore ont tendance à boire beaucoup plus d'eau par rapport aux personnes ayant un régime végétarien.
 
-...Vos deux descriptions ici...
+
 
 ### Description par l'étudiant 2
 
