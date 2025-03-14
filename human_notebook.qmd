@@ -46,8 +46,6 @@ biometry <- read("data/biometry.rds")
 skimr::skim (biometry)
 ```
 
-
-
 <!--% Ensuite vous décrirez graphiquement (avec `chart()`) et numériquement (tableaux avec `tabularise()`, `skimr::skim()`, etc.) vos données. Chaque étudiant ajoute deux éléments descriptifs pertinents. -->
 
 ### Description par l'étudiant 1
