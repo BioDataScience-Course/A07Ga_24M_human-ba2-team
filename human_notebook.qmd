@@ -50,8 +50,9 @@ skimr::skim (biometry)
 
 ### Description par l'étudiant 1
 
-```{r_nefise}
-
+```{r}
+chart(data = biometry, sommeil ~ fast_food) +
+  geom_violin()
 ```
 
 ...Vos deux descriptions ici...
@@ -66,7 +67,7 @@ skimr::skim (biometry)
 
 ### Description par l'étudiant 3
 
-<<<<<<< HEAD
+\<\<\<\<\<\<\< HEAD
 
 ```{r_graphique_chrisstelle}
 
