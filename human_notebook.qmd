@@ -50,15 +50,17 @@ skimr::skim(biometry)
 
 ### Description par l'étudiant 1
 
-```{r_nefise}
-
+```{r}
+chart(data = biometry, eau ~ alimentation) +
+  geom_violin()
 ```
+D'aprés le graphique, les personnes ayant un régime carnivore ont tendance à boire beaucoup plus d'eau par rapport aux personnes ayant un régime végétarien.
 
-...Vos deux descriptions ici...
+
 
 ### Description par l'étudiant 2
 
-```{r_ide}
+```{r}
 
 ```
 
@@ -66,7 +68,6 @@ skimr::skim(biometry)
 
 ### Description par l'étudiant 3
 
-<<<<<<< HEAD
 
 ```{r}
 
@@ -75,7 +76,7 @@ skimr::skim(biometry)
 
 **interprétation** les personnes les plus grandes tendent à avoir une masse plus élevée les hommes ont une masse plus élevée que les femmes pour une même taille les femmes sont concentrées dans la plage 50-80 Kg alors que les hommes couvrent un plus grand éventail de masses (jusqu'à 120 kg)
 
-```{r_tableau_christelle}
+```{r}
 biometry %>.%
   sgroup_by(.,sex) %>.%
   ssummarise(., mean= fmean(delta_sommeil), sd = fsd(delta_sommeil), n = fn (delta_sommeil))
@@ -99,7 +100,7 @@ biometry %>.%
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice1_nefise}
+```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
@@ -116,14 +117,14 @@ biometry %>.%
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice2_ide}
+```{r}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice2_ide}
+```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
@@ -140,7 +141,7 @@ biometry %>.%
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice3_christelle}
+```{r}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 #indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
 #ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
@@ -155,7 +156,7 @@ biometry %>.%
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r plot_indice3_christelle}
+```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
 ```
