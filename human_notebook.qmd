@@ -67,9 +67,9 @@ skimr::skim (biometry)
 ### Description par l'étudiant 3
 
 
-```{r_graphique_christelle}
+```{r_chrisstelle}
 
-chart(data = biometry, taille ~ masse %col=% genre ) +
+chart(data = biometry, taille ~ masse_corr %col=% genre ) +
 geom_point(na.rm = TRUE) +
   labs(title = "Relation entre la taille et la masse",
        x = "masse (kg)",
