@@ -66,8 +66,9 @@ skimr::skim (biometry)
 
 ### Description par l'étudiant 3
 
+<<<<<<< HEAD
 
-```{r_chrisstelle}
+```{r_graphique_chrisstelle}
 
 chart(data = biometry, taille ~ masse_corr %col=% genre ) +
 geom_point(na.rm = TRUE) +
@@ -76,10 +77,8 @@ geom_point(na.rm = TRUE) +
        y = "taille (cm)")
 
 ```
-**interprétation**
-les personnes les plus grandes tendent à avoir une masse plus élevée 
-les hommes ont une masse plus élevée que les femmes pour une même taille
-les femmes sont concentrées dans la plage 50-80 Kg alors que les hommes couvrent un plus grand éventail de masses (jusqu'à 120 kg)
+
+**interprétation** les personnes les plus grandes tendent à avoir une masse plus élevée les hommes ont une masse plus élevée que les femmes pour une même taille les femmes sont concentrées dans la plage 50-80 Kg alors que les hommes couvrent un plus grand éventail de masses (jusqu'à 120 kg)
 
 ```{r_tableau_christelle}
 biometry %>.%
@@ -97,7 +96,6 @@ biometry %>.%
 
 <!--% Description et formule ci-dessous. -->
 
-```{r indice1_nefise}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```
