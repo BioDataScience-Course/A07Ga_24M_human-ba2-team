@@ -43,7 +43,7 @@ La description des données et les tests statistiques sont réalisés dans la Sc
 
 ```{r}
 biometry <- read("data/biometry.rds")
-skimr::skim (biometry)
+skimr::skim(biometry)
 ```
 
 <!--% Ensuite vous décrirez graphiquement (avec `chart()`) et numériquement (tableaux avec `tabularise()`, `skimr::skim()`, etc.) vos données. Chaque étudiant ajoute deux éléments descriptifs pertinents. -->
@@ -68,13 +68,8 @@ skimr::skim (biometry)
 
 <<<<<<< HEAD
 
-```{r_graphique_chrisstelle}
+```{r}
 
-chart(data = biometry, taille ~ masse_corr %col=% genre ) +
-geom_point(na.rm = TRUE) +
-  labs(title = "Relation entre la taille et la masse",
-       x = "masse (kg)",
-       y = "taille (cm)")
 
 ```
 
@@ -82,6 +77,8 @@ geom_point(na.rm = TRUE) +
 
 ```{r_tableau_christelle}
 biometry %>.%
+  sgroup_by(.,sex) %>.%
+  ssummarise(., mean= fmean(delta_sommeil), sd = fsd(delta_sommeil), n = fn (delta_sommeil))
   
 
 ...Vos deux descriptions ici...
@@ -151,8 +148,8 @@ biometry %>.%
 #IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}
 
 
-data$IC <- data$tour_taille / 100 / (0.109 * sqrt(data$masse / (data$taille / 100)))
-summary(data$IC)
+#data$IC <- data$tour_taille / 100 / (0.109 * sqrt(data$masse / (data$taille / 100)))
+#summary(data$IC)
 
 ```
 
@@ -220,18 +217,35 @@ summary(data$IC)
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
+#IMC selon le sexe
+biometry <- smutate(biometry, imc = masse_corr/(taille)^2) 
+   
+biometry %>.%
+sgroup_by(., genre) %>.%
+     ssummarise (.,
+       mean = fmean(imc))
+    
+
 
 ```
 
-<!-- Hypothèse nulle et alternative -->
+<!-- Hypothèse nulle et alternative --> 
+H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro
+H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
 
 <!-- Vérification des conditions d'application -->
 
+
 ```{r test_t_1}
 
+t.test(data = biometry, imc ~ genre, 
+  alternative = "two.sided", var.equal = TRUE )
 ```
 
 <!-- Interprétation statistique et biologique -->
+
+nous ne rejetons pas H0 au seuil de 5%
+Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2
 
