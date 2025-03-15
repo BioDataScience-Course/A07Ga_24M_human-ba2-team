@@ -74,13 +74,43 @@ D'aprés le graphique, les personnes ayant un régime carnivore ont tendance à 
 
 ```
 
-**interprétation** les personnes les plus grandes tendent à avoir une masse plus élevée les hommes ont une masse plus élevée que les femmes pour une même taille les femmes sont concentrées dans la plage 50-80 Kg alors que les hommes couvrent un plus grand éventail de masses (jusqu'à 120 kg)
+**interprétation** 
+```{r christelle}
+biometry %>.%
+  sgroup_by(.,genre) %>.%
+  ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
+```
+
+***interprétations***
+-les femmes dorment en moyenne trois minutes de plus que les hommes 
+-l'écart-type est plus élevé chez les femmes, ce qui semble suggerer une grande variabilité dans leurs habitudes de sommeil
+-Nous allons faire un graphique complémentaire pour visualiser les données
+
+```{r christelle_grp comp. tableau}
+chart(biometry, sommeil ~ genre %fill=% genre) +
+geom_boxplot() +
+  labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
+
+```
+***interprétations***
+- nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
+-l'étendue interquartile est assez similaire pour les deux groupes
+- Il y a une valeur extrême chez les femmes: cette valeur peut etre à une erreur de mesure ou à un trouble de sommeil
+
+-Dans la suite de notre travail, nous ferons un test statistique pour vérifier si cette différence est statistiquement significative.
+
+HYPOTHESES
+H0:différence significative de sommeil entre les hommes et les femmes 
+H1: pas de différence de sommeil entre les hommes et les femmes 
 
 ```{r}
-biometry %>.%
-  sgroup_by(.,sex) %>.%
-  ssummarise(., mean= fmean(delta_sommeil), sd = fsd(delta_sommeil), n = fn (delta_sommeil))
-  
+t.test(sommeil ~ genre, data = biometry, alternative = "two.sided", var.equal = TRUE)
+```
+Nous rejetons H0 au seuil de alpha 5%
+Il n'y a pas de différence significative entre la durée de sommeil des hommes et des femmes (t = 0.24358, df = 142, p-value = 0.8079).
+
+
+
 
 ...Vos deux descriptions ici...
 
@@ -140,19 +170,26 @@ biometry %>.%
 ### Indice 3
 
 <!--% Description et formule ci-dessous. -->
+indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
+L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
+
+ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
+
+IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}
+
 
 ```{r}
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-#indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
-#ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
-
-#IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}
+#Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 
-#data$IC <- data$tour_taille / 100 / (0.109 * sqrt(data$masse / (data$taille / 100)))
-#summary(data$IC)
+data$IC <- data$tour_taille / 100 / (0.109 * sqrt(data$masse / (data$taille / 100)))
+summary(data$IC)
 
 ```
+
+
+ 
+
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
@@ -231,6 +268,7 @@ sgroup_by(., genre) %>.%
 ```
 
 <!-- Hypothèse nulle et alternative --> 
+
 H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro
 H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
 
@@ -245,7 +283,7 @@ t.test(data = biometry, imc ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-nous ne rejetons pas H0 au seuil de 5%
+Nous ne rejetons pas H0 au seuil de 5%
 Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2
