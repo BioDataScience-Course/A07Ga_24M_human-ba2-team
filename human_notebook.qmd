@@ -92,23 +92,6 @@ geom_boxplot() +
   labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
 
 ```
-***interprétations***
-- nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
--l'étendue interquartile est assez similaire pour les deux groupes
-- Il y a une valeur extrême chez les femmes: cette valeur peut etre à une erreur de mesure ou à un trouble de sommeil
-
--Dans la suite de notre travail, nous ferons un test statistique pour vérifier si cette différence est statistiquement significative.
-
-HYPOTHESES
-H0:différence significative de sommeil entre les hommes et les femmes 
-H1: pas de différence de sommeil entre les hommes et les femmes 
-
-```{r}
-t.test(sommeil ~ genre, data = biometry, alternative = "two.sided", var.equal = TRUE)
-```
-Nous rejetons H0 au seuil de alpha 5%
-Il n'y a pas de différence significative entre la durée de sommeil des hommes et des femmes (t = 0.24358, df = 142, p-value = 0.8079).
-
 
 
 
@@ -182,13 +165,17 @@ IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \te
 #Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 
-data$IC <- data$tour_taille / 100 / (0.109 * sqrt(data$masse / (data$taille / 100)))
-summary(data$IC)
-
 ```
 
 
- 
+
+```{r}
+data$IC <- data$tour_taille / 100 / (0.109 * sqrt (data$masse_corr/(data$taille / 100)))
+summary (data$IC)
+
+```
+`
+
 
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
