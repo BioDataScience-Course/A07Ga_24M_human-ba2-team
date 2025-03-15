@@ -75,6 +75,7 @@ D'aprés le graphique, les personnes ayant un régime carnivore ont tendance à 
 ```
 
 **interprétation** 
+
 ```{r christelle}
 biometry %>.%
   sgroup_by(.,genre) %>.%
@@ -164,25 +165,27 @@ IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \te
 ```{r}
 #Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
-
+biometry <- smutate(biometry, ic = tour_taille / 100 / (0.109 * sqrt(masse_corr/(taille / 100)) 
+  
+  biometry %>.%
+smutate(risque_ic = case_when(
+                ic < 1.0 ~ "faible",
+                ic >= 1.0 & ic < 1.25 ~ "modéré"
+                ic >= 1.25 ~ "élevé"
+)) 
+  
+  biometry$risque_ic <- factor (biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
+     
+  head(biometry[, c("ic", "risque_ic")])
 ```
 
-
-
-```{r}
-data$IC <- data$tour_taille / 100 / (0.109 * sqrt (data$masse_corr/(data$taille / 100)))
-summary (data$IC)
-
-```
 `
-
-
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-
+tableau_ic
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
