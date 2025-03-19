@@ -165,36 +165,72 @@ IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \te
 ```{r}
 #Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
-biometry <- smutate(biometry, ic = tour_taille / 100 / (0.109 * sqrt(masse_corr/(taille / 100)) 
-  
-  biometry %>.%
-smutate(risque_ic = case_when(
-                ic < 1.0 ~ "faible",
-                ic >= 1.0 & ic < 1.25 ~ "modéré"
-                ic >= 1.25 ~ "élevé"
-)) 
-  
-  biometry$risque_ic <- factor (biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
-     
-  head(biometry[, c("ic", "risque_ic")])
+
 ```
 
-`
+
+
+
+
+```{r}
+  
+```{r}
+biometry <- biometry %>%
+  mutate(
+    ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
+  ) %>%
+  mutate(
+    risque_ic = case_when(
+      ic < 1.0 ~ "faible",
+      ic >= 1.0 & ic < 1.25 ~ "modéré",
+      ic >= 1.25 ~ "élevé"
+    )
+  )
+biometry$risque_ic <- factor(biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
+
+# Afficher les premières lignes des colonnes 'ic' et 'risque_ic'
+head(biometry[, c("ic", "risque_ic")])
+
+```
+
+```
+
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
+```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-tableau_ic
+
+
+table_IC <- biometry %>%
+  group_by(risque_ic) %>%
+  summarise(
+    fumeurs = sum(fumeur == 1) / n() * 100,
+    alcool = sum(alcool > 0) / n() * 100,
+    fast_food = sum(fast_food > 1) / n() * 100,
+    activité_Physique_élevé = sum(activite_physique > 300) / n() * 100,
+    Sommeil_6h = sum(sommeil < 6) / n() * 100
+  )
+
+print(table_IC)
+```
+
+```
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   ...
 
--   ...
+- Les facteurs les plus liés à un IC élevé semblent être :
+La consommation de fast-food et le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
--   ...
+-L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
+
+- L’activité physique ne semble pas être un élément clé de différenciation.
+
+- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs et l'indice de conicité.
+
 
 ## Tests d'hypothèses
 
@@ -207,18 +243,94 @@ tableau_ic
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
-
+table_ic_chi <- table(biometry$facteur_risque, biometry$risque_ic)
+print(table_ic_chi)
 ```
 
 <!--% Hypothèse nulle et alternative -->
+H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
+H1: Il y a une association significative entre les facteurs de risque et l'indice de conicité ic
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_chi2_1}
+-les observations sont indépendantes 
+- nous allons transformer nos variables quantitatives en variables qualitatives 
+
+
+***Sommeil (en heures) → Catégories***
+Moins de 6h → "Insuffisant"
+6h ou plus → "Suffisant"
+
+```{r}
+biometry$sommeil_cat <- ifelse(biometry$sommeil < 6, "Insuffisant", "Suffisant")
 
 ```
 
+***Activité physique (en minutes) → Catégories***
+
+Moins de 150 min/semaine → "sédentaire"
+Entre 150 et 300 min/semaine → "modérée"
+Plus de 300 min/semaine → "élevée"
+
+```{r}
+biometry$activite_cat <- cut(biometry$activite_physique, 
+                             breaks = c(-Inf, 150, 300, Inf), 
+                             labels = c("Sédentaire", "Modérée", "Élevée"))
+                             
+```
+
+***Consommation d’alcool (en nombre de verres) → Catégories***
+0 verres → "Non consommateur"
+1 verre ou plus → "Consommateur"
+
+```{r}
+biometry$alcool_cat <- ifelse(biometry$alcool > 0, "Consommateur", "Non consommateur")
+```
+
+
+***Consommation de fast-food (fréquence) → Catégories**
+1 fois ou moins par semaine → "Rare"
+Plus d’une fois par semaine → "Fréquent"
+
+```{r}
+biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
+```
+
+ ***Fumeur (0 = Non, 1 = Oui) ***
+```{r}
+biometry$fumeur_cat <- factor(biometry$fumeur, labels = c("Non fumeur", "Fumeur"))
+```
+
+```{r}
+table_IC_alcool <- table(biometry$risque_ic, biometry$alcool_cat)
+table_IC_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
+table_IC_activite <- table(biometry$risque_ic, biometry$activite_cat)
+table_IC_sommeil <- table(biometry$risque_ic, biometry$sommeil_cat)
+```
+
+
+
+```{r test_chi2_1_1}
+table_ic_chi <- table(biometry$facteur_risque, biometry$risque_ic)
+chisq.test(table_ic_chi)
+```
+
+
+
+```{r test_chi2_1_2}
+chisq.test(table(biometry$fumeur, biometry$risque_ic))
+chisq.test(table(biometry$alcool, biometry$risque_ic))
+chisq.test(table(biometry$fast_food, biometry$risque_ic))
+chisq.test(table(biometry$activite_physique, biometry$risque_ic))
+chisq.test(table(biometry$sommeil, biometry$risque_ic))
+```
+
+
+
 <!--% Interprétation statistique et biologique -->
+
+
+
 
 ### Test de Chi^2^ 2
 
