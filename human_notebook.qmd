@@ -206,14 +206,17 @@ head(biometry[, c("ic", "risque_ic")])
 table_IC <- biometry %>%
   group_by(risque_ic) %>%
   summarise(
-    fumeurs = sum(fumeur == 1) / n() * 100,
-    alcool = sum(alcool > 0) / n() * 100,
-    fast_food = sum(fast_food > 1) / n() * 100,
-    activité_Physique_élevé = sum(activite_physique > 300) / n() * 100,
-    Sommeil_6h = sum(sommeil < 6) / n() * 100
+    fumeurs = sum(fumeur == 1, na.rm = TRUE) / n() * 100,
+    alcool = sum(alcool > 0, na.rm = TRUE) / n() * 100,
+    fast_food = sum(fast_food > 1, na.rm = TRUE) / n() * 100,
+    activité_Physique_élevé = sum(activite_physique > 300, na.rm = TRUE) / n() * 100,
+    Sommeil_6h = sum(sommeil < 6, na.rm = TRUE) / n() * 100
   )
 
 print(table_IC)
+
+
+
 ```
 
 ```
@@ -228,8 +231,9 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 -L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
 - L’activité physique ne semble pas être un élément clé de différenciation.
+- la population n'est pas affectée par le tabagisme.
 
-- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs et l'indice de conicité.
+- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
 
 
 ## Tests d'hypothèses
@@ -238,14 +242,23 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 
 <!--# Chaque test d'hypothèse doit être correctement employé. Vous devez indiquer, pour chaque test, l'hypothèse nulle et l'hypothèse alternative. Vous devez vérifier les conditions d'application du test d'hypothèse. Vous le réalisez, et ensuite vous l'interprétez du point de vue statistique d'abord et biologique ensuite. -->
 
+
+
 ### Test de Chi^2^ 1
+
+
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
-table_ic_chi <- table(biometry$facteur_risque, biometry$risque_ic)
-print(table_ic_chi)
+
+# tableau de contingence entre 'fast_food' et 'risque_ic'
+table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
+print(table_fast_food)
+
+
 ```
+
 
 <!--% Hypothèse nulle et alternative -->
 H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
@@ -257,73 +270,38 @@ H1: Il y a une association significative entre les facteurs de risque et l'indic
 - nous allons transformer nos variables quantitatives en variables qualitatives 
 
 
-***Sommeil (en heures) → Catégories***
-Moins de 6h → "Insuffisant"
-6h ou plus → "Suffisant"
+#fast_food (semaines)
+1 fois ou moins par semaine : "Rare"
+Plus d’une fois par semaine : "Fréquent"
+
 
 ```{r}
-biometry$sommeil_cat <- ifelse(biometry$sommeil < 6, "Insuffisant", "Suffisant")
-
-```
-
-***Activité physique (en minutes) → Catégories***
-
-Moins de 150 min/semaine → "sédentaire"
-Entre 150 et 300 min/semaine → "modérée"
-Plus de 300 min/semaine → "élevée"
-
-```{r}
-biometry$activite_cat <- cut(biometry$activite_physique, 
-                             breaks = c(-Inf, 150, 300, Inf), 
-                             labels = c("Sédentaire", "Modérée", "Élevée"))
-                             
-```
-
-***Consommation d’alcool (en nombre de verres) → Catégories***
-0 verres → "Non consommateur"
-1 verre ou plus → "Consommateur"
-
-```{r}
-biometry$alcool_cat <- ifelse(biometry$alcool > 0, "Consommateur", "Non consommateur")
-```
 
 
-***Consommation de fast-food (fréquence) → Catégories**
-1 fois ou moins par semaine → "Rare"
-Plus d’une fois par semaine → "Fréquent"
-
-```{r}
 biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
-```
+biometry$fast_food_cat <- factor(biometry$fast_food_cat)
 
- ***Fumeur (0 = Non, 1 = Oui) ***
-```{r}
-biometry$fumeur_cat <- factor(biometry$fumeur, labels = c("Non fumeur", "Fumeur"))
-```
+# Tableau de contingence entre 'fast_food_cat' et 'risque_ic'
+table_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
+print(table_fast_food)
 
-```{r}
-table_IC_alcool <- table(biometry$risque_ic, biometry$alcool_cat)
-table_IC_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
-table_IC_activite <- table(biometry$risque_ic, biometry$activite_cat)
-table_IC_sommeil <- table(biometry$risque_ic, biometry$sommeil_cat)
+
+
 ```
 
 
 
-```{r test_chi2_1_1}
-table_ic_chi <- table(biometry$facteur_risque, biometry$risque_ic)
-chisq.test(table_ic_chi)
+```{r test_chi2_1}
+
+
+# Test du chi-deux pour 'fast_food_cat' et 'risque_ic'
+result_fast_food <- chisq.test(table_fast_food)
+print(result_fast_food)
+
+
 ```
 
 
-
-```{r test_chi2_1_2}
-chisq.test(table(biometry$fumeur, biometry$risque_ic))
-chisq.test(table(biometry$alcool, biometry$risque_ic))
-chisq.test(table(biometry$fast_food, biometry$risque_ic))
-chisq.test(table(biometry$activite_physique, biometry$risque_ic))
-chisq.test(table(biometry$sommeil, biometry$risque_ic))
-```
 
 
 
