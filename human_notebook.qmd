@@ -65,7 +65,7 @@ D'après le graphique, les hommes ont tendance a faire plus d'activité physique
 ```
 
 
-### Description par Christelle
+### Description 1 par Christelle
 
 
 ```{r}
@@ -78,6 +78,7 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1))
 **interprétation** 
 On observe une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
 
+### Description 2 par Christelle
 
 ```{r christelle}
 biometry %>.%
@@ -104,8 +105,22 @@ geom_boxplot() +
 
 - Il y a une valeur extrême chez les femmes: cette valeur peut etre à une erreur de mesure ou à un trouble de sommeil
 
+### Description 1 par Christelle
 
-...Vos deux descriptions ici...
+```{r}
+
+```
+***interprétation***
+
+
+### Description 2 par Christelle
+
+```{r}
+
+```
+
+***interprétation***
+
 
 ## Calcul d'indices
 
@@ -421,7 +436,18 @@ Il n'existe pas une différence significative entre l'imc des hommes et celui de
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
-
+biometry2 <- smutate(crabs, group  = labelise(
+    factor(paste(species, sex, sep = "-")),
+    "Groupe espèce - sexe", units = NA))
+    
+    biometry %>.%
+  sgroup_by(., group) %>.%
+  ssummarise(.,
+    mean  = fmean(aspect5),
+    sd    = fsd(aspect5),
+    count = fsum(!is.na(aspect5)))
+    
+    anova(crabs2_anova <- lm(data = crabs2, aspect5 ~ group)) |> tabularise()
 ```
 
 <!--% Hypothèse nulle et alternative -->
