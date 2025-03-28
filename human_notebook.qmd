@@ -51,12 +51,12 @@ skimr::skim(biometry)
 ### Description 1 par Nefise
 
 ```{r}
-chart(data = biometry, masse_corr ~ activite_physique) +
-  geom_point()
+chart(data = biometry, masse_corr ~ activite_physique %fill=% genre| genre) +
+  geom_violin(show.legend = FALSE)
 ```
 
 **interprétation**
-D'après le graphique, les personnes ayant une faible activité physique tendent à avoir une masse corporelle plus élevée.
+D'après le graphique, les hommes ont tendance a faire plus d'activité physique que les femmes et les personnes ayant tendance à réaliser peu d'activité physique tendent à avoir une masse corporelle plus élevée.
 
 ### Description 2 par Nefise
 
