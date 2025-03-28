@@ -84,6 +84,8 @@ On observe une tendance où la consommation fréquente de sucre est associée à
 biometry %>.%
   sgroup_by(.,genre) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
+
+
 ```
 
 ***interprétation***
@@ -284,7 +286,7 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 
 
 
-### Test de Chi^2^ 1
+### Test de Chi^2^ 1 by Christelle
 ```{r chi2_ic}
 # tableau de contingence entre 'fast_food' et 'risque_ic'
 table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
@@ -307,34 +309,8 @@ print(result_fast_food)
 ```
 
 
-# Complément avec le Rapport Tour de Taille / Tour de Hanche (RTH)
 
-L'indice de conicité (IC) étant un bon indicateur de la répartition de la graisse abdominale, il n’a cependant pas permis de réaliser un test statistique concluant. Pour pallier cette limite, nous allons utiliser le rapport taille-hanche (RTH), un autre indice couramment employé pour évaluer la distribution des graisses et les risques métaboliques, afin de tester son association avec les facteurs de risque à l’aide du test du chi².
 
-Le RTH est défini par la formule suivante :
-
-RTH = \frac{\text{Tour de Taille (cm)}}{\text{Tour de Hanche (cm)}} 
-
-Une valeur élevée du RTH est souvent associée à une augmentation du risque cardiovasculaire, ce qui justifie son utilisation dans cette étude aux côtés de l'IC.
-
-```{r}
-
-biometry <- biometry %>%
-  mutate(
-    rth = (tour_taille / tour_hanche) / 100,  # Calcul de RTH
-    cat_RTH = case_when(  # Classification de RTH selon le genre
-      genre == "F" & rth < 0.80 ~ "Faible",
-      genre == "F" & rth >= 0.80 & rth < 0.85 ~ "Modéré",
-      genre == "F" & rth >= 0.85 ~ "Élevé",
-      genre == "M" & rth < 0.90 ~ "Faible",
-      genre == "M" & rth >= 0.90 & rth < 1.00 ~ "Modéré",
-      genre == "M" & rth >= 1.00 ~ "Élevé"
-    )  
-  ) 
-
-head(biometry)
-
-```
 
 
 
