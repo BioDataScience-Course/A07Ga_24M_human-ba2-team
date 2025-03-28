@@ -179,9 +179,30 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
+indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
+L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
+
+ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
+
+$$IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}$$
+
 ```{r}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
+biometry <- biometry %>%
+  mutate(
+    ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
+  ) %>%
+  mutate(
+    risque_ic = case_when(
+      ic < 1.0 ~ "faible",
+      ic >= 1.0 & ic < 1.25 ~ "modéré",
+      ic >= 1.25 ~ "élevé"
+    )
+  )
+biometry$risque_ic <- factor(biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
 
+# Afficher les premières lignes des colonnes 'ic' et 'risque_ic'
+head(biometry[, c("ic", "risque_ic")])
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
@@ -189,15 +210,33 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
+table_IC <- biometry %>%
+  group_by(risque_ic) %>%
+  summarise(
+    fumeurs = sum(fumeur == 1, na.rm = TRUE) / n() * 100,
+    alcool = sum(alcool > 0, na.rm = TRUE) / n() * 100,
+    fast_food = sum(fast_food > 1, na.rm = TRUE) / n() * 100,
+    activité_Physique_élevé = sum(activite_physique > 300, na.rm = TRUE) / n() * 100,
+    Sommeil_6h = sum(sommeil < 6, na.rm = TRUE) / n() * 100
+  )
+
+print(table_IC)
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   ...
+- Les facteurs les plus liés à un IC élevé semblent être :
+La consommation de fast-food et le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
--   ...
+-L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
--   ...
+- L’activité physique ne semble pas être un élément clé de différenciation.
+- la population n'est pas affectée par le tabagisme.
+
+- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+
+***l'indice de conicité ne nous permet pas de faire un test robuste*
+
 
 ### Indice de Ide
 
@@ -250,81 +289,6 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 -   ...
 
-<!--% Description et formule ci-dessous. -->
-indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
-L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
-
-ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
-
-IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}
-
-
-
-```{r}
-#Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-
-```{r}
-biometry <- biometry %>%
-  mutate(
-    ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
-  ) %>%
-  mutate(
-    risque_ic = case_when(
-      ic < 1.0 ~ "faible",
-      ic >= 1.0 & ic < 1.25 ~ "modéré",
-      ic >= 1.25 ~ "élevé"
-    )
-  )
-biometry$risque_ic <- factor(biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
-
-# Afficher les premières lignes des colonnes 'ic' et 'risque_ic'
-head(biometry[, c("ic", "risque_ic")])
-
-```
-
-``
-
-
-<!--% Graphique ou tableau utilisant l'indice calculé.-->
-
-```{r}
-```{r}
-# Graphique ou tableau utilisant l'indice calculé.
-
-
-table_IC <- biometry %>%
-  group_by(risque_ic) %>%
-  summarise(
-    fumeurs = sum(fumeur == 1, na.rm = TRUE) / n() * 100,
-    alcool = sum(alcool > 0, na.rm = TRUE) / n() * 100,
-    fast_food = sum(fast_food > 1, na.rm = TRUE) / n() * 100,
-    activité_Physique_élevé = sum(activite_physique > 300, na.rm = TRUE) / n() * 100,
-    Sommeil_6h = sum(sommeil < 6, na.rm = TRUE) / n() * 100
-  )
-
-print(table_IC)
-
-
-
-```
-
-```
-```
-
-<!--% Interprétation en quelques points du graphique ou tableau. -->
-
-
-- Les facteurs les plus liés à un IC élevé semblent être :
-La consommation de fast-food et le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
-
--L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
-
-- L’activité physique ne semble pas être un élément clé de différenciation.
-- la population n'est pas affectée par le tabagisme.
-
-- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
-
-***l'indice de conicité ne nous permet pas de faire un test robuste*
 
 
 ## Tests d'hypothèses
@@ -358,14 +322,6 @@ print(result_fast_food)
 ```
 
 
-
-
-
-
-
-
-
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
@@ -381,12 +337,7 @@ print(result_fast_food)
 -les observations sont indépendantes 
 
 
-```
-
-
-
 ```{r test_chi2_1}
-
 
 
 ```
