@@ -402,8 +402,6 @@ t.test(data = biometry, imc ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-Nous ne rejetons pas H0 au seuil de 5%
-Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2 by Nefise
 
