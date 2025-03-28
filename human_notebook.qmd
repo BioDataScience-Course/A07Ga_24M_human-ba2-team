@@ -1,6 +1,6 @@
 ---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
-author: "Tercan Nefise, Baseka Manzabe Christelle, Tchuileng Ide"
+author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
 format:
   html:
@@ -241,55 +241,57 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 
 ### Indice de Ide
 
+<!--% Description et formule ci-dessous. -->
+
+L'Indice Taille-Hanche est utilisé pour évaluer la répartition des graisses et le risque cardio-métabolique.
+Le rapport taille-hanche est un bon reflet de la répartition des graisses dans notre organisme. Son élévation témoigne d’une accumulation de tissus graisseux au niveau de la région abdominale. L’aspect général de la silhouette s’apparente à une pomme. Lorsqu’il est plus faible, la silhouette est en forme de poire : la graisse s’établit préférentiellement dans le bas du corps, au niveau des hanches, fesses et cuisses. En fonction de leur localisation dans notre corps, ces réserves d’énergie n’ont pas le même impact sur la santé.
+
+reference de l'article: Waist-to-hip ratio better predicts early death than BMI – and should replace BMI as a simple measure of healthy weight, Diabetologia, 21 septembre 2022
+
+$$ITH = \frac{\text{Tour de taille (cm)}}{\text{Tour de hanches (cm)}}$$
 ```{r}
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 # Graphique ou tableau utilisant l'indice calculé.
-#L'Indice de Masse Grasse (IMG) permet d'estimer la proportion de graisse corporelle par rapport à la masse totale du corps. C'est un indicateur plus précis que l'IMC pour évaluer l'adiposité.
 
-#reference de l'article: Deurenberg P, Weststrate JA, Seidell JC. "Body mass index as a measure of body fatness: age- and sex-specific prediction formulas." British Journal of Nutrition. 1991;65(2):105-114.
 
-#IMG = 1.2 * IMC + 0.23 * AGE - 10.8 * SEXE - 5.4
+# Calcul de l'Indice Taille-Hanche
+biometry$ITH <- biometry$tour_taille / biometry$tour_hanche
+summary(biometry$ITH)  # les valeurs doivent être comprises entre 0.6 et 1.2
 
-#calcul de la mediane des differentes tailles car presence d'une valeur manquante
-biometry$taille[is.na(biometry$taille)] <- median(biometry$taille, na.rm = TRUE)
+# Catégorisation de l'ITH selon les seuils de l'OMS
+biometry$ITH_categorie <- cut(
+  biometry$ITH,
+  breaks = c(-Inf, 0.85, 0.90, 1.00, Inf),
+  labels = c("Faible", "Modéré", "Élevé", "Très Élevé"),
+  right = FALSE
+)
+table(biometry$ITH_categorie)
 
-# Calcul de l'IMC
-biometry$IMC <- biometry$masse / (biometry$taille^2)
-
-# Calcul de l'IMG selon Deurenberg
-biometry$IMG <- (1.2 * biometry$IMC) + 
-                     (0.23 * biometry$age) - 
-                     (10.8 * ifelse(biometry$genre == "H", 1, 0)) - 5.4
-
-# Catégorisation selon les seuils OMS
-biometry$IMG_categorie <- cut(biometry$IMG, 
-  breaks = c(0, 10, 20, 30, 40, Inf), 
-  labels = c("Très faible", "Faible", "Normal", "Élevé", "Très élevé"),
-  include.lowest = TRUE, right = FALSE)
-  
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-chart(data = biometry, ~ IMG_categorie %fill=% genre) +
+chart(data = biometry, ~ ITH_categorie %fill=% genre) +
   geom_bar(position = "dodge") +
-  labs(title = "Répartition de l'Indice de Masse Grasse par genre", 
-       x = "Catégorie d'IMG", y = "Effectif")
+  labs(
+    title = "Répartition de l'Indice Taille-Hanche par genre",
+    x = "Catégorie de risque (ITH)",
+    y = "Effectif"
+  )
+
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
+-La majorité des femmes se situent dans la catégorie "Faible", indiquant une répartition des graisses moins à risque.
 
+-Les hommes sont majoritairement représentés dans les catégories "Élevé" et "Très Élevé", associées à un risque cardiovasculaire accru.
 
--   Les femmes (F) sont majoritairement classées dans la catégorie "Très faible". Cela indique une tendance à une masse grasse plus faible.
+-Les catégories "Modéré" montrent une répartition équilibrée entre les deux genres.
 
--   D'un point de vue **biologique**, un IMG trop bas peut être associé à un manque de réserves énergétiques, ce qui peut poser des problèmes de santé (fatigue, troubles hormonaux, etc.).
-
--   ...
-
+-Globalement, les femmes présentent un profil plus protecteur, tandis que les hommes sont plus exposés aux risques métaboliques liés à une répartition abdominale des graisses.
 
 
 ## Tests d'hypothèses
@@ -352,15 +354,24 @@ print(result_fast_food)
 
 
 
-### Test de Chi^2^ by Ide
+### Test de Chi^2^ 2 by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_2}
+# Tableau de contingence entre genre et catégorie d'ITH
+table_ITH <- table(biometry$genre, biometry$ITH_categorie)
+
+# Affichage du tableau
+tabularise(table_ITH)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
+H₀ (hypothèse nulle) : Il n’existe aucune association entre le genre et la catégorie d’ITH (les deux variables sont indépendantes).
+
+H₁ (hypothèse alternative) : Il existe une association significative entre le genre et la catégorie d’ITH (les distributions diffèrent selon le genre).
+
 
 <!--% Vérification des conditions d'application -->
 
@@ -372,7 +383,7 @@ print(result_fast_food)
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
-### Test t de Student 1 by Christelle
+### Test t de Student 1
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -405,7 +416,7 @@ t.test(data = biometry, imc ~ genre,
 Nous ne rejetons pas H0 au seuil de 5%
 Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
-### Test t de Student 2 by Nefise
+### Test t de Student 2
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -425,7 +436,7 @@ Il n'existe pas une différence significative entre l'imc des hommes et celui de
 
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
 
-### ANOVA à un facteur 1 (Nefise)
+### ANOVA à un facteur 1
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -459,7 +470,10 @@ biometry2 %>.%
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_2}
-
+anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
+  as.data.frame() |>
+  tibble::rownames_to_column("Source de variation") |>
+  tabularise()
 ```
 
 <!--% Hypothèse nulle et alternative -->
