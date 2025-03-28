@@ -48,23 +48,22 @@ skimr::skim(biometry)
 
 <!--% Ensuite vous décrirez graphiquement (avec `chart()`) et numériquement (tableaux avec `tabularise()`, `skimr::skim()`, etc.) vos données. Chaque étudiant ajoute deux éléments descriptifs pertinents. -->
 
-### Description par l'étudiant 1
+### Description 1 par Nefise
 
 ```{r}
-chart(data = biometry, eau ~ alimentation) +
-  geom_violin()
+chart(data = biometry, masse_corr ~ activite_physique %fill=% genre| genre) +
+  geom_violin(show.legend = FALSE)
 ```
-D'aprés le graphique, les personnes ayant un régime carnivore ont tendance à boire beaucoup plus d'eau par rapport aux personnes ayant un régime végétarien.
 
+**interprétation**
+D'après le graphique, les hommes ont tendance a faire plus d'activité physique que les femmes et les personnes ayant tendance à réaliser peu d'activité physique tendent à avoir une masse corporelle plus élevée.
 
-
-### Description par l'étudiant 2
+### Description 2 par Nefise
 
 ```{r}
 
 ```
 
-...Vos deux descriptions ici...
 
 ### Description par Christelle
 
@@ -86,7 +85,7 @@ biometry %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 ```
 
-***interprétations***
+***interprétation***
 -les femmes dorment en moyenne trois minutes de plus que les hommes 
 -l'écart-type est plus élevé chez les femmes, ce qui semble suggerer une grande variabilité dans leurs habitudes de sommeil
 -Nous allons faire un graphique complémentaire pour visualiser les données
