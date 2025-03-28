@@ -83,6 +83,8 @@ On observe une tendance où la consommation fréquente de sucre est associée à
 biometry %>.%
   sgroup_by(.,genre) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
+
+
 ```
 
 ***interprétation***
@@ -249,7 +251,7 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 
 
 
-### Test de Chi^2^ 1
+### Test de Chi^2^ 1 by Christelle
 ```{r chi2_ic}
 # tableau de contingence entre 'fast_food' et 'risque_ic'
 table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
