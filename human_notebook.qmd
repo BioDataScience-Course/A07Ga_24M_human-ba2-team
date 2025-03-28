@@ -1,6 +1,6 @@
 ---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
-author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
+author: "Tercan Nefise, Baseka Manzabe Christelle, Tchuileng Ide"
 date: "`r Sys.Date()`"
 format:
   html:
@@ -352,7 +352,7 @@ print(result_fast_food)
 
 
 
-### Test de Chi^2^ 2
+### Test de Chi^2^ by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -372,7 +372,7 @@ print(result_fast_food)
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
-### Test t de Student 1
+### Test t de Student 1 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -405,7 +405,7 @@ t.test(data = biometry, imc ~ genre,
 Nous ne rejetons pas H0 au seuil de 5%
 Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
-### Test t de Student 2
+### Test t de Student 2 by Nefise
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -425,7 +425,7 @@ Il n'existe pas une différence significative entre l'imc des hommes et celui de
 
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
 
-### ANOVA à un facteur 1
+### ANOVA à un facteur 1 (Nefise)
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
