@@ -65,45 +65,6 @@ D'après le graphique, les hommes ont tendance a faire plus d'activité physique
 ```
 **interprétation**
 
-### Description 1 par Ide
-
-```{r}
-give_n <- function(x)
-  c(y = max(x) * 1.1, label = length(x))
-chart(data = biometry, alimentation ~ masse_corr %fill=% genre) +
-  geom_boxplot() +
-  stat_summary(fun.data = give_n, geom = "text", hjust = 0.5, 
-               position = position_dodge(0.75)) +
-  labs(title = "Masse corrigée en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse corrigée")
-
-```
-***interprétation***
-
-
--Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
-
--Omnivores: C'est la catégorie avec le plus d'individus(72 et 56), et la distribution est plus étendue. Des valeurs aberrantes sont présentes dans cette catégorie.
-
--Végétariens: il semble y avoir uniquement des femmes dans l'échantillon. Avec une distribution serrée autour d'une masse corrigée plus faible.
-
-De façon général, la médiane de masse_corr semble être plus élevée pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
-
-
-### Description 2 par Ide
-
-```{r}
-chart(data = biometry, activite_physique ~ masse_corr, color = genre) + 
-  geom_point(alpha = 0.6) +
-  labs(title = "Relation entre activité physique et masse corrigée", x = "Activité physique (min/semaine)", y = "Masse corrigée")
-```
-
-***interprétation***
-
--On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique ne semble pas etre directement liée a la masse corrigée.
-
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant clair dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en masse corrigée.
-
--La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
 
 ### Description 1 par Christelle
 
@@ -146,6 +107,46 @@ geom_boxplot() +
 -l'étendue interquartile est assez similaire pour les deux groupes 
 
 - Il y a une valeur extrême chez les femmes: cette valeur peut etre à une erreur de mesure ou à un trouble de sommeil
+
+### Description 1 par Ide
+
+```{r}
+give_n <- function(x)
+  c(y = max(x) * 1.1, label = length(x))
+chart(data = biometry, alimentation ~ masse_corr %fill=% genre) +
+  geom_boxplot() +
+  stat_summary(fun.data = give_n, geom = "text", hjust = 0.5, 
+               position = position_dodge(0.75)) +
+  labs(title = "Masse corrigée en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse corrigée")
+
+```
+***interprétation***
+
+
+-Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
+
+-Omnivores: C'est la catégorie avec le plus d'individus(72 et 56), et la distribution est plus étendue. Des valeurs aberrantes sont présentes dans cette catégorie.
+
+-Végétariens: il semble y avoir uniquement des femmes dans l'échantillon. Avec une distribution serrée autour d'une masse corrigée plus faible.
+
+De façon général, la médiane de masse_corr semble être plus élevée pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
+
+
+### Description 2 par Ide
+
+```{r}
+chart(data = biometry, activite_physique ~ masse_corr, color = genre) + 
+  geom_point(alpha = 0.6) +
+  labs(title = "Relation entre activité physique et masse corrigée", x = "Activité physique (min/semaine)", y = "Masse corrigée")
+```
+
+***interprétation***
+
+-On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique ne semble pas etre directement liée a la masse corrigée.
+
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant clair dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en masse corrigée.
+
+-La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
 
 
 ## Calcul d'indices
