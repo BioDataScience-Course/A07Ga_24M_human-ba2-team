@@ -77,7 +77,7 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 **interprétation** 
-On observe une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
+Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
 
 ### Description 2 par Christelle
 
@@ -86,27 +86,26 @@ biometry %>.%
   sgroup_by(.,genre) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 
+#Nous allons faire un graphique complémentaire pour visualiser les données
 
-```
-
-***interprétation***
--les femmes dorment en moyenne trois minutes de plus que les hommes 
--l'écart-type est plus élevé chez les femmes, ce qui semble suggerer une grande variabilité dans leurs habitudes de sommeil
--Nous allons faire un graphique complémentaire pour visualiser les données
-
-```{r christelle_grp comp. tableau}
 chart(biometry, sommeil ~ genre %fill=% genre) +
 geom_boxplot() +
   labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
 
 ```
-***interprétations*** 
 
+***interprétation***
+
+-les femmes dorment en moyenne trois minutes de plus que les hommes 
+-l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
+
+Dans le graphique,
 - nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire) 
 
 -l'étendue interquartile est assez similaire pour les deux groupes 
 
-- Il y a une valeur extrême chez les femmes: cette valeur peut etre à une erreur de mesure ou à un trouble de sommeil
+- Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
+
 
 ### Description 1 par Ide
 
@@ -181,7 +180,7 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
-indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
+L'indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
 L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
 
 ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
