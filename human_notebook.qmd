@@ -196,12 +196,11 @@ biometry <- biometry %>%
   ) %>%
   mutate(
     risque_ic = case_when(
-      ic < 1.0 ~ "faible",
-      ic >= 1.0 & ic < 1.25 ~ "modéré",
+      ic < 1.25 ~ "modéré",
       ic >= 1.25 ~ "élevé"
     )
   )
-biometry$risque_ic <- factor(biometry$risque_ic, levels = c("faible", "modéré", "élevé"))
+biometry$risque_ic <- factor(biometry$risque_ic, levels = c("modéré", "élevé"))
 
 # Afficher les premières lignes des colonnes 'ic' et 'risque_ic'
 head(biometry[, c("ic", "risque_ic")])
@@ -228,7 +227,7 @@ print(table_IC)
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
 - Les facteurs les plus liés à un IC élevé semblent être :
-La consommation de fast-food et le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
+La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
 -L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
@@ -236,8 +235,6 @@ La consommation de fast-food et le manque de sommeil (les personnes à risque IC
 - la population n'est pas affectée par le tabagisme.
 
 - Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
-
-***l'indice de conicité ne nous permet pas de faire un test robuste*
 
 
 ### Indice de Ide
@@ -301,7 +298,7 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 
 
-### Test de Chi^2^ 1 by Christelle
+### Test de Chi^2^ 1 Indice Christelle
 ```{r chi2_ic}
 # tableau de contingence entre 'fast_food' et 'risque_ic'
 table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
@@ -404,6 +401,8 @@ t.test(data = biometry, imc ~ genre,
 <!-- Interprétation statistique et biologique -->
 La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
 
+Nous ne rejetons pas H0 au seuil de 5%
+Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2 by Nefise
 
