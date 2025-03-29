@@ -107,6 +107,8 @@ Dans le graphique,
 - Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
 
 
+
+
 ### Description 1 par Ide
 
 ```{r}
@@ -207,33 +209,38 @@ head(biometry[, c("ic", "risque_ic")])
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
+
+
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
-table_IC <- biometry %>%
+table_ic <- biometry %>%
+  filter(!is.na(risque_ic)) %>%
   group_by(risque_ic) %>%
   summarise(
-    fumeurs = sum(fumeur == 1, na.rm = TRUE) / n() * 100,
-    alcool = sum(alcool > 0, na.rm = TRUE) / n() * 100,
-    fast_food = sum(fast_food > 1, na.rm = TRUE) / n() * 100,
-    activité_Physique_élevé = sum(activite_physique > 300, na.rm = TRUE) / n() * 100,
-    Sommeil_6h = sum(sommeil < 6, na.rm = TRUE) / n() * 100
+    age = mean(age < 25, na.rm = TRUE) * 100,
+    alcool = mean(alcool > 0, na.rm = TRUE) * 100,
+    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,
+    activité_Physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,
+    Sommeil_6h = mean(sommeil < 6, na.rm = TRUE)  * 100
   )
 
-print(table_IC)
+print(table_ic)
+
+
 ```
+
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les facteurs les plus liés à un IC élevé semblent être :
-La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
+- Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
+- Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
+- Les  personnes qui sonsomment plus de fast food ont modere ( contre intuitif) 
+- L'activité physique ne semble pas avoir d'impact sur l' IC
+- avec un IC élevé consomment moins de fast food 
+- le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
 
--L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
-
-- L’activité physique ne semble pas être un élément clé de différenciation.
-- la population n'est pas affectée par le tabagisme.
-
-- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
 
 
 ### Indice de Ide
@@ -297,46 +304,46 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 
 
-### Test de Chi^2^ 1 Indice Christelle
-```{r chi2_ic}
-# tableau de contingence entre 'fast_food' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
-print(table_fast_food)
-# H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
-# H1: Il y a une association significative entre les facteurs de risque et l'indice de conicité ic
-# 
-#transformation de la variable
-biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
-biometry$fast_food_cat <- factor(biometry$fast_food_cat)
-
-# Tableau de contingence entre 'fast_food_cat' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
-print(table_fast_food)
-
-# Test du chi-deux pour 'fast_food_cat' et 'risque_ic'
-result_fast_food <- chisq.test(table_fast_food)
-print(result_fast_food)
-
-```
-
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
 
+table_sommeil_ic <- biometry %>%
+  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h")) %>% 
+  group_by(risque_ic, sommeil_cat) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
+
+print(table_sommeil_ic)
+
+
+chart(data = biometry, ~ sommeil %fill=% risque_ic) +
+  geom_bar(position = "dodge") +
+  labs(title = "Répartition du sommeil selon l'Indice de Conicité",
+       x = "Durée du sommeil (<6h vs ≥6h)",
+       y = "Nombre d'individus") +
+  scale_fill_viridis_d()
 
 ```
 
 
 <!--% Hypothèse nulle et alternative -->
 
+ H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité ic
+ H1: Il y a une association significative entre le sommeil et l'indice de conicité ic
+ 
 <!--% Vérification des conditions d'application -->
 
--les observations sont indépendantes 
+
+```{r}
 
 
-```{r test_chi2_1}
+```
 
+
+```{r test_chi2_1 }
+
+chisq.test(table_cont_sommeil)
 
 ```
 
@@ -399,8 +406,6 @@ t.test(data = biometry, imc ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-Nous ne rejetons pas H0 au seuil de 5%
-Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2 by Nefise
 
