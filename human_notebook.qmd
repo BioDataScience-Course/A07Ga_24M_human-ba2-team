@@ -121,6 +121,7 @@ chart(data = biometry, alimentation ~ masse_corr %fill=% genre) +
   labs(title = "Masse corrigée en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse corrigée")
 
 ```
+
 ***interprétation***
 
 
@@ -405,6 +406,7 @@ t.test(data = biometry, imc ~ genre,
 ```
 
 <!-- Interprétation statistique et biologique -->
+La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
 
 
 ### Test t de Student 2 by Nefise
@@ -455,6 +457,7 @@ biometry2 %>.%
 ```
 
 <!--% Interprétation statistique et biologique -->
+
 
 ### ANOVA à un facteur 2
 
