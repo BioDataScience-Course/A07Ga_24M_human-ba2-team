@@ -152,6 +152,7 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 -La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
 
+
 ## Calcul d'indices
 
 <!--% Calculez au moins quatre indices (un par étudiant) en vous basant sur la littérature et en relation avec votre question de recherche. Décrivez chaque indice avec une formule mathématique en LaTeX. Calculez une nouvelle variable dans votre tableau pour cet indice sur base de la formule mathématique. Si cela est pertinent, définissez aussi une variable facteur qui qualifie l'état de bonne santé selon une échelle qualitative. -->
@@ -215,6 +216,8 @@ ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K
 
 $$IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}$$
 
+# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
+
 ```{r}
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 biometry <- biometry %>%
@@ -238,30 +241,45 @@ head(biometry[, c("ic", "risque_ic")])
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 
-table_IC <- biometry %>%
+table_ic <- biometry %>%
+  filter(!is.na(risque_ic)) %>%
   group_by(risque_ic) %>%
   summarise(
-    fumeurs = sum(fumeur == 1, na.rm = TRUE) / n() * 100,
-    alcool = sum(alcool > 0, na.rm = TRUE) / n() * 100,
-    fast_food = sum(fast_food > 1, na.rm = TRUE) / n() * 100,
-    activité_Physique_élevé = sum(activite_physique > 300, na.rm = TRUE) / n() * 100,
-    Sommeil_6h = sum(sommeil < 6, na.rm = TRUE) / n() * 100
+    age = mean(age < 25, na.rm = TRUE) * 100,
+    alcool = mean(alcool > 0, na.rm = TRUE) * 100,
+    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,
+    activité_Physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,
+    Sommeil_6h = mean(sommeil < 6, na.rm = TRUE)  * 100
   )
 
-print(table_IC)
+print(table_ic)
+
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
+- Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
--L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
+- L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
--   L'activité physique ne semble pas être un élément clé de différenciation.
+- L'activité physique ne semble pas être un élément clé de différenciation.
 
--   la population n'est pas affectée par le tabagisme.
+- la population n'est pas affectée par le tabagisme.
+
+
+
+- Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
+- Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
+- Les  personnes qui sonsomment plus de fast food ont modere ( contre intuitif) 
+- L'activité physique ne semble pas avoir d'impact sur l' IC
+- avec un IC élevé consomment moins de fast food 
+- le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
+
+
+Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
 
 -   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+
 
 ### Indice de Ide
 
@@ -271,7 +289,9 @@ L'Indice de Masse Grasse (IMG) permet d'estimer la proportion de graisse corpore
 
 reference de l'article: Deurenberg P, Weststrate JA, Seidell JC. "Body mass index as a measure of body fatness: age- and sex-specific prediction formulas." British Journal of Nutrition. 1991;65(2):105-114.
 
-$$IMG = 1.2 \times IMC + 0.23 \times \text{Âge} - 10.8 \times \text{Sexe} - 5.4$$ \# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
+$$IMG = 1.2 \times IMC + 0.23 \times \text{Âge} - 10.8 \times \text{Sexe} - 5.4$$
+
+# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
 # Calcul de la mediane des differentes tailles car presence d'une valeur manquante
@@ -309,11 +329,13 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 -   D'un point de vue **biologique**, un IMG trop bas peut être associé à un manque de réserves énergétiques, ce qui peut poser des problèmes de santé (fatigue, troubles hormonaux, etc.).
 
+
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
 
 <!--# Chaque test d'hypothèse doit être correctement employé. Vous devez indiquer, pour chaque test, l'hypothèse nulle et l'hypothèse alternative. Vous devez vérifier les conditions d'application du test d'hypothèse. Vous le réalisez, et ensuite vous l'interprétez du point de vue statistique d'abord et biologique ensuite. -->
+
 
 ### Test de Chi^2^ 1 Indice Christelle
 
@@ -342,21 +364,39 @@ print(result_fast_food)
 
 ```{r plot_chi2_1}
 
+table_sommeil_ic <- biometry %>%
+  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h")) %>% 
+  group_by(risque_ic, sommeil_cat) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
+
+print(table_sommeil_ic)
+
+
+chart(data = biometry, ~ sommeil %fill=% risque_ic) +
+  geom_bar(position = "dodge") +
+  labs(title = "Répartition du sommeil selon l'Indice de Conicité",
+       x = "Durée du sommeil (<6h vs ≥6h)",
+       y = "Nombre d'individus") +
+  scale_fill_viridis_d()
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+ H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité ic
+ H1: Il y a une association significative entre le sommeil et l'indice de conicité ic
+ 
 <!--% Vérification des conditions d'application -->
 
--les observations sont indépendantes
+les observations sont indépendantes
 
-```{r test_chi2_1}
-
-
+```{r test_chi2_1 }
+chisq.test(table_cont_sommeil)
 ```
 
 <!--% Interprétation statistique et biologique -->
+
 
 ### Test de Chi^2^ by Ide
 
@@ -385,11 +425,11 @@ print(result_fast_food)
 ```{r plot_t_1}
 #IMC selon le sexe
 biometry <- smutate(biometry, imc = masse_corr/(taille)^2) 
-   
+
 biometry %>.%
-sgroup_by(., genre) %>.%
-     ssummarise (.,
-       mean = fmean(imc))
+  sgroup_by(., genre) %>.%
+  ssummarise(.,mean = fmean(imc))
+
 ```
 
 <!-- Hypothèse nulle et alternative -->
@@ -399,7 +439,6 @@ H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro
 <!-- Vérification des conditions d'application -->
 
 ```{r test_t_1}
-
 t.test(data = biometry, imc ~ genre, 
   alternative = "two.sided", var.equal = TRUE )
 ```
@@ -407,8 +446,6 @@ t.test(data = biometry, imc ~ genre,
 <!-- Interprétation statistique et biologique -->
 
 La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
-
-Nous ne rejetons pas H0 au seuil de 5% Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2 by Nefise
 
