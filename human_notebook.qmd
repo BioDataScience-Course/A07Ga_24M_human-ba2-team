@@ -51,23 +51,32 @@ skimr::skim(biometry)
 ### Description 1 par Nefise
 
 ```{r}
-chart(data = biometry, masse_corr ~ activite_physique %fill=% genre| genre) +
-  geom_violin(show.legend = FALSE)
+chart (data = biometry, genre ~ tour_taille %fill=%  intolerance_lactose) +
+  geom_boxplot () +
+  coord_flip ()
 ```
 
-**interprétation**
-D'après le graphique, les hommes ont tendance a faire plus d'activité physique que les femmes et les personnes ayant tendance à réaliser peu d'activité physique tendent à avoir une masse corporelle plus élevée.
+**interprétation** 
+Chez les hommes (H), le tour de taille des non intolérants (N) est plus dispersé avec plusieurs valeurs extrêmes, tandis que celui des intolérants (O) est plus homogène, avec une médiane plus élevée, possiblement due à une accumulation de graisses viscérales ou à une consommation accrue d'aliments sans lactose, souvent plus caloriques. Chez les femmes (F), les non intolérantes (N) présentent une forte variabilité avec des valeurs extrêmes élevées, alors que les intolérantes (O) ont un tour de taille plus bas et plus regroupé, ce qui pourrait s'expliquer par une meilleure gestion alimentaire des femmes ou des effets de malabsorption. La taille de l'échantillon pourrait aussi jouer un rôle, notamment chez les hommes intolérants, où quelques valeurs élevées biaisent la médiane.
 
 ### Description 2 par Nefise
 
 ```{r}
+biometry %>.%
+  sgroup_by(., genre) %>.%
+  ssummarise(.,
+    mean = fmean(fumeur),
+    sq = fsd(fumeur),
+    nobs = fnobs(fumeur))
 
+# Tableau formaté avec knitr::kable()
+knitr::kable(biometry)
 ```
-**interprétation**
 
+**interprétation** 
+Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
 
 ### Description 1 par Christelle
-
 
 ```{r}
 chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
@@ -96,16 +105,13 @@ geom_boxplot() +
 
 ***interprétation***
 
--les femmes dorment en moyenne trois minutes de plus que les hommes 
--l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
+-les femmes dorment en moyenne trois minutes de plus que les hommes -l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
 
-Dans le graphique,
-- nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire) 
+Dans le graphique, - nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
 
--l'étendue interquartile est assez similaire pour les deux groupes 
+-l'étendue interquartile est assez similaire pour les deux groupes
 
-- Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
-
+-   Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
 
 ### Description 1 par Ide
 
@@ -122,7 +128,6 @@ chart(data = biometry, alimentation ~ masse_corr %fill=% genre) +
 
 ***interprétation***
 
-
 -Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
 
 -Omnivores: C'est la catégorie avec le plus d'individus(72 et 56), et la distribution est plus étendue. Des valeurs aberrantes sont présentes dans cette catégorie.
@@ -130,7 +135,6 @@ chart(data = biometry, alimentation ~ masse_corr %fill=% genre) +
 -Végétariens: il semble y avoir uniquement des femmes dans l'échantillon. Avec une distribution serrée autour d'une masse corrigée plus faible.
 
 De façon général, la médiane de masse_corr semble être plus élevée pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
-
 
 ### Description 2 par Ide
 
@@ -148,7 +152,6 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 -La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
 
-
 ## Calcul d'indices
 
 <!--% Calculez au moins quatre indices (un par étudiant) en vous basant sur la littérature et en relation avec votre question de recherche. Décrivez chaque indice avec une formule mathématique en LaTeX. Calculez une nouvelle variable dans votre tableau pour cet indice sur base de la formule mathématique. Si cela est pertinent, définissez aussi une variable facteur qui qualifie l'état de bonne santé selon une échelle qualitative. -->
@@ -159,30 +162,54 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
+L'Indice de Masse Corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (\<18,5), poids normal (18,5-24,9), surpoids (25-29,9), et obésité (≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
+
+ref article: PasseportSanté. (n.d.). IMC : calcul, catégories et limites de l'indice de masse corporelle. PasseportSanté. Consulté le 30 mars 2025, à partir de https://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=IMC
+
+$$IMC = \frac{\text{Poids (kg)}}{\text{Taille (m)}^2}$$
+
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
+```{r}
+#indice sous format numérique et facteur
+biometry3 <- biometry %>%
+  smutate(., 
+    bmi = masse / (taille/100)^2) %>.%
+  smutate(., bmi_cat = case_when(
+    bmi < 18.5 ~ "sous-poids",
+    bmi <= 18.5 & bmi < 25 ~ "poids-normal",
+    bmi >= 25 & bmi < 30 ~ "surpoids",
+    bmi >= 30 ~ "obèse")) %>.%
+  sselect(., genre, bmi, bmi_cat)
+```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-
+biometry3 %>.%
+  sgroup_by(., genre, bmi_cat)%>.%
+  ssummarise(.,
+    mean   = fmean(bmi),
+    number = fn(bmi))
+tabularise(biometry3)
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   ...
+- Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes, contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
 
--   ...
+- Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes, contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
 
--   ...
+- Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
+
+- Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
 ### Indice de Christelle
 
 <!--% Description et formule ci-dessous. -->
 
-L'indice de conicité (IC) utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991)
-L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
+L'indice de conicité (IC) est utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991). L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
 
 ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
 
@@ -226,31 +253,28 @@ print(table_IC)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les facteurs les plus liés à un IC élevé semblent être :
-La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
+-   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
 -L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
-- L’activité physique ne semble pas être un élément clé de différenciation.
-- la population n'est pas affectée par le tabagisme.
+-   L'activité physique ne semble pas être un élément clé de différenciation.
 
-- Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+-   la population n'est pas affectée par le tabagisme.
 
+-   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
 
 ### Indice de Ide
 
+<!--% Description et formule ci-dessous. -->
+
+L'Indice de Masse Grasse (IMG) permet d'estimer la proportion de graisse corporelle par rapport à la masse totale du corps. C'est un indicateur plus précis que l'IMC pour évaluer l'adiposité.
+
+reference de l'article: Deurenberg P, Weststrate JA, Seidell JC. "Body mass index as a measure of body fatness: age- and sex-specific prediction formulas." British Journal of Nutrition. 1991;65(2):105-114.
+
+$$IMG = 1.2 \times IMC + 0.23 \times \text{Âge} - 10.8 \times \text{Sexe} - 5.4$$ \# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
+
 ```{r}
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-# Graphique ou tableau utilisant l'indice calculé.
-#L'Indice de Masse Grasse (IMG) permet d'estimer la proportion de graisse corporelle par rapport à la masse totale du corps. C'est un indicateur plus précis que l'IMC pour évaluer l'adiposité.
-
-#reference de l'article: Deurenberg P, Weststrate JA, Seidell JC. "Body mass index as a measure of body fatness: age- and sex-specific prediction formulas." British Journal of Nutrition. 1991;65(2):105-114.
-
-#IMG = 1.2 * IMC + 0.23 * AGE - 10.8 * SEXE - 5.4
-
-#calcul de la mediane des differentes tailles car presence d'une valeur manquante
+# Calcul de la mediane des differentes tailles car presence d'une valeur manquante
 biometry$taille[is.na(biometry$taille)] <- median(biometry$taille, na.rm = TRUE)
 
 # Calcul de l'IMC
@@ -281,14 +305,9 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-
 -   Les femmes (F) sont majoritairement classées dans la catégorie "Très faible". Cela indique une tendance à une masse grasse plus faible.
 
 -   D'un point de vue **biologique**, un IMG trop bas peut être associé à un manque de réserves énergétiques, ce qui peut poser des problèmes de santé (fatigue, troubles hormonaux, etc.).
-
--   ...
-
-
 
 ## Tests d'hypothèses
 
@@ -296,9 +315,8 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 <!--# Chaque test d'hypothèse doit être correctement employé. Vous devez indiquer, pour chaque test, l'hypothèse nulle et l'hypothèse alternative. Vous devez vérifier les conditions d'application du test d'hypothèse. Vous le réalisez, et ensuite vous l'interprétez du point de vue statistique d'abord et biologique ensuite. -->
 
-
-
 ### Test de Chi^2^ 1 Indice Christelle
+
 ```{r chi2_ic}
 # tableau de contingence entre 'fast_food' et 'risque_ic'
 table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
@@ -320,7 +338,6 @@ print(result_fast_food)
 
 ```
 
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
@@ -328,27 +345,18 @@ print(result_fast_food)
 
 ```
 
-
 <!--% Hypothèse nulle et alternative -->
 
 <!--% Vérification des conditions d'application -->
 
--les observations sont indépendantes 
-
+-les observations sont indépendantes
 
 ```{r test_chi2_1}
 
 
 ```
 
-
-
-
-
 <!--% Interprétation statistique et biologique -->
-
-
-
 
 ### Test de Chi^2^ by Ide
 
@@ -384,13 +392,11 @@ sgroup_by(., genre) %>.%
        mean = fmean(imc))
 ```
 
-<!-- Hypothèse nulle et alternative --> 
+<!-- Hypothèse nulle et alternative -->
 
-H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro
-H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
+H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
 
 <!-- Vérification des conditions d'application -->
-
 
 ```{r test_t_1}
 
@@ -399,10 +405,10 @@ t.test(data = biometry, imc ~ genre,
 ```
 
 <!-- Interprétation statistique et biologique -->
+
 La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
 
-Nous ne rejetons pas H0 au seuil de 5%
-Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
+Nous ne rejetons pas H0 au seuil de 5% Il n'existe pas une différence significative entre l'imc des hommes et celui des femmes au seuil alpha 5% (t = 0.33256, df = 141, p-value = 0.74)
 
 ### Test t de Student 2 by Nefise
 
@@ -441,6 +447,13 @@ biometry2 %>.%
     count = fsum(!is.na(aspect5)))
     
     anova(crabs2_anova <- lm(data = crabs2, aspect5 ~ group)) |> tabularise()
+    
+    biometry %>.%
+  sselect(., genre, intolerance_lactose, tour_taille) %>.%
+  sgroup_by(., intolerance_lactose) %>.%
+  ssummarise(.,
+    mean  = fmean(tour_taille),
+    sd    = fsd(tour_taille))
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -452,7 +465,6 @@ biometry2 %>.%
 ```
 
 <!--% Interprétation statistique et biologique -->
-
 
 ### ANOVA à un facteur 2
 
