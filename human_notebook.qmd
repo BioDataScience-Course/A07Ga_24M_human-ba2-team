@@ -198,9 +198,9 @@ tabularise(biometry3)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes, contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
+- Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
 
-- Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes, contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
+- Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
 
 - Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
 
@@ -384,15 +384,15 @@ chart(data = biometry, ~ sommeil %fill=% risque_ic) +
 
 <!--% Hypothèse nulle et alternative -->
 
- H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité ic
- H1: Il y a une association significative entre le sommeil et l'indice de conicité ic
+ H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic)
+ H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
  
 <!--% Vérification des conditions d'application -->
 
 les observations sont indépendantes
 
 ```{r test_chi2_1 }
-chisq.test(table_cont_sommeil)
+chisq.test(table_sommeil_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
