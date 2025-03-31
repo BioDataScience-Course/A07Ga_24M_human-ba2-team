@@ -234,14 +234,14 @@ print(table_ic)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
-- Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
-- Les  personnes qui sonsomment plus de fast food ont modere ( contre intuitif) 
+- Les personnes les plus jeunes ont tendance à avoir un IC modéré, tandis que les personnes plus âgées ont un IC élevé.
+- Il y a une légère augmentation de la consommation d'alcool chez ceux qui ont un IC élevé 
+- Les  personnes qui consomment plus de fast food ont modéré ( contre intuitif) 
 - L'activité physique ne semble pas avoir d'impact sur l' IC
 - avec un IC élevé consomment moins de fast food 
-- le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
+- le sommeil est un facteur potentiel car un IC élevé est associé à un sommeil plus court.
 
-Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
+Dans la suite du travail, nous allons effectuer des test d'hypothèses pour voir si ces tendances sont statistiquement significatives.
 
 
 ### Indice de Ide
@@ -315,7 +315,7 @@ table_sommeil_ic <- biometry %>%
   summarise(n = n(), .groups = "drop") %>%
   mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
 
-print(table_sommeil_ic)
+head(table_sommeil_ic)
 
 
 chart(data = biometry, ~ sommeil %fill=% risque_ic) +
@@ -337,15 +337,28 @@ chart(data = biometry, ~ sommeil %fill=% risque_ic) +
 
 
 ```{r}
+biometry <- biometry %>%
+  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h"))
 
+
+# Supprimer les valeurs manquantes
+biometry_clean <- biometry %>% 
+  filter(!is.na(sommeil_cat), !is.na(risque_ic))
+
+# Créer la table de contingence
+table_cont_sommeil <- table(biometry_clean$sommeil_cat, biometry_clean$risque_ic)
+
+# Vérifier le tableau
+print(table_cont_sommeil)
 
 ```
 
 
-```{r test_chi2_1 }
+```{r test_chi2_1}
 
 chisq.test(table_cont_sommeil)
 
+#à completer dans l'interprétation : l'approximation donne un avis car il y a un grand écart entre sommeil <6 et sommeil ≥ 6
 ```
 
 
@@ -380,6 +393,7 @@ chisq.test(table_cont_sommeil)
 ### Test t de Student 1 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
+
 
 ```{r plot_t_1}
 #IMC selon le sexe
