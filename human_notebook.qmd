@@ -76,13 +76,19 @@ knitr::kable(biometry)
 **interprétation** 
 Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
 
+
 ### Description 1 par Christelle
+
+Le tour de taille est un bon indicateur de la répartition de la graisse corporelle et de la santé métabolique. Un tour de taille élevé est lié à un risque accru de maladies comme les maladies cardiaques et le diabète. La consommation de sucre, surtout les sucres ajoutés, joue un rôle important dans le métabolisme et la prise de poids, notamment au niveau de l'abdomen.
+
+Dans cette analyse, nous examinons la relation entre le tour de taille et la consommation de sucre, en cherchant à visualiser comment les variations de sucre peuvent influencer cette mesure.
 
 ```{r}
 chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
   geom_violin(alpha = 0.7, color = "black") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+labs(title = "Variations du tour de taille en fonction 
+      de la consommation de sucre",)
 ```
 
 **interprétation** 
@@ -238,21 +244,86 @@ head(biometry[, c("ic", "risque_ic")])
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r}
-# Graphique ou tableau utilisant l'indice calculé.
 
-table_ic <- biometry %>%
-  filter(!is.na(risque_ic)) %>%
-  group_by(risque_ic) %>%
-  summarise(
-    age = mean(age < 25, na.rm = TRUE) * 100,
-    alcool = mean(alcool > 0, na.rm = TRUE) * 100,
-    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,
-    activité_Physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,
-    Sommeil_6h = mean(sommeil < 6, na.rm = TRUE)  * 100
+
+
+
+
+```{r}
+
+# Catégorisation des variables
+biometry <- biometry %>%
+  mutate(
+    sucre_cat = factor(case_when(
+      sucre == "jamais" ~ "Faible",
+      sucre %in% c("rarement") ~ "Modéré",
+      sucre %in% c("souvent", "régulièrement") ~ "Élevé"
+    )),
+    ap_cat = factor(case_when(
+      activite_physique < 150 ~ "Sédentaire",
+      activite_physique < 300 ~ "Modéré",
+      TRUE ~ "Élevé"
+    )),
+    sommeil_cat = factor(ifelse(sommeil < 6, "<6h", "≥6h"))
   )
 
-print(table_ic)
+# Création du tableau récapitulatif
+table_recap <- biometry %>%
+  select(risque_ic, sucre_cat, ap_cat, sommeil_cat) %>%
+  pivot_longer(-risque_ic, names_to = "facteur", values_to = "categorie") %>%
+  group_by(risque_ic, facteur, categorie) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  mutate(pourcentage = n / sum(n) * 100)
+
+print(table_recap)
+```
+
+
+
+
+
+
+
+
+```{r}
+
+# Créer un tableau croisé entre risque_ic et chaque variable
+table_risque_ic <- list()
+
+# Variables à analyser
+variables <- c("genre", "activite_physique", "alimentation", "alcool", 
+               "intolerance_lactose", "sommeil", "intolerance_gluten", 
+               "fast_food", "sucre", "fumeur", "cortisone", "eau", "age", "masse_corr", "whr")
+
+# Créer les tableaux croisés pour chaque variable
+for (var in variables) {
+  table_risque_ic[[var]] <- table(biometry$risque_ic, biometry[[var]])
+}
+
+# Afficher les résultats
+print(table_risque_ic)
+
+
+
+```
+```{r}
+ggplot(table_recap, aes(x = facteur, y = pourcentage, fill = risque_ic)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  ylab("Pourcentage d'individus") +
+  xlab("Facteurs de risque") +
+  ggtitle("Répartition des facteurs de risque selon l'Indice de Conicité") +
+  scale_fill_viridis(discrete = TRUE) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
+
+
+
+```{r}
+
 
 ```
 
@@ -423,39 +494,60 @@ chisq.test(table_cont_sommeil)
 
 ```
 
-<!--% Interprétation statistique et biologique -->
+<!--% Interprétation statistique et biologique --> ***CHRIS***
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
 ### Test t de Student 1 by Christelle
 
+Le Waist-to-Hip Ratio (WHR) est un indice utilisé pour évaluer la répartition de la graisse corporelle, en particulier la graisse viscérale, qui est un facteur clé dans le risque de maladies cardiovasculaires et de diabète de type 2. Contrairement à l'IMC, le WHR prend en compte la distribution de la graisse autour de la taille, un rapport élevé étant associé à un risque accru de troubles métaboliques. La formule du WHR est la suivante :
+
+$$\text{WHR} = \frac{\text{Tour de taille}}{\text{Tour de hanche}}$$
+
+Le WHR est considéré comme un meilleur indicateur du risque de maladies cardiaques et de diabète que l'IMC (Bertoni et al., 2009). Des études montrent que les hommes ont généralement un WHR plus élevé que les femmes en raison de la distribution différente de la graisse dans le corps. Un WHR élevé est lié à un risque accru de maladies cardiovasculaires et varie en fonction du sexe.
+
+Référence :
+Bertoni, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
+
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
-
 ```{r plot_t_1}
-#IMC selon le sexe
-biometry <- smutate(biometry, imc = masse_corr/(taille)^2) 
+biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
 
 biometry %>.%
   sgroup_by(., genre) %>.%
-  ssummarise(.,mean = fmean(imc))
+  ssummarise(.,mean = fmean(whr))
+
+
+chart(data = biometry, whr ~ genre %fill=% genre) +
+  geom_boxplot() +
+  labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
+       x = "Sexe",
+       y = "WHR")
 
 ```
 
+Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est conforme aux tendances observées dans de nombreuses études : les hommes tendent à avoir une plus grande accumulation de graisse au niveau abdominal par rapport aux femmes, ce qui conduit à un ratio taille-hanche plus élevé.
+
 <!-- Hypothèse nulle et alternative -->
 
-H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
+H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
+
+H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
 
 <!-- Vérification des conditions d'application -->
 
-```{r test_t_1}
-t.test(data = biometry, imc ~ genre, 
+
+
+```{r test_t_1 Christelle}
+t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = TRUE )
 ```
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
+La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Ainsi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 142, valeur p = 0.76).
 
 ### Test t de Student 2 by Nefise
 
@@ -467,7 +559,7 @@ La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypo
 
 <!--% Hypothèse nulle et alternative -->
 
-<!--% Vérification des conditions d'application -->
+<!--% Vérification des conditions d'application --> ***CHRIS***
 
 ```{r test_t_2}
 
@@ -505,7 +597,7 @@ biometry2 %>.%
 
 <!--% Hypothèse nulle et alternative -->
 
-<!--% Vérification des conditions d'application -->
+<!--% Vérification des conditions d'application -->***cHRIS***
 
 ```{r test_anova1_1}
 
@@ -529,7 +621,7 @@ biometry2 %>.%
 
 ```
 
-<!--% Interprétation statistique et biologique -->
+<!--% Interprétation statistique et biologique -->***CHRIS***
 
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
@@ -549,9 +641,9 @@ biometry2 %>.%
 
 ```
 
-<!--% Interprétation statistique et biologique -->
+<!--% Interprétation statistique et biologique -->***CHRIS***
 
-### ANOVA à deux facteurs 2
+### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
