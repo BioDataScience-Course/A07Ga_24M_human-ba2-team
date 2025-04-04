@@ -92,32 +92,49 @@ labs(title = "Variations du tour de taille en fonction
 ```
 
 **interprétation** 
-Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
+La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
 
 ### Description 2 par Christelle
 
+Le mode de vie moderne, avec une alimentation riche en fast food et un sommeil de mauvaise qualité, joue un rôle clé dans la santé métabolique. La consommation de fast food, riche en graisses et sucres, est liée à un risque accru de maladies cardiovasculaires et de diabète, tandis qu'un sommeil insuffisant perturbe les mécanismes hormonaux, favorisant la prise de poids. 
+Dans cette section, nous analysons l'impact de ces facteurs, en tenant compte des différences entre hommes et femmes, pour mieux comprendre comment ils influencent la santé et le risque de maladies métaboliques.
+
 ```{r christelle}
+
+# Convertir 'fast_food' en facteur avec des catégories
+biometry$fast_food_cat <- cut(
+  biometry$fast_food,
+  breaks = c(-Inf, 3, 7, Inf), 
+  labels = c("Faible", "Modéré", "Élevé"),
+  right = TRUE
+)
+
+
 biometry %>.%
-  sgroup_by(.,genre) %>.%
+  sgroup_by(.,genre, fast_food_cat) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 
 #Nous allons faire un graphique complémentaire pour visualiser les données
 
-chart(biometry, sommeil ~ genre %fill=% genre) +
+
+chart(biometry, sommeil ~ fast_food_cat %fill=% genre) +
 geom_boxplot() +
-  labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
+  labs (title= "Comparaison de sommeil entre les hommes et les femmes en 
+          fonction de la consommation du fast_food", x = "catégories de fast_food", y = "temps de sommeil (heures)") +
+  scale_fill_manual(values = c("cyan", "pink")) 
 
 ```
 
 ***interprétation***
 
--les femmes dorment en moyenne trois minutes de plus que les hommes -l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
+Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Dans le graphique, - nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
+Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats.
 
--l'étendue interquartile est assez similaire pour les deux groupes
+Pour confirmer ces tendances, des tests statistiques comme l'ANOVA ou des tests de comparaison entre les groupes seraient nécessaires pour déterminer si ces différences sont statistiquement significatives.
 
--   Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
+Cette analyse montre que des comportements alimentaires comme une consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, influencent négativement la répartition des graisses corporelles et la santé métabolique. La consommation de sucre est associée à un tour de taille plus élevé, un facteur de risque pour les maladies cardiovasculaires et le diabète. De même, le fast food et le manque de sommeil perturbent la santé, avec des effets différents selon le genre. Ces résultats soulignent l'importance de réguler l'alimentation et d'améliorer la qualité du sommeil pour prévenir les maladies métaboliques et cardiovasculaires.
+
 
 ### Description 1 par Ide
 
@@ -245,87 +262,37 @@ head(biometry[, c("ic", "risque_ic")])
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 
-
-
-
-
 ```{r}
 
-# Catégorisation des variables
+# Regrouper l'âge en catégories
 biometry <- biometry %>%
-  mutate(
-    sucre_cat = factor(case_when(
-      sucre == "jamais" ~ "Faible",
-      sucre %in% c("rarement") ~ "Modéré",
-      sucre %in% c("souvent", "régulièrement") ~ "Élevé"
-    )),
-    ap_cat = factor(case_when(
-      activite_physique < 150 ~ "Sédentaire",
-      activite_physique < 300 ~ "Modéré",
-      TRUE ~ "Élevé"
-    )),
-    sommeil_cat = factor(ifelse(sommeil < 6, "<6h", "≥6h"))
+  mutate(age_cat = case_when(
+    age < 25 ~ "< 25 ans",
+    age >= 25 & age <= 40 ~ "25-40 ans",
+    age > 40 ~ "> 40 ans"
+  ))
+
+# Créer le tableau avec les nouveaux facteurs de risque
+table_ic <- biometry %>%
+  filter(!is.na(risque_ic)) %>%
+  group_by(risque_ic) %>%
+  summarise(
+    age_jeune = mean(age < 25, na.rm = TRUE) * 100,  # % des individus de moins de 25 ans
+    alcool = mean(alcool > 0, na.rm = TRUE) * 100,  # % des individus consommant de l'alcool
+    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,  # % des individus consommant plus de 1 portion de fast food
+    activité_physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,  # % des individus avec une activité physique élevée
+    sommeil_6h = mean(sommeil < 6, na.rm = TRUE) * 100,  # % des individus dormant moins de 6 heures
+    sucre_élevé = mean(sucre %in% c("souvent", "régulièrement"), na.rm = TRUE) * 100,  # % des individus avec une consommation de sucre élevée
+    eau_élevé = mean(eau > 2.5, na.rm = TRUE) * 100  # % des individus avec une consommation d'eau élevée (plus de 2.5L)
   )
 
-# Création du tableau récapitulatif
-table_recap <- biometry %>%
-  select(risque_ic, sucre_cat, ap_cat, sommeil_cat) %>%
-  pivot_longer(-risque_ic, names_to = "facteur", values_to = "categorie") %>%
-  group_by(risque_ic, facteur, categorie) %>%
-  summarise(n = n(), .groups = "drop") %>%
-  mutate(pourcentage = n / sum(n) * 100)
-
-print(table_recap)
-```
-
-
-
-
-
-
-
-
-```{r}
-
-# Créer un tableau croisé entre risque_ic et chaque variable
-table_risque_ic <- list()
-
-# Variables à analyser
-variables <- c("genre", "activite_physique", "alimentation", "alcool", 
-               "intolerance_lactose", "sommeil", "intolerance_gluten", 
-               "fast_food", "sucre", "fumeur", "cortisone", "eau", "age", "masse_corr", "whr")
-
-# Créer les tableaux croisés pour chaque variable
-for (var in variables) {
-  table_risque_ic[[var]] <- table(biometry$risque_ic, biometry[[var]])
-}
-
 # Afficher les résultats
-print(table_risque_ic)
-
-
-
-```
-```{r}
-ggplot(table_recap, aes(x = facteur, y = pourcentage, fill = risque_ic)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  ylab("Pourcentage d'individus") +
-  xlab("Facteurs de risque") +
-  ggtitle("Répartition des facteurs de risque selon l'Indice de Conicité") +
-  scale_fill_viridis(discrete = TRUE) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-
-
-
-
-
-```{r}
+head(table_ic)
 
 
 ```
+
+
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
@@ -398,23 +365,6 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 ### Test de Chi^2^ 1 Indice Christelle
 
 ```{r chi2_ic}
-# tableau de contingence entre 'fast_food' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
-print(table_fast_food)
-# H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
-# H1: Il y a une association significative entre les facteurs de risque et l'indice de conicité ic
-# 
-#transformation de la variable
-biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
-biometry$fast_food_cat <- factor(biometry$fast_food_cat)
-
-# Tableau de contingence entre 'fast_food_cat' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
-print(table_fast_food)
-
-# Test du chi-deux pour 'fast_food_cat' et 'risque_ic'
-result_fast_food <- chisq.test(table_fast_food)
-print(result_fast_food)
 
 ```
 
@@ -422,56 +372,19 @@ print(result_fast_food)
 
 ```{r plot_chi2_1}
 
-table_sommeil_ic <- biometry %>%
-  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h")) %>% 
-  group_by(risque_ic, sommeil_cat) %>%
-  summarise(n = n(), .groups = "drop") %>%
-  mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
-
-head(table_sommeil_ic)
-
-
-chart(data = biometry, ~ sommeil %fill=% risque_ic) +
-  geom_bar(position = "dodge") +
-  labs(title = "Répartition du sommeil selon l'Indice de Conicité",
-       x = "Durée du sommeil (<6h vs ≥6h)",
-       y = "Nombre d'individus") +
-  scale_fill_viridis_d()
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
- H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic)
- H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
- 
+
 <!--% Vérification des conditions d'application -->
 
 
 
-```{r}
-biometry <- biometry %>%
-  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h"))
-
-
-# Supprimer les valeurs manquantes
-biometry_clean <- biometry %>% 
-  filter(!is.na(sommeil_cat), !is.na(risque_ic))
-
-# Créer la table de contingence
-table_cont_sommeil <- table(biometry_clean$sommeil_cat, biometry_clean$risque_ic)
-
-# Vérifier le tableau
-print(table_cont_sommeil)
-
-```
 
 
 ```{r test_chi2_1}
-
-chisq.test(table_cont_sommeil)
-
-#à completer dans l'interprétation : l'approximation donne un avis car il y a un grand écart entre sommeil <6 et sommeil ≥ 6
 
 ```
 
