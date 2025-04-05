@@ -88,7 +88,7 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
   geom_violin(alpha = 0.7, color = "black") +
 theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
 labs(title = "Variations du tour de taille en fonction 
-      de la consommation de sucre",)
+      de la consommation de sucre")
 ```
 
 **interprétation** 
@@ -127,13 +127,12 @@ geom_boxplot() +
 
 ***interprétation***
 
+Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats.
 Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats.
+Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
-Pour confirmer ces tendances, des tests statistiques comme l'ANOVA ou des tests de comparaison entre les groupes seraient nécessaires pour déterminer si ces différences sont statistiquement significatives.
-
-Cette analyse montre que des comportements alimentaires comme une consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, influencent négativement la répartition des graisses corporelles et la santé métabolique. La consommation de sucre est associée à un tour de taille plus élevé, un facteur de risque pour les maladies cardiovasculaires et le diabète. De même, le fast food et le manque de sommeil perturbent la santé, avec des effets différents selon le genre. Ces résultats soulignent l'importance de réguler l'alimentation et d'améliorer la qualité du sommeil pour prévenir les maladies métaboliques et cardiovasculaires.
+Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux, comme l'ANOVA ou le test du chi-carré, afin d'établir des relations significatives. Par exemple, un test de corrélation pourrait confirmer la relation entre sucre et tour de taille, tandis qu'un test de Kruskal-Wallis pourrait comparer les différences de tour de taille entre les catégories de consommation de fast-food."
 
 
 ### Description 1 par Ide
@@ -229,6 +228,7 @@ tabularise(biometry3)
 
 - Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
+
 ### Indice de Christelle
 
 <!--% Description et formule ci-dessous. -->
@@ -260,6 +260,7 @@ head(biometry[, c("ic", "risque_ic")])
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
+Dans cette partie de l'analyse, nous explorons les relations entre l'indice de conicité (IC) et plusieurs facteurs de style de vie potentiellement associés à des risques de santé. En particulier, nous nous intéressons à des variables telles que l'âge, la consommation d'alcool, la fréquence de la consommation de fast food, l'activité physique, la durée de sommeil, ainsi que la consommation de sucre et d'eau.
 
 
 ```{r}
@@ -270,7 +271,12 @@ biometry <- biometry %>%
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
     age > 40 ~ "> 40 ans"
-  ))
+  ), sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
+      sommeil >= 7 & sommeil > 8 ~ "Modéré",
+      sommeil > 8 ~ "Suffisant"), sucre_cat = case_when(
+      sucre %in% c("jamais", "rarement") ~ "Faible",
+      sucre == "régulièrement" ~ "Régulièrement",
+      sucre == "souvent" ~ "Souvent"))
 
 # Créer le tableau avec les nouveaux facteurs de risque
 table_ic <- biometry %>%
@@ -286,25 +292,19 @@ table_ic <- biometry %>%
     eau_élevé = mean(eau > 2.5, na.rm = TRUE) * 100  # % des individus avec une consommation d'eau élevée (plus de 2.5L)
   )
 
-# Afficher les résultats
 head(table_ic)
-
-
 ```
 
 
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les personnes les plus jeunes ont tendance à avoir un IC modéré, tandis que les personnes plus âgées ont un IC élevé.
-- Il y a une légère augmentation de la consommation d'alcool chez ceux qui ont un IC élevé 
-- Les  personnes qui consomment plus de fast food ont modéré ( contre intuitif) 
-- L'activité physique ne semble pas avoir d'impact sur l' IC
-- avec un IC élevé consomment moins de fast food 
-- le sommeil est un facteur potentiel car un IC élevé est associé à un sommeil plus court.
-
--   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier si l'association entre le sommeil (facteur le plus lié) et l'indice de conicité est statistiquement significative.
-
+- Les personnes les plus jeunes ont tendance à présenter un risque ic modéré, tandis que celles plus âgées sont susceptibles d'avoir un risque ic élevé.
+- La consommation d'alcool est légèrement plus élevée chez ceux ayant un risque ic élevé.
+- Les  personnes qui consomment plus de fast food ont un risque modéré ( contre intuitif) 
+- L'activité physique ne semble pas avoir d'impact sur le risque IC
+- Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité. 
+- La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes. 
 
 ### Indice de Ide
 
@@ -364,31 +364,57 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 ### Test de Chi^2^ 1 Indice Christelle
 
-```{r chi2_ic}
-
-```
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
-
 ```{r plot_chi2_1}
 
+table_contingence <- biometry %>%
+  count(risque_ic, age_cat, sucre, sommeil_cat)
+
+# Afficher le tableau de contingence
+print(table_contingence)
+tabularise(table_contingence)
 
 ```
 
+
 <!--% Hypothèse nulle et alternative -->
+H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants
+H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
 
 
 <!--% Vérification des conditions d'application -->
 
 
+```{r test_chi2_1 âge}
 
+table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
+chisq.test(table_age_ic)
 
+```
+<!--% Interprétation statistique et biologique -->
 
-```{r test_chi2_1}
+```{r test_chi2_1 sommeil}
+table(biometry$sommeil_cat, biometry$risque_ic)
+head(table_sommeil_ic)
+
+chisq.test(table_sommeil_ic)
 
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+```{r test_chi2_1 sucre}
+
+table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
+head(table_sucre_ic)
+
+chisq.test(table_sucre_ic)
+
+```
+
+<!--% Interprétation statistique et biologique -->
+
 
 
 ### Test de Chi^2^ by Ide
@@ -437,7 +463,8 @@ chart(data = biometry, whr ~ genre %fill=% genre) +
   geom_boxplot() +
   labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
        x = "Sexe",
-       y = "WHR")
+       y = "WHR") +
+   scale_fill_manual(values = c("lightgreen", "orange")) 
 
 ```
 
