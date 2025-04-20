@@ -56,8 +56,7 @@ chart (data = biometry, genre ~ tour_taille %fill=%  intolerance_lactose) +
   coord_flip ()
 ```
 
-**interprétation** 
-Chez les hommes (H), le tour de taille des non intolérants (N) est plus dispersé avec plusieurs valeurs extrêmes, tandis que celui des intolérants (O) est plus homogène, avec une médiane plus élevée, possiblement due à une accumulation de graisses viscérales ou à une consommation accrue d'aliments sans lactose, souvent plus caloriques. Chez les femmes (F), les non intolérantes (N) présentent une forte variabilité avec des valeurs extrêmes élevées, alors que les intolérantes (O) ont un tour de taille plus bas et plus regroupé, ce qui pourrait s'expliquer par une meilleure gestion alimentaire des femmes ou des effets de malabsorption. La taille de l'échantillon pourrait aussi jouer un rôle, notamment chez les hommes intolérants, où quelques valeurs élevées biaisent la médiane.
+**interprétation** Chez les hommes (H), le tour de taille des non intolérants (N) est plus dispersé avec plusieurs valeurs extrêmes, tandis que celui des intolérants (O) est plus homogène, avec une médiane plus élevée, possiblement due à une accumulation de graisses viscérales ou à une consommation accrue d'aliments sans lactose, souvent plus caloriques. Chez les femmes (F), les non intolérantes (N) présentent une forte variabilité avec des valeurs extrêmes élevées, alors que les intolérantes (O) ont un tour de taille plus bas et plus regroupé, ce qui pourrait s'expliquer par une meilleure gestion alimentaire des femmes ou des effets de malabsorption. La taille de l'échantillon pourrait aussi jouer un rôle, notamment chez les hommes intolérants, où quelques valeurs élevées biaisent la médiane.
 
 ### Description 2 par Nefise
 
@@ -73,8 +72,7 @@ biometry %>.%
 knitr::kable(biometry)
 ```
 
-**interprétation** 
-Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
+**interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
 
 ### Description 1 par Christelle
 
@@ -85,8 +83,7 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
-**interprétation** 
-Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
+**interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
 
 ### Description 2 par Christelle
 
@@ -152,7 +149,6 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 -La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
 
-
 ## Calcul d'indices
 
 <!--% Calculez au moins quatre indices (un par étudiant) en vous basant sur la littérature et en relation avec votre question de recherche. Décrivez chaque indice avec une formule mathématique en LaTeX. Calculez une nouvelle variable dans votre tableau pour cet indice sur base de la formule mathématique. Si cela est pertinent, définissez aussi une variable facteur qui qualifie l'état de bonne santé selon une échelle qualitative. -->
@@ -198,13 +194,13 @@ tabularise(biometry3)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
+-   Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
 
-- Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
+-   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
 
-- Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
+-   Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
 
-- Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
+-   Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
 ### Indice de Christelle
 
@@ -258,28 +254,29 @@ print(table_ic)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-- Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
+-   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
-- L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
+-   L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
 
-- L'activité physique ne semble pas être un élément clé de différenciation.
+-   L'activité physique ne semble pas être un élément clé de différenciation.
 
-- la population n'est pas affectée par le tabagisme.
+-   la population n'est pas affectée par le tabagisme.
 
+-   Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
 
+-   Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
 
-- Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
-- Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
-- Les  personnes qui sonsomment plus de fast food ont modere ( contre intuitif) 
-- L'activité physique ne semble pas avoir d'impact sur l' IC
-- avec un IC élevé consomment moins de fast food 
-- le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
+-   Les personnes qui sonsomment plus de fast food ont modere ( contre intuitif)
 
+-   L'activité physique ne semble pas avoir d'impact sur l' IC
+
+-   avec un IC élevé consomment moins de fast food
+
+-   le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
 
 Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
 
 -   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
-
 
 ### Indice de Ide
 
@@ -329,13 +326,11 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 -   D'un point de vue **biologique**, un IMG trop bas peut être associé à un manque de réserves énergétiques, ce qui peut poser des problèmes de santé (fatigue, troubles hormonaux, etc.).
 
-
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
 
 <!--# Chaque test d'hypothèse doit être correctement employé. Vous devez indiquer, pour chaque test, l'hypothèse nulle et l'hypothèse alternative. Vous devez vérifier les conditions d'application du test d'hypothèse. Vous le réalisez, et ensuite vous l'interprétez du point de vue statistique d'abord et biologique ensuite. -->
-
 
 ### Test de Chi^2^ 1 Indice Christelle
 
@@ -384,9 +379,8 @@ chart(data = biometry, ~ sommeil %fill=% risque_ic) +
 
 <!--% Hypothèse nulle et alternative -->
 
- H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic)
- H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
- 
+H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
+
 <!--% Vérification des conditions d'application -->
 
 les observations sont indépendantes
@@ -396,7 +390,6 @@ chisq.test(table_sommeil_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
-
 
 ### Test de Chi^2^ by Ide
 
