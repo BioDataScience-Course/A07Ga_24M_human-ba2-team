@@ -481,7 +481,11 @@ La valeur p étant supérieure au seuil alpha de 5%,
 
 <!--% Vérification des conditions d'application -->
 
-***CHRIS***
+La variable dépendante est quantitative.
+La variable explicative est qualitative binaire (deux groupes).
+Les deux échantillons sont indépendants.
+Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n > 30).
+Les variances des deux groupes sont égales.
 
 ```{r test_t_2}
 
