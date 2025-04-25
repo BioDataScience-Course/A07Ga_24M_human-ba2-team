@@ -467,7 +467,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Ainsi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 142, valeur p = 0.76).
+La valeur p étant supérieure au seuil alpha de 5%, 
 
 ### Test t de Student 2 by Nefise
 
