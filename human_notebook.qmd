@@ -76,39 +76,61 @@ knitr::kable(biometry)
 
 ### Description 1 par Christelle
 
+Le tour de taille est un bon indicateur de la répartition de la graisse corporelle et de la santé métabolique. Un tour de taille élevé est lié à un risque accru de maladies comme les maladies cardiaques et le diabète. La consommation de sucre, surtout les sucres ajoutés, joue un rôle important dans le métabolisme et la prise de poids, notamment au niveau de l'abdomen.
+
+Dans cette analyse, nous examinons la relation entre le tour de taille et la consommation de sucre, en cherchant à visualiser comment les variations de sucre peuvent influencer cette mesure.
+
 ```{r}
 chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
   geom_violin(alpha = 0.7, color = "black") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+labs(title = "Variations du tour de taille en fonction 
+      de la consommation de sucre")
 ```
 
+<<<<<<< HEAD
 **interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
+=======
+**interprétation** La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
+>>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Description 2 par Christelle
 
+Le mode de vie moderne, avec une alimentation riche en fast food et un sommeil de mauvaise qualité, joue un rôle clé dans la santé métabolique. La consommation de fast food, riche en graisses et sucres, est liée à un risque accru de maladies cardiovasculaires et de diabète, tandis qu'un sommeil insuffisant perturbe les mécanismes hormonaux, favorisant la prise de poids. Dans cette section, nous analysons l'impact de ces facteurs, en tenant compte des différences entre hommes et femmes, pour mieux comprendre comment ils influencent la santé et le risque de maladies métaboliques.
+
 ```{r christelle}
+
+# Convertir 'fast_food' en facteur
+biometry$fast_food_cat <- cut(
+  biometry$fast_food,
+  breaks = c(-Inf, 3, 7, Inf), 
+  labels = c("Faible", "Modéré", "Élevé"),
+  right = TRUE
+)
+
+
 biometry %>.%
-  sgroup_by(.,genre) %>.%
+  sgroup_by(.,genre, fast_food_cat) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 
-#Nous allons faire un graphique complémentaire pour visualiser les données
+#graphique
 
-chart(biometry, sommeil ~ genre %fill=% genre) +
+
+chart(biometry, sommeil ~ fast_food_cat %fill=% genre) +
 geom_boxplot() +
-  labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
+  labs (title= "Comparaison de sommeil entre les hommes et les femmes en 
+          fonction de la consommation du fast_food", x = "catégories de fast_food", y = "temps de sommeil (heures)") +
+  scale_fill_manual(values = c("cyan", "pink")) 
 
 ```
 
 ***interprétation***
 
--les femmes dorment en moyenne trois minutes de plus que les hommes -l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
+Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Dans le graphique, - nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
+Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
--l'étendue interquartile est assez similaire pour les deux groupes
-
--   Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
+Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux, comme l'ANOVA ou le test du chi-carré, afin d'établir des relations significatives. Par exemple, un test de corrélation pourrait confirmer la relation entre sucre et tour de taille, tandis qu'un test de Kruskal-Wallis pourrait comparer les différences de tour de taille entre les catégories de consommation de fast-food."
 
 ### Description 1 par Ide
 
@@ -208,19 +230,18 @@ tabularise(biometry3)
 
 L'indice de conicité (IC) est utilisé pour évaluer la répartition de la graisse abdominale et les risques cardiovasculaires ( proposé par Valdez en 1991). L'indice de conicité est un excellent indicateur non seulement de la répartition de la graisse abdominale, mais aussi un outil précieux dans l'évaluation des risques cardiovasculaires, surtout lorsqu'il est utilisé avec d'autres mesures de santé.
 
-ref article: Lebacq, T., Ost, C., Bel, S., Brocatus, L., Teppers, E., Cuypers, K., Tafforeau, J., & De Ridder, K. A. A. (2015). Physical activity and sedentary behavior in Belgium (BNFCS2014): design, methods and expected outcomes.
+ref article: [@lebacq2016]
 
 $$IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}$$
 
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-biometry <- biometry %>%
-  mutate(
+biometry <- biometry %>.%
+  smutate(.,
     ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
-  ) %>%
-  mutate(
+  ) %>.%
+  smutate(.,
     risque_ic = case_when(
       ic < 1.25 ~ "modéré",
       ic >= 1.25 ~ "élevé"
@@ -234,26 +255,43 @@ head(biometry[, c("ic", "risque_ic")])
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r}
-# Graphique ou tableau utilisant l'indice calculé.
+Dans cette partie de l'analyse, nous explorons les relations entre l'indice de conicité (IC) et plusieurs facteurs de style de vie potentiellement associés à des risques de santé. En particulier, nous nous intéressons à des variables telles que l'âge, la consommation d'alcool, la fréquence de la consommation de fast food, l'activité physique, la durée de sommeil, ainsi que la consommation de sucre et d'eau.
 
+```{r}
+
+# Regrouper l'âge en catégories
+biometry <- biometry %>%
+  mutate(age_cat = case_when(
+    age < 25 ~ "< 25 ans",
+    age >= 25 & age <= 40 ~ "25-40 ans",
+    age > 40 ~ "> 40 ans"
+  ), sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
+      sommeil >= 7 & sommeil > 8 ~ "Modéré",
+      sommeil > 8 ~ "Suffisant"), sucre_cat = case_when(
+      sucre %in% c("jamais", "rarement") ~ "Faible",
+      sucre == "régulièrement" ~ "Régulièrement",
+      sucre == "souvent" ~ "Souvent"))
+
+# Créer le tableau avec les nouveaux facteurs de risque
 table_ic <- biometry %>%
   filter(!is.na(risque_ic)) %>%
   group_by(risque_ic) %>%
   summarise(
-    age = mean(age < 25, na.rm = TRUE) * 100,
-    alcool = mean(alcool > 0, na.rm = TRUE) * 100,
-    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,
-    activité_Physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,
-    Sommeil_6h = mean(sommeil < 6, na.rm = TRUE)  * 100
+    age_jeune = mean(age < 25, na.rm = TRUE) * 100,  # % des individus de moins de 25 ans
+    alcool = mean(alcool > 0, na.rm = TRUE) * 100,  # % des individus consommant de l'alcool
+    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,  # % des individus consommant plus de 1 portion de fast food
+    activité_physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,  # % des individus avec une activité physique élevée
+    sommeil_6h = mean(sommeil < 6, na.rm = TRUE) * 100,  # % des individus dormant moins de 6 heures
+    sucre_élevé = mean(sucre %in% c("souvent", "régulièrement"), na.rm = TRUE) * 100,  # % des individus avec une consommation de sucre élevée
+    eau_élevé = mean(eau > 2.5, na.rm = TRUE) * 100  # % des individus avec une consommation d'eau élevée (plus de 2.5L)
   )
 
-print(table_ic)
-
+head(table_ic)
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
+<<<<<<< HEAD
 -   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
 
 -   L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
@@ -277,6 +315,14 @@ print(table_ic)
 Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
 
 -   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+=======
+-   Les personnes les plus jeunes ont tendance à présenter un risque ic modéré, tandis que celles plus âgées sont susceptibles d'avoir un risque ic élevé.
+-   La consommation d'alcool est légèrement plus élevée chez ceux ayant un risque ic élevé.
+-   Les personnes qui consomment plus de fast food ont un risque modéré (contre intuitif)
+-   L'activité physique ne semble pas avoir d'impact sur le risque IC
+-   Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité.
+-   La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes.
+>>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Indice de Ide
 
@@ -329,10 +375,13 @@ chart(data = biometry, ~ ITH_categorie %fill=% genre) +
 
 -Les hommes sont majoritairement représentés dans les catégories "Élevé" et "Très Élevé", associées à un risque cardiovasculaire accru.
 
+<<<<<<< HEAD
 -Les catégories "Modéré" montrent une répartition équilibrée entre les deux genres.
 
 -Globalement, les femmes présentent un profil plus protecteur, tandis que les hommes sont plus exposés aux risques métaboliques liés à une répartition abdominale des graisses.
 
+=======
+>>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
@@ -341,51 +390,22 @@ chart(data = biometry, ~ ITH_categorie %fill=% genre) +
 
 ### Test de Chi^2^ 1 Indice Christelle
 
-```{r chi2_ic}
-# tableau de contingence entre 'fast_food' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
-print(table_fast_food)
-# H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
-# H1: Il y a une association significative entre les facteurs de risque et l'indice de conicité ic
-# 
-#transformation de la variable
-biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
-biometry$fast_food_cat <- factor(biometry$fast_food_cat)
-
-# Tableau de contingence entre 'fast_food_cat' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
-print(table_fast_food)
-
-# Test du chi-deux pour 'fast_food_cat' et 'risque_ic'
-result_fast_food <- chisq.test(table_fast_food)
-print(result_fast_food)
-
-```
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
 
-table_sommeil_ic <- biometry %>%
-  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h")) %>% 
-  group_by(risque_ic, sommeil_cat) %>%
-  summarise(n = n(), .groups = "drop") %>%
-  mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
+table_contingence <- biometry %>.%
+  count(risque_ic, age_cat, sucre, sommeil_cat)
 
-print(table_sommeil_ic)
-
-
-chart(data = biometry, ~ sommeil %fill=% risque_ic) +
-  geom_bar(position = "dodge") +
-  labs(title = "Répartition du sommeil selon l'Indice de Conicité",
-       x = "Durée du sommeil (<6h vs ≥6h)",
-       y = "Nombre d'individus") +
-  scale_fill_viridis_d()
+# Afficher le tableau de contingence
+print(table_contingence)
+tabularise(table_contingence)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+<<<<<<< HEAD
 H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
 
 <!--% Vérification des conditions d'application -->
@@ -399,11 +419,47 @@ H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H
 ```{r test_chi2_1 }
 chisq.test(table_fast_food)$expected
 
+=======
+H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
+
+<!--% Vérification des conditions d'application -->
+
+```{r test_chi2_1 âge}
+
+table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
+chisq.test(table_age_ic)
+
+>>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 ```
 
 <!--% Interprétation statistique et biologique -->
 
+<<<<<<< HEAD
 ### Test de Chi^2^ 2 by Ide
+=======
+```{r test_chi2_1 sommeil}
+table(biometry$sommeil_cat, biometry$risque_ic)
+head(table_sommeil_ic)
+
+chisq.test(table_sommeil_ic)
+
+```
+
+<!--% Interprétation statistique et biologique -->
+
+```{r test_chi2_1 sucre}
+
+table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
+head(table_sucre_ic)
+
+chisq.test(table_sucre_ic)
+
+```
+
+<!--% Interprétation statistique et biologique -->
+
+### Test de Chi^2^ by Ide
+>>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -438,36 +494,57 @@ H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'
 
 <!--% Interprétation statistique et biologique -->
 
+***CHRIS***
+
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
 ### Test t de Student 1
 
+Le Waist-to-Hip Ratio (WHR) est un indice utilisé pour évaluer la répartition de la graisse corporelle, en particulier la graisse viscérale, qui est un facteur clé dans le risque de maladies cardiovasculaires et de diabète de type 2. Contrairement à l'IMC, le WHR prend en compte la distribution de la graisse autour de la taille, un rapport élevé étant associé à un risque accru de troubles métaboliques. La formule du WHR est la suivante :
+
+$$\text{WHR} = \frac{\text{Tour de taille}}{\text{Tour de hanche}}$$
+
+Le WHR est considéré comme un meilleur indicateur du risque de maladies cardiaques et de diabète que l'IMC (Bertoni et al., 2009). Des études montrent que les hommes ont généralement un WHR plus élevé que les femmes en raison de la distribution différente de la graisse dans le corps. Un WHR élevé est lié à un risque accru de maladies cardiovasculaires et varie en fonction du sexe.
+
+Référence : Berton, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
-#IMC selon le sexe
-biometry <- smutate(biometry, imc = masse_corr/(taille)^2) 
+biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
 
 biometry %>.%
   sgroup_by(., genre) %>.%
-  ssummarise(.,mean = fmean(imc))
+  ssummarise(.,mean = fmean(whr))
+
+
+chart(data = biometry, whr ~ genre %fill=% genre) +
+  geom_boxplot() +
+  labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
+       x = "Sexe",
+       y = "WHR") +
+   scale_fill_manual(values = c("lightgreen", "orange")) 
 
 ```
 
+Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est conforme aux tendances observées dans de nombreuses études : les hommes tendent à avoir une plus grande accumulation de graisse au niveau abdominal par rapport aux femmes, ce qui conduit à un ratio taille-hanche plus élevé.
+
 <!-- Hypothèse nulle et alternative -->
 
-H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
+H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
+
+H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
 
 <!-- Vérification des conditions d'application -->
 
-```{r test_t_1}
-t.test(data = biometry, imc ~ genre, 
+```{r test_t_1 Christelle}
+t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = TRUE )
 ```
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
+La valeur p étant supérieure au seuil alpha de 5%, 
 
 ### Test t de Student 2
 
@@ -480,6 +557,12 @@ La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypo
 <!--% Hypothèse nulle et alternative -->
 
 <!--% Vérification des conditions d'application -->
+
+La variable dépendante est quantitative.
+La variable explicative est qualitative binaire (deux groupes).
+Les deux échantillons sont indépendants.
+Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n > 30).
+Les variances des deux groupes sont égales.
 
 ```{r test_t_2}
 
@@ -519,6 +602,8 @@ biometry2 %>.%
 
 <!--% Vérification des conditions d'application -->
 
+***cHRIS***
+
 ```{r test_anova1_1}
 
 ```
@@ -546,6 +631,8 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 
 <!--% Interprétation statistique et biologique -->
 
+***CHRIS***
+
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
 ### ANOVA à deux facteurs 1
@@ -566,7 +653,9 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 
 <!--% Interprétation statistique et biologique -->
 
-### ANOVA à deux facteurs 2
+***CHRIS***
+
+### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
