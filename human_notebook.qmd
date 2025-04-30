@@ -405,21 +405,7 @@ tabularise(table_contingence)
 
 <!--% Hypothèse nulle et alternative -->
 
-<<<<<<< HEAD
-H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
 
-<!--% Vérification des conditions d'application -->
-
--Indépendance des observations:chaque ligne du dataset représente un individu.
-
--Les deux variables sont qualitatives: fast_food_cat est une variable catégorisée (Fréquent / Rare) et risque_ic est un facteur de risque catégorisé (Modéré / Élevé).
-
--Les effectifs attendus sont tous superieurs a 5.
-
-```{r test_chi2_1 }
-chisq.test(table_fast_food)$expected
-
-=======
 H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
 
 <!--% Vérification des conditions d'application -->
@@ -429,14 +415,9 @@ H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/l
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
 chisq.test(table_age_ic)
 
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 ```
 
-<!--% Interprétation statistique et biologique -->
 
-<<<<<<< HEAD
-### Test de Chi^2^ 2 by Ide
-=======
 ```{r test_chi2_1 sommeil}
 table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
@@ -445,7 +426,6 @@ chisq.test(table_sommeil_ic)
 
 ```
 
-<!--% Interprétation statistique et biologique -->
 
 ```{r test_chi2_1 sucre}
 
@@ -458,8 +438,8 @@ chisq.test(table_sucre_ic)
 
 <!--% Interprétation statistique et biologique -->
 
+
 ### Test de Chi^2^ by Ide
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
