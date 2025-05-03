@@ -75,13 +75,15 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 **interprétation**
 
-Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales.
+Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. 
+Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales.
 
 Chez les personnes ayant une activité physique faible, le tour de poignet est généralement plus petit, suggérant une densité osseuse et une masse musculaire moindres. En revanche, dans cette catégorie, les omnivores présentent une médiane plus élevée que les carnivores et les herbivores ne sont pas représenté dans ce groupe.
 
+
 ### Description 2 par Nefise
 
-Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets néfastes sur la santé cardiovasculaire, respiratoire et générale. Des études ont montré qu'il existe des différences dans les comportements de consommation de tabac entre les hommes et les femmes, tant en termes de fréquence que de motivations.
+Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets néfastes sur la santé cardiovasculaire, respiratoire et générale. Des études ont montré qu’il existe des différences dans les comportements de consommation de tabac entre les hommes et les femmes, tant en termes de fréquence que de motivations.
 
 ```{r}
 biometry %>.%
@@ -93,7 +95,8 @@ biometry %>.%
 
 ```
 
--   **interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
+-
+**interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
 
 
 ### Description 1 par Christelle
@@ -110,9 +113,10 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
       de la consommation de sucre")
 ```
 
-**interprétation**
+**interprétation** 
 
 La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
+
 
 ### Description 2 par Christelle
 
@@ -227,7 +231,7 @@ biometry2 <- biometry %>%
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-biometry2 %>.%
+biometry3 %>.%
   sgroup_by(., genre, bmi_cat)%>.%
   ssummarise(.,
     mean   = fmean(bmi),
@@ -318,6 +322,7 @@ head(table_ic)
 -   Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité.
 -   La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes.
 
+
 ### Indice de Ide
 
 <!--% Description et formule ci-dessous. -->
@@ -373,6 +378,7 @@ chart(data = biometry, ~ ITH_categorie %fill=% genre) +
 
 -Globalement, les femmes présentent un profil plus protecteur, tandis que les hommes sont plus exposés aux risques métaboliques liés à une répartition abdominale des graisses.
 
+
 ### Indice de Nefise 2
 
 <!--% Description et formule ci-dessous. -->
@@ -424,6 +430,7 @@ biometry3 %>.%
 
 -   Les femmes sont sur-représentées dans les catégories de RFM élevé et très élevé, tandis que les hommes dominent les catégories de RFM très faible et modérées (noté NA dans le tableau).
 
+
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
@@ -447,7 +454,7 @@ tabularise(table_contingence)
 
 <!--% Hypothèse nulle et alternative -->
 
-H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
+H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants. 
 
 H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
@@ -478,6 +485,8 @@ chisq.test(table_sucre_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+
 
 ### Test de Chi^2^ by Ide
 
@@ -527,6 +536,7 @@ $$\text{WHR} = \frac{\text{Tour de taille}}{\text{Tour de hanche}}$$
 Le WHR est considéré comme un meilleur indicateur du risque de maladies cardiaques et de diabète que l'IMC (Bertoni et al., 2009). Des études montrent que les hommes ont généralement un WHR plus élevé que les femmes en raison de la distribution différente de la graisse dans le corps. Un WHR élevé est lié à un risque accru de maladies cardiovasculaires et varie en fonction du sexe.
 
 Référence : Berton, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
+
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -630,12 +640,6 @@ H0: Il n'y a pas de différence significative du nombre de verres d'alcool conso
 H1: Il existe une différence significative du nombre de verres d'alcool consommés par semaine entre les individus ayant un régime alimentaire herbivore, carnivore ou omnivore.
 
 <!--% Vérification des conditions d'application -->
-
-***cHRIS***
-
-```{r}
-bartlett.test(data = biometry, alcool ~ alimentation)
-```
 
 ```{r test_anova1_1}
 
