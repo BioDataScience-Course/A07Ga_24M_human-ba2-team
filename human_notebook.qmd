@@ -75,7 +75,10 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 **interprétation**
 
-Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales. Chez les personnes ayant une activité physique faible, le tour de poignet est généralement plus petit, suggérant une densité osseuse et une masse musculaire moindres. En revanche, dans cette catégorie, les omnivores présentent une médiane plus élevée que les carnivores. Aucun herbivore n'est représenté dans ce groupe.
+Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. 
+Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales.
+
+Chez les personnes ayant une activité physique faible, le tour de poignet est généralement plus petit, suggérant une densité osseuse et une masse musculaire moindres. En revanche, dans cette catégorie, les omnivores présentent une médiane plus élevée que les carnivores et les herbivores ne sont pas représenté dans ce groupe.
 
 
 ### Description 2 par Nefise
