@@ -95,6 +95,7 @@ biometry %>.%
 
 -   **interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
 
+
 ### Description 1 par Christelle
 
 Le tour de taille est un bon indicateur de la répartition de la graisse corporelle et de la santé métabolique. Un tour de taille élevé est lié à un risque accru de maladies comme les maladies cardiaques et le diabète. La consommation de sucre, surtout les sucres ajoutés, joue un rôle important dans le métabolisme et la prise de poids, notamment au niveau de l'abdomen.
@@ -104,8 +105,8 @@ Dans cette analyse, nous examinons la relation entre le tour de taille et la con
 ```{r}
 chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
   geom_violin(alpha = 0.7, color = "black") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-labs(title = "Variations du tour de taille en fonction 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Variations du tour de taille en fonction 
       de la consommation de sucre")
 ```
 
@@ -127,13 +128,11 @@ biometry$fast_food_cat <- cut(
   right = TRUE
 )
 
-
 biometry %>.%
   sgroup_by(.,genre, fast_food_cat) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 
-#graphique
-
+# Graphique
 
 chart(biometry, sommeil ~ fast_food_cat %fill=% genre) +
 geom_boxplot() +
@@ -145,11 +144,13 @@ geom_boxplot() +
 
 ***interprétation***
 
-Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
+Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. 
+Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
 Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux, comme l'ANOVA ou le test du chi-carré, afin d'établir des relations significatives. Par exemple, un test de corrélation pourrait confirmer la relation entre sucre et tour de taille, tandis qu'un test de Kruskal-Wallis pourrait comparer les différences de tour de taille entre les catégories de consommation de fast-food."
+
 
 ### Description 1 par Ide
 
@@ -166,13 +167,13 @@ chart(data = biometry, masse_corr ~ alimentation %fill=% genre) +
 
 ***interprétation***
 
--Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
+- Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
 
--Omnivores: C'est la catégorie avec le plus d'individus(72 et 56), et la distribution est plus étendue. Des valeurs aberrantes sont présentes dans cette catégorie.
+- Omnivores: C'est la catégorie avec le plus d'individus (72 pour les femmes et 56 pour les hommes), et la distribution est plus étendue. Des valeurs extrêmes sont présentes dans cette catégorie.
 
--Végétariens: il semble y avoir uniquement des femmes dans l'échantillon. Avec une distribution serrée autour d'une masse corrigée plus faible.
+- Végétariens: Il y a uniquement des femmes dans l'échantillon, avec une distribution serrée autour d'une masse corrigée faible.
 
-De façon général, la médiane de masse_corr semble être plus élevée pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
+De façon général, les médianes de masse_corr semblent être plus élevées pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
 
 ### Description 2 par Ide
 
@@ -184,11 +185,12 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
 
 ***interprétation***
 
--On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique ne semble pas etre directement liée a la masse corrigée.
+-On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse corrigée.
 
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant clair dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en masse corrigée.
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses corrigées.
 
--La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Tres peu dépassent 120min/ semaine.
+-La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine.
+
 
 ## Calcul d'indices
 
@@ -507,7 +509,7 @@ H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'
 <!--% Vérification des conditions d'application -->
 
 ```{r test_chi2_2}
-
+# NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -562,7 +564,8 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%,
+# NEFISE
+
 
 ### Test t de Student 2
 
@@ -656,7 +659,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_2}
-
+# NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -678,7 +681,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova2_1}
-
+#NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -702,6 +705,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 ```
 
 <!--% Interprétation statistique et biologique -->
+#NEFISE
 
 # Discussion et conclusions
 
