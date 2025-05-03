@@ -54,13 +54,18 @@ Le tour de poignet est un indicateur utile de la densité osseuse et de la struc
 
 ```{r}
 
-# Catégorisation de l'activité physique en fonction du nombre d'heures par semaine
+# Catégorisation de l'activité physique (nombre d'heures par semaine)
 biometry$activite_physique_cat <- cut(
   biometry$activite_physique,
   breaks = c(-Inf, 2, 5, Inf),
   labels = c("Faible", "Modéré", "Élevé"),
-  right = TRUE
-)
+  right = TRUE )
+
+# Catégorisation de l'activité physique (nombre d'heures par semaine)
+smutate(biometry, activite_physique_cat = case_when(
+  activite_physique <= 2 ~ "Faible",
+  activite_physique > 2 & activite_physique <= 5 ~ "Modéré",
+  activite_physique > 5 ~ "Élevé"))
 
 chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
   geom_boxplot() +
@@ -73,30 +78,51 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 ```
 
-**interprétation**
+**interprétations**
 
-Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. 
-Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales.
+Les individus ayant une activité physique élevée ont un tour de poignet plus important, reflétant une ossature et une masse musculaire plus développées. 
+Parmi eux, les carnivores affichent les poignets les plus larges, avec une médiane avoisinant les 17,5 cm. Cela pourrait s'expliquer par un apport plus élevé en protéines animales, qui favorisent le développement musculaire et osseux. Les omnivores suivent de près, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu’actifs, ont les poignets les plus fins, même en comparaison avec les personnes inactives physiquement. Cela pourrait s'expliquer par un apport limité en protéines animales, qui influencerait leur masse osseuse (médiane autour de 15 cm).
 
-Chez les personnes ayant une activité physique faible, le tour de poignet est généralement plus petit, suggérant une densité osseuse et une masse musculaire moindres. En revanche, dans cette catégorie, les omnivores présentent une médiane plus élevée que les carnivores et les herbivores ne sont pas représenté dans ce groupe.
+Chez les personnes ayant une activité physique faible, le tour de poignet est plus petit (entre 15 et 17,5 cm), ce qui suggère une densité osseuse et une masse musculaire moindres. En revanche, dans ce groupe, les omnivores présentent une médiane plus élevée que les carnivores, tandis qu’aucun herbivore n’est représenté.
 
 
 ### Description 2 par Nefise
 
-Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets néfastes sur la santé cardiovasculaire, respiratoire et générale. Des études ont montré qu’il existe des différences dans les comportements de consommation de tabac entre les hommes et les femmes, tant en termes de fréquence que de motivations.
+Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets néfastes sur la santé cardiovasculaire, respiratoire et générale. Il entretient un lien indirect avec l’obésité. En effet, la nicotine a des effets sur l’appétit et le métabolisme, pouvant conduire à une réduction temporaire de la masse corporelle chez certains fumeurs. Cependant, cette relation n’est pas uniforme : elle varie selon le genre, les comportements individuels et peut s’inverser après l’arrêt du tabac, souvent accompagné d’une prise de poids.
 
 ```{r}
+
+# Catégorisation de la masse corrigée (kg)
+biometry$masse_corr_cat <- cut(
+  biometry$masse_corr,
+  breaks = c(0, 60, 80, Inf),
+  labels = c("Faible", "Modéré", "Élevé"),
+  right = TRUE )
+
+# Catégorisation de la masse corrigée (kg)
+smutate(biometry, masse_corr_cat = case_when(
+  masse_corr >= 0 & masse_corr <= 50 ~ "Faible",
+  masse_corr > 50 & masse_corr <= 80 ~ "Modéré",
+  masse_corr > 80 ~ "Élevé"))
+
+
 biometry %>.%
-  sgroup_by(., genre) %>.%
+  sgroup_by(., genre, masse_corr_cat) %>.%
   ssummarise(.,
-    mean = fmean(fumeur),
-    sq = fsd(fumeur),
+    mean_fumeur = fmean(fumeur),
+    sd_fumeur = fsd(fumeur),
     nobs = fnobs(fumeur))
 
 ```
 
 -
-**interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
+**interprétations**
+
+- Chez les hommes, la consommation moyenne de cigarettes augmente avec la masse : elle est nulle pour les individus à masse faible, passe à 2,73 pour ceux à masse modérée, puis à 3,41 pour ceux à masse élevée.
+
+- Chez les femmes, seules celles avec une masse modérée consomment du tabac, avec une moyenne de 12 cigarettes par semaine, ce qui est nettement plus élevé que chez les hommes dans la même catégorie.
+
+- L’écart-type chez les femmes à masse modérée (51,19) est très élevé, ce qui indique une forte variabilité : certaines consomment beaucoup, d'autres très peu. Chez les hommes, les écarts-types restent plus faibles (entre 6,86 et 11,67), reflétant une consommation plus homogène.
 
 
 ### Description 1 par Christelle
@@ -113,7 +139,7 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
       de la consommation de sucre")
 ```
 
-**interprétation** 
+**interprétations** 
 
 La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
 
@@ -146,7 +172,7 @@ geom_boxplot() +
 
 ```
 
-***interprétation***
+***interprétations***
 
 Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. 
 Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
@@ -169,7 +195,7 @@ chart(data = biometry, masse_corr ~ alimentation %fill=% genre) +
 
 ```
 
-***interprétation***
+***interprétations***
 
 - Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
 
@@ -187,7 +213,7 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
   labs(title = "Relation entre activité physique et masse corrigée", x = "Activité physique (min/semaine)", y = "Masse corrigée")
 ```
 
-***interprétation***
+***interprétations***
 
 -On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse corrigée.
 
@@ -513,7 +539,8 @@ test_ith_sommeil
 
 <!--% Hypothèse nulle et alternative -->
 
-H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'ITH. H₁ : Il existe une association significative entre la durée de sommeil et la catégorie d'ITH.
+H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'ITH. 
+H₁ : Il existe une association significative entre la durée de sommeil et la catégorie d'ITH.
 
 <!--% Vérification des conditions d'application -->
 
@@ -617,7 +644,8 @@ H1 : Il existe une différence significative du WHR moyen selon la prise de cort
 
 ### ANOVA à un facteur 1
 
-La consommation d'alcool peut varier selon les régimes alimentaires. Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le nombre moyen de verres d'alcool consommés par semaine diffère selon que l'individu suit un régime herbivore, carnivore ou omnivore.
+La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires. Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore.
+Cette analyse vise à déterminer si le type d’alimentation influence le nombre de verres d’alcool consommés par semaine, afin de mieux comprendre l’interaction entre les habitudes alimentaires et un facteur indirectement lié au risque d’obésité.
 
 Reference: Caducee.net. (2006, 13 février). Alcool et régime alimentaire. https://www.caducee.net/actualite-medicale/5701/alcool-et-regime-alimentaire.html
 
@@ -630,7 +658,6 @@ chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
        x = "Type d'alimentation", 
        y = "Nombre de verres d'alcool par semaine") + 
   coord_flip()
-
 ```
 
 <!--% Hypothèse nulle et alternative -->
