@@ -88,11 +88,7 @@ labs(title = "Variations du tour de taille en fonction
       de la consommation de sucre")
 ```
 
-<<<<<<< HEAD
-**interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
-=======
 **interprétation** La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Description 2 par Christelle
 
@@ -291,38 +287,12 @@ head(table_ic)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-<<<<<<< HEAD
--   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
-
--   L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
-
--   L'activité physique ne semble pas être un élément clé de différenciation.
-
--   la population n'est pas affectée par le tabagisme.
-
--   Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
-
--   Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
-
--   Les personnes qui sonsomment plus de fast food ont modere ( contre intuitif)
-
--   L'activité physique ne semble pas avoir d'impact sur l' IC
-
--   avec un IC élevé consomment moins de fast food
-
--   le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
-
-Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
-
--   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
-=======
 -   Les personnes les plus jeunes ont tendance à présenter un risque ic modéré, tandis que celles plus âgées sont susceptibles d'avoir un risque ic élevé.
 -   La consommation d'alcool est légèrement plus élevée chez ceux ayant un risque ic élevé.
 -   Les personnes qui consomment plus de fast food ont un risque modéré (contre intuitif)
 -   L'activité physique ne semble pas avoir d'impact sur le risque IC
 -   Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité.
 -   La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes.
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Indice de Ide
 
@@ -375,13 +345,6 @@ chart(data = biometry, ~ ITH_categorie %fill=% genre) +
 
 -Les hommes sont majoritairement représentés dans les catégories "Élevé" et "Très Élevé", associées à un risque cardiovasculaire accru.
 
-<<<<<<< HEAD
--Les catégories "Modéré" montrent une répartition équilibrée entre les deux genres.
-
--Globalement, les femmes présentent un profil plus protecteur, tandis que les hommes sont plus exposés aux risques métaboliques liés à une répartition abdominale des graisses.
-
-=======
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
@@ -405,7 +368,6 @@ tabularise(table_contingence)
 
 <!--% Hypothèse nulle et alternative -->
 
-
 H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
 
 <!--% Vérification des conditions d'application -->
@@ -417,7 +379,6 @@ chisq.test(table_age_ic)
 
 ```
 
-
 ```{r test_chi2_1 sommeil}
 table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
@@ -425,7 +386,6 @@ head(table_sommeil_ic)
 chisq.test(table_sommeil_ic)
 
 ```
-
 
 ```{r test_chi2_1 sucre}
 
@@ -437,7 +397,6 @@ chisq.test(table_sucre_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
-
 
 ### Test de Chi^2^ by Ide
 
@@ -524,7 +483,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, 
+La valeur p étant supérieure au seuil alpha de 5%,
 
 ### Test t de Student 2
 
@@ -538,11 +497,7 @@ La valeur p étant supérieure au seuil alpha de 5%,
 
 <!--% Vérification des conditions d'application -->
 
-La variable dépendante est quantitative.
-La variable explicative est qualitative binaire (deux groupes).
-Les deux échantillons sont indépendants.
-Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n > 30).
-Les variances des deux groupes sont égales.
+La variable dépendante est quantitative. La variable explicative est qualitative binaire (deux groupes). Les deux échantillons sont indépendants. Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n \> 30). Les variances des deux groupes sont égales.
 
 ```{r test_t_2}
 
