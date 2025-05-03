@@ -54,7 +54,7 @@ Le tour de poignet est un indicateur utile de la densité osseuse et de la struc
 
 ```{r}
 
-# Catégoriser l'activité physique en fonction du nombre d'heures par semaine
+# Catégorisation de l'activité physique en fonction du nombre d'heures par semaine
 biometry$activite_physique_cat <- cut(
   biometry$activite_physique,
   breaks = c(-Inf, 2, 5, Inf),
