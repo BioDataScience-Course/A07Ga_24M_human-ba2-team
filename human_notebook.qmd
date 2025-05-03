@@ -107,17 +107,10 @@ labs(title = "Variations du tour de taille en fonction
       de la consommation de sucre")
 ```
 
-<<<<<<< HEAD
-**interprétation**
+**interprétation** 
 
 La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
-=======
-<<<<<<< HEAD
-**interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
-=======
-**interprétation** La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
->>>>>>> 5c4fec35fc3d497161e71a88551dcf3f0aeba328
+
 
 ### Description 2 par Christelle
 
@@ -574,7 +567,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, 
+La valeur p étant supérieure au seuil alpha de 5%,
 
 ### Test t de Student 2
 
@@ -605,8 +598,6 @@ H0 : Il n'y a pas de différence significative du WHR moyen entre les individus 
 H1 : Il existe une différence significative du WHR moyen selon la prise de cortisone.
 
 <!--% Vérification des conditions d'application -->
-
-***CHRIS***
 
 ```{r test_t_2}
 
