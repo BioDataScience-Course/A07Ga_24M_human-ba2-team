@@ -518,7 +518,7 @@ H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'
 <!--% Vérification des conditions d'application -->
 
 ```{r test_chi2_2}
-
+# NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -574,7 +574,8 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%,
+# NEFISE
+
 
 ### Test t de Student 2
 
@@ -664,7 +665,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_2}
-
+# NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -686,7 +687,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova2_1}
-
+#NEFISE
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -710,6 +711,7 @@ anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
 ```
 
 <!--% Interprétation statistique et biologique -->
+#NEFISE
 
 # Discussion et conclusions
 
