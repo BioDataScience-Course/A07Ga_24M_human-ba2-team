@@ -83,6 +83,8 @@ Chez les personnes ayant une activité physique faible, le tour de poignet est g
 
 ### Description 2 par Nefise
 
+Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets néfastes sur la santé cardiovasculaire, respiratoire et générale. Des études ont montré qu’il existe des différences dans les comportements de consommation de tabac entre les hommes et les femmes, tant en termes de fréquence que de motivations.
+
 ```{r}
 biometry %>.%
   sgroup_by(., genre) %>.%
