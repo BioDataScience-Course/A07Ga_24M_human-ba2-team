@@ -50,13 +50,32 @@ skimr::skim(biometry)
 
 ### Description 1 par Nefise
 
+Le tour de poignet est un indicateur utile de la densité osseuse et de la structure corporelle. L'activité physique agit sur le développement musculaire et osseux, tandis que le type d'alimentation influence la composition corporelle. On cherche à comprendre comment ces trois facteurs interagissent pour affecter la santé physique.
+
 ```{r}
-chart (data = biometry, genre ~ tour_taille %fill=%  intolerance_lactose) +
-  geom_boxplot () +
-  coord_flip ()
+
+# Catégoriser l'activité physique en fonction du nombre d'heures par semaine
+biometry$activite_physique_cat <- cut(
+  biometry$activite_physique,
+  breaks = c(-Inf, 2, 5, Inf),
+  labels = c("Faible", "Modéré", "Élevé"),
+  right = TRUE
+)
+
+chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
+  geom_boxplot() +
+  labs(
+    title = "Répartition du tour de poignet selon l'activité physique et l'alimentation",
+    x = "Catégories d'activité physique",
+    y = "Tour de poignet (cm)",
+    fill = "Type d'alimentation"
+  )
+
 ```
 
-**interprétation** Chez les hommes (H), le tour de taille des non intolérants (N) est plus dispersé avec plusieurs valeurs extrêmes, tandis que celui des intolérants (O) est plus homogène, avec une médiane plus élevée, possiblement due à une accumulation de graisses viscérales ou à une consommation accrue d'aliments sans lactose, souvent plus caloriques. Chez les femmes (F), les non intolérantes (N) présentent une forte variabilité avec des valeurs extrêmes élevées, alors que les intolérantes (O) ont un tour de taille plus bas et plus regroupé, ce qui pourrait s'expliquer par une meilleure gestion alimentaire des femmes ou des effets de malabsorption. La taille de l'échantillon pourrait aussi jouer un rôle, notamment chez les hommes intolérants, où quelques valeurs élevées biaisent la médiane.
+**interprétation**
+
+Les individus ayant une activité physique élevée ont généralement un tour de poignet plus important, ce qui reflète une ossature et une masse musculaire plus développées. Parmi eux, les carnivores présentent la médiane la plus élevée, ce qui peut s'expliquer par une consommation plus importante de protéines animales, favorisant le renforcement du tissu osseux et musculaire. Les omnivores suivent, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs physiquement, ont des tours de poignet plus faibles, possiblement en raison d'un apport plus limité en protéines animales. Chez les personnes ayant une activité physique faible, le tour de poignet est généralement plus petit, suggérant une densité osseuse et une masse musculaire moindres. En revanche, dans cette catégorie, les omnivores présentent une médiane plus élevée que les carnivores. Aucun herbivore n'est représenté dans ce groupe.
 
 ### Description 2 par Nefise
 
@@ -68,47 +87,71 @@ biometry %>.%
     sq = fsd(fumeur),
     nobs = fnobs(fumeur))
 
-# Tableau formaté avec knitr::kable()
-knitr::kable(biometry)
 ```
 
-**interprétation** Les femmes fument en moyenne plus que les hommes, avec une consommation de 5,47 cigarettes par semaine contre 2,91 chez les hommes. Cependant, l'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène. L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
+**interprétation**
+
+-   L'échantillon est relativement équilibré avec 65 hommes et 79 femmes.
+
+-   Les femmes fument en moyenne plus que les hommes, avec une consommation moyenne de 5,47 cigarettes par semaine contre 2,91 chez les hommes.
+
+-   L'écart-type chez les femmes (34,81) est bien plus élevé que chez les hommes (9,15), ce qui indique une grande variabilité dans leur consommation de cigarettes. Cette dispersion pourrait être causée par quelques fumeuses extrêmes qui augmentent l'écart-type. En revanche, la consommation chez les hommes semble plus homogène.
 
 ### Description 1 par Christelle
+
+Le tour de taille est un bon indicateur de la répartition de la graisse corporelle et de la santé métabolique. Un tour de taille élevé est lié à un risque accru de maladies comme les maladies cardiaques et le diabète. La consommation de sucre, surtout les sucres ajoutés, joue un rôle important dans le métabolisme et la prise de poids, notamment au niveau de l'abdomen.
+
+Dans cette analyse, nous examinons la relation entre le tour de taille et la consommation de sucre, en cherchant à visualiser comment les variations de sucre peuvent influencer cette mesure.
 
 ```{r}
 chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
   geom_violin(alpha = 0.7, color = "black") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+labs(title = "Variations du tour de taille en fonction 
+      de la consommation de sucre")
 ```
 
-**interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
+**interprétation**
+
+La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
 
 ### Description 2 par Christelle
 
+Le mode de vie moderne, avec une alimentation riche en fast food et un sommeil de mauvaise qualité, joue un rôle clé dans la santé métabolique. La consommation de fast food, riche en graisses et sucres, est liée à un risque accru de maladies cardiovasculaires et de diabète, tandis qu'un sommeil insuffisant perturbe les mécanismes hormonaux, favorisant la prise de poids. Dans cette section, nous analysons l'impact de ces facteurs, en tenant compte des différences entre hommes et femmes, pour mieux comprendre comment ils influencent la santé et le risque de maladies métaboliques.
+
 ```{r christelle}
+
+# Convertir 'fast_food' en facteur avec des catégories
+biometry$fast_food_cat <- cut(
+  biometry$fast_food,
+  breaks = c(-Inf, 3, 7, Inf), 
+  labels = c("Faible", "Modéré", "Élevé"),
+  right = TRUE
+)
+
+
 biometry %>.%
-  sgroup_by(.,genre) %>.%
+  sgroup_by(.,genre, fast_food_cat) %>.%
   ssummarise(., mean = fmean(sommeil), sd = fsd(sommeil), n = fn(sommeil))
 
 #Nous allons faire un graphique complémentaire pour visualiser les données
 
-chart(biometry, sommeil ~ genre %fill=% genre) +
+
+chart(biometry, sommeil ~ fast_food_cat %fill=% genre) +
 geom_boxplot() +
-  labs (title= "Comparaison de sommeil entre les hommes et les femmes", x = "genre", y = "temps de sommeil (heures)")
+  labs (title= "Comparaison de sommeil entre les hommes et les femmes en 
+          fonction de la consommation du fast_food", x = "catégories de fast_food", y = "temps de sommeil (heures)") +
+  scale_fill_manual(values = c("cyan", "pink")) 
 
 ```
 
 ***interprétation***
 
--les femmes dorment en moyenne trois minutes de plus que les hommes -l'écart-type est plus élevé chez les femmes, ce qui semble suggérer une grande variabilité dans leurs habitudes de sommeil
+Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Dans le graphique, - nous observons que le temps moyen de sommeil entre les hommes et les femmes est autour de 7h (similaire)
+Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
--l'étendue interquartile est assez similaire pour les deux groupes
-
--   Il y a une valeur extrême chez les femmes: cette valeur peut être due à une erreur de mesure ou à un trouble de sommeil.
+Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux, comme l'ANOVA ou le test du chi-carré, afin d'établir des relations significatives. Par exemple, un test de corrélation pourrait confirmer la relation entre sucre et tour de taille, tandis qu'un test de Kruskal-Wallis pourrait comparer les différences de tour de taille entre les catégories de consommation de fast-food."
 
 ### Description 1 par Ide
 
@@ -159,17 +202,17 @@ chart(data = biometry, activite_physique ~ masse_corr, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
-L'Indice de Masse Corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (\<18,5), poids normal (18,5-24,9), surpoids (25-29,9), et obésité (≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
+L'Indice de Masse Corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (IMC \<18,5), poids normal (18,5\<IMC\<24,9), surpoids (25\>IMC\<29,9), et obésité (IMC≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
 
-ref article: PasseportSanté. (n.d.). IMC : calcul, catégories et limites de l'indice de masse corporelle. PasseportSanté. Consulté le 30 mars 2025, à partir de https://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=IMC
+Référence: PasseportSanté. (n.d.). IMC : calcul, catégories et limites de l'indice de masse corporelle. PasseportSanté. Consulté le 30 mars 2025, à partir de https://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=IMC
 
 $$IMC = \frac{\text{Poids (kg)}}{\text{Taille (m)}^2}$$
 
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
-#indice sous format numérique et facteur
-biometry3 <- biometry %>%
+# Indice sous format numérique et facteur
+biometry2 <- biometry %>%
   smutate(., 
     bmi = masse / (taille/100)^2) %>.%
   smutate(., bmi_cat = case_when(
@@ -189,16 +232,15 @@ biometry3 %>.%
   ssummarise(.,
     mean   = fmean(bmi),
     number = fn(bmi))
-tabularise(biometry3)
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
 -   Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
 
--   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre seulement 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
-
 -   Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
+
+-   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
 
 -   Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
@@ -234,49 +276,48 @@ head(biometry[, c("ic", "risque_ic")])
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
-```{r}
-# Graphique ou tableau utilisant l'indice calculé.
+Dans cette partie de l'analyse, nous explorons les relations entre l'indice de conicité (IC) et plusieurs facteurs de style de vie potentiellement associés à des risques de santé. En particulier, nous nous intéressons à des variables telles que l'âge, la consommation d'alcool, la fréquence de la consommation de fast food, l'activité physique, la durée de sommeil, ainsi que la consommation de sucre et d'eau.
 
+```{r}
+
+# Regrouper l'âge en catégories
+biometry <- biometry %>%
+  mutate(age_cat = case_when(
+    age < 25 ~ "< 25 ans",
+    age >= 25 & age <= 40 ~ "25-40 ans",
+    age > 40 ~ "> 40 ans"
+  ), sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
+      sommeil >= 7 & sommeil > 8 ~ "Modéré",
+      sommeil > 8 ~ "Suffisant"), sucre_cat = case_when(
+      sucre %in% c("jamais", "rarement") ~ "Faible",
+      sucre == "régulièrement" ~ "Régulièrement",
+      sucre == "souvent" ~ "Souvent"))
+
+# Créer le tableau avec les nouveaux facteurs de risque
 table_ic <- biometry %>%
   filter(!is.na(risque_ic)) %>%
   group_by(risque_ic) %>%
   summarise(
-    age = mean(age < 25, na.rm = TRUE) * 100,
-    alcool = mean(alcool > 0, na.rm = TRUE) * 100,
-    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,
-    activité_Physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,
-    Sommeil_6h = mean(sommeil < 6, na.rm = TRUE)  * 100
+    age_jeune = mean(age < 25, na.rm = TRUE) * 100,  # % des individus de moins de 25 ans
+    alcool = mean(alcool > 0, na.rm = TRUE) * 100,  # % des individus consommant de l'alcool
+    fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,  # % des individus consommant plus de 1 portion de fast food
+    activité_physique_élevé = mean(activite_physique > 300, na.rm = TRUE) * 100,  # % des individus avec une activité physique élevée
+    sommeil_6h = mean(sommeil < 6, na.rm = TRUE) * 100,  # % des individus dormant moins de 6 heures
+    sucre_élevé = mean(sucre %in% c("souvent", "régulièrement"), na.rm = TRUE) * 100,  # % des individus avec une consommation de sucre élevée
+    eau_élevé = mean(eau > 2.5, na.rm = TRUE) * 100  # % des individus avec une consommation d'eau élevée (plus de 2.5L)
   )
 
-print(table_ic)
-
+head(table_ic)
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
-
--   L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
-
--   L'activité physique ne semble pas être un élément clé de différenciation.
-
--   la population n'est pas affectée par le tabagisme.
-
--   Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
-
--   Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
-
--   Les personnes qui sonsomment plus de fast food ont modere ( contre intuitif)
-
--   L'activité physique ne semble pas avoir d'impact sur l' IC
-
--   avec un IC élevé consomment moins de fast food
-
--   le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
-
-Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
-
--   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
+-   Les personnes les plus jeunes ont tendance à présenter un risque ic modéré, tandis que celles plus âgées sont susceptibles d'avoir un risque ic élevé.
+-   La consommation d'alcool est légèrement plus élevée chez ceux ayant un risque ic élevé.
+-   Les personnes qui consomment plus de fast food ont un risque modéré ( contre intuitif)
+-   L'activité physique ne semble pas avoir d'impact sur le risque IC
+-   Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité.
+-   La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes.
 
 ### Indice de Ide
 
@@ -326,6 +367,57 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 -   D'un point de vue **biologique**, un IMG trop bas peut être associé à un manque de réserves énergétiques, ce qui peut poser des problèmes de santé (fatigue, troubles hormonaux, etc.).
 
+### Indice de Nefise 2
+
+<!--% Description et formule ci-dessous. -->
+
+Le RFM (Relative Fat Mass) est un indice estimant la masse grasse corporelle à partir de la taille et du tour de taille, sans nécessiter de pesée. Il est simple à calculer et plus précis que l'IMC pour évaluer la composition corporelle. Ce n'est pas la même chose que l'IMG, car le RFM est basé uniquement sur des mesures de taille et de tour de taille, tandis que l'IMG prend en compte d'autres paramètres comme l'IMC, l'âge et le sexe.
+
+Reference: WeCook WeCare. (n.d.). De l'IMC au RFM. https://www.wecookwecare.com/blog/perte-de-poids/minceur-surpoids/de-limc-au-rfm
+
+$$RFM (homme) = 64 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$
+
+$$RFM (femme)= 76 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$
+
+# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
+
+```{r}
+biometry3 <- biometry %>%
+  smutate(., rfm = case_when(
+    genre == "F" ~ 76 - 20 * (taille / tour_taille),
+    genre == "H" ~ 64 - 20 * (taille / tour_taille))) %>.%
+  smutate(., rfm_cat = case_when(
+    rfm < 20 ~ "Très faible",
+    rfm <= 20 & rfm < 30 ~  "Modéré",
+    rfm >= 30 & rfm < 40 ~  "Élevé",
+    rfm >= 40 ~  "Très élevé")) %>.%
+  sselect(., genre, rfm, rfm_cat) ->biometry3
+```
+
+<!--% Graphique ou tableau utilisant l'indice calculé.-->
+
+```{r}
+biometry3 %>.%
+  sgroup_by(., genre, rfm_cat)%>.%
+  ssummarise(.,
+    mean   = fmean(rfm),
+    number = fn(rfm))
+```
+
+<!--% Interprétation en quelques points du graphique ou tableau. -->
+
+-   Le RFM très faible est observé uniquement chez les hommes (20 sur 65), avec une moyenne de 17.12. Cela indique qu'environ 1/4 des hommes ont un profil maigre ou sportif.
+
+-   Les valeurs de RFM élevées sont présentes chez les deux sexes, mais les femmes ont une moyenne légèrement plus élevée (34.45 contre 33.38 chez les hommes), indiquant une différence modérée entre eux.
+
+-   Le RFM très élevé est observé uniquement chez les femmes, avec une moyenne de 44.37. Cela indique qu'une proportion significative de femmes présente une masse grasse corporelle élevée.
+
+-   Le RFM modéré (noté NA dans le tableau) est plus fréquent chez les hommes (38 individus contre 22 chez les femmes) avec des moyennes proches (24.38 pour les hommes et 27.11 pour les femmes).
+
+-   Les femmes présentent des valeurs moyennes de RFM plus élevées que les hommes, ce qui est en accord avec les différences biologiques de composition corporelle entre les sexes.
+
+-   Les femmes sont sur-représentées dans les catégories de RFM élevé et très élevé, tandis que les hommes dominent les catégories de RFM très faible et modérées (noté NA dans le tableau).
+
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
@@ -334,62 +426,52 @@ chart(data = biometry, ~ IMG_categorie %fill=% genre) +
 
 ### Test de Chi^2^ 1 Indice Christelle
 
-```{r chi2_ic}
-# tableau de contingence entre 'fast_food' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food)
-print(table_fast_food)
-# H0: Il n' y a pas d'association entre les facteurs de risque et l'indice de conicité ic
-# H1: Il y a une association significative entre les facteurs de risque et l'indice de conicité ic
-# 
-#transformation de la variable
-biometry$fast_food_cat <- ifelse(biometry$fast_food > 1, "Fréquent", "Rare")
-biometry$fast_food_cat <- factor(biometry$fast_food_cat)
-
-# Tableau de contingence entre 'fast_food_cat' et 'risque_ic'
-table_fast_food <- table(biometry$risque_ic, biometry$fast_food_cat)
-print(table_fast_food)
-
-# Test du chi-deux pour 'fast_food_cat' et 'risque_ic'
-result_fast_food <- chisq.test(table_fast_food)
-print(result_fast_food)
-
-```
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_1}
 
-table_sommeil_ic <- biometry %>%
-  mutate(sommeil_cat = ifelse(sommeil < 6, "<6h", "≥6h")) %>% 
-  group_by(risque_ic, sommeil_cat) %>%
-  summarise(n = n(), .groups = "drop") %>%
-  mutate(pourcentage = n / sum(n) * 100)  # Calcul du pourcentage
+table_contingence <- biometry %>%
+  count(risque_ic, age_cat, sucre, sommeil_cat)
 
-print(table_sommeil_ic)
-
-
-chart(data = biometry, ~ sommeil %fill=% risque_ic) +
-  geom_bar(position = "dodge") +
-  labs(title = "Répartition du sommeil selon l'Indice de Conicité",
-       x = "Durée du sommeil (<6h vs ≥6h)",
-       y = "Nombre d'individus") +
-  scale_fill_viridis_d()
+# Afficher le tableau de contingence
+print(table_contingence)
+tabularise(table_contingence)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
+H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
 
 <!--% Vérification des conditions d'application -->
 
-les observations sont indépendantes
+```{r test_chi2_1 âge}
 
-```{r test_chi2_1 }
-chisq.test(table_sommeil_ic)
+table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
+chisq.test(table_age_ic)
+
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+```{r test_chi2_1 sommeil}
+table(biometry$sommeil_cat, biometry$risque_ic)
+head(table_sommeil_ic)
+
+chisq.test(table_sommeil_ic)
+
+```
+
+<!--% Interprétation statistique et biologique -->
+
+```{r test_chi2_1 sucre}
+
+table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
+head(table_sucre_ic)
+
+chisq.test(table_sucre_ic)
+
+```
 
 ### Test de Chi^2^ by Ide
 
@@ -409,48 +491,89 @@ chisq.test(table_sommeil_ic)
 
 <!--% Interprétation statistique et biologique -->
 
+***CHRIS***
+
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
 ### Test t de Student 1 by Christelle
 
+Le Waist-to-Hip Ratio (WHR) est un indice utilisé pour évaluer la répartition de la graisse corporelle, en particulier la graisse viscérale, qui est un facteur clé dans le risque de maladies cardiovasculaires et de diabète de type 2. Contrairement à l'IMC, le WHR prend en compte la distribution de la graisse autour de la taille, un rapport élevé étant associé à un risque accru de troubles métaboliques. La formule du WHR est la suivante :
+
+$$\text{WHR} = \frac{\text{Tour de taille}}{\text{Tour de hanche}}$$
+
+Le WHR est considéré comme un meilleur indicateur du risque de maladies cardiaques et de diabète que l'IMC (Bertoni et al., 2009). Des études montrent que les hommes ont généralement un WHR plus élevé que les femmes en raison de la distribution différente de la graisse dans le corps. Un WHR élevé est lié à un risque accru de maladies cardiovasculaires et varie en fonction du sexe.
+
+Référence : Bertoni, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
-#IMC selon le sexe
-biometry <- smutate(biometry, imc = masse_corr/(taille)^2) 
+biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
 
 biometry %>.%
   sgroup_by(., genre) %>.%
-  ssummarise(.,mean = fmean(imc))
+  ssummarise(.,mean = fmean(whr))
+
+
+chart(data = biometry, whr ~ genre %fill=% genre) +
+  geom_boxplot() +
+  labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
+       x = "Sexe",
+       y = "WHR") +
+   scale_fill_manual(values = c("lightgreen", "orange")) 
 
 ```
 
+Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est conforme aux tendances observées dans de nombreuses études : les hommes tendent à avoir une plus grande accumulation de graisse au niveau abdominal par rapport aux femmes, ce qui conduit à un ratio taille-hanche plus élevé.
+
 <!-- Hypothèse nulle et alternative -->
 
-H0: la différence entre la moyenne de l'imc des hommes et des femmes vaut zéro H1: la différence entre la moyenne de l'imc des hommes et des femmes est différent de zéro
+H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
+
+H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
 
 <!-- Vérification des conditions d'application -->
 
-```{r test_t_1}
-t.test(data = biometry, imc ~ genre, 
+```{r test_t_1 Christelle}
+t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = TRUE )
 ```
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Anisi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 141, valeur p = 0.74).
+La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypothèse nulle. Ainsi, il n'existe pas de différence significative entre l'IMC des hommes et celui des femmes au seuil alpha 5% (test t bilatéral, t = 0.33256, ddl = 142, valeur p = 0.76).
 
 ### Test t de Student 2 by Nefise
+
+La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses abdominales lorsqu'elle est administrée sur le long terme. Sachant que le Waist-to-Hip Ratio (WHR) est un indicateur utilisé pour évaluer la répartition des graisses corporelles et le risque métabolique associé, il est pertinent de se demander si la prise de cortisone influence significativement le WHR. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
+
+Référence : Corbaz, A. (2024, 13 novembre). Le cortisol affecte-t-il la prise de poids ? Nutrition by Aurélia. https://www.nutrition-by-aurelia.ch/blog/le-cortisol-affecte-t-il-la-prise-de-poids
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_2}
 
+# La variable WHR a déjà été céer dans le test t de Student précedent.
+# 
+# Réalisation graphique:
+chart(data = biometry, cortisone ~ whr %fill=% genre) +
+  geom_boxplot() +
+  labs(title = "WHR selon la prise de cortisone",
+       x = "Prise de cortisone",
+       y = "Waist-to-Hip Ratio") + 
+  coord_flip ()
+
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+H0 : Il n'y a pas de différence significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas prise.
+
+H1 : Il existe une différence significative du WHR moyen selon la prise de cortisone.
+
 <!--% Vérification des conditions d'application -->
+
+***CHRIS***
 
 ```{r test_t_2}
 
@@ -462,33 +585,31 @@ La valeur p étant supérieure au seuil alpha de 5%, nous ne rejetons pas l'hypo
 
 ### ANOVA à un facteur 1 (Nefise)
 
+La consommation d'alcool peut varier selon les régimes alimentaires. Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le nombre moyen de verres d'alcool consommés par semaine diffère selon que l'individu suit un régime herbivore, carnivore ou omnivore.
+
+Reference: Caducee.net. (2006, 13 février). Alcool et régime alimentaire. https://www.caducee.net/actualite-medicale/5701/alcool-et-regime-alimentaire.html
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
-biometry2 <- smutate(biometry, group  = labelise(
-    factor(paste(alimentation, intolerance_gluten, sep = "-")),
-    "Groupe alimentation - intolérance au gluten", units = NA))
-    
-biometry2 %>.%
-  sgroup_by(., masse_corr) %>.%
-  ssummarise(.,
-    mean  = fmean(alimentation),
-    sd    = fsd(aspect5),
-    count = fsum(!is.na(aspect5)))
-    
-    anova(crabs2_anova <- lm(data = crabs2, aspect5 ~ group)) |> tabularise()
-    
-    biometry %>.%
-  sselect(., genre, intolerance_lactose, tour_taille) %>.%
-  sgroup_by(., intolerance_lactose) %>.%
-  ssummarise(.,
-    mean  = fmean(tour_taille),
-    sd    = fsd(tour_taille))
+chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
+  geom_boxplot() +
+  labs(title = "Consommation d'alcool selon le type d'alimentation",
+       x = "Type d'alimentation", 
+       y = "Nombre de verres d'alcool par semaine") + 
+  coord_flip()
+
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+H0: Il n'y a pas de différence significative du nombre de verres d'alcool consommés par semaine entre les individus ayant un régime alimentaire herbivore, carnivore ou omnivore.
+
+H1: Il existe une différence significative du nombre de verres d'alcool consommés par semaine entre les individus ayant un régime alimentaire herbivore, carnivore ou omnivore.
+
 <!--% Vérification des conditions d'application -->
+
+***cHRIS***
 
 ```{r test_anova1_1}
 
@@ -514,6 +635,8 @@ biometry2 %>.%
 
 <!--% Interprétation statistique et biologique -->
 
+***CHRIS***
+
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
 ### ANOVA à deux facteurs 1
@@ -534,7 +657,9 @@ biometry2 %>.%
 
 <!--% Interprétation statistique et biologique -->
 
-### ANOVA à deux facteurs 2
+***CHRIS***
+
+### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
