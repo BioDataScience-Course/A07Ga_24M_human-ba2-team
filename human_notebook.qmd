@@ -88,11 +88,7 @@ labs(title = "Variations du tour de taille en fonction
       de la consommation de sucre")
 ```
 
-<<<<<<< HEAD
-**interprétation** Nous observons une tendance où la consommation fréquente de sucre est associée à un tour de taille plus élevé, ce qui pourrait suggérer un lien entre alimentation sucrée et accumulation de graisse abdominale.
-=======
 **interprétation** La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Description 2 par Christelle
 
@@ -291,67 +287,46 @@ head(table_ic)
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
-<<<<<<< HEAD
--   Les facteurs les plus liés à un IC élevé semblent être : La consommation de fast-food, le manque de sommeil (les personnes à risque IC élevé dorment moins et mangent plus de fast-food).
-
--   L'alcool pourrait aussi jouer un rôle, mais l'écart n'est pas aussi marqué.
-
--   L'activité physique ne semble pas être un élément clé de différenciation.
-
--   la population n'est pas affectée par le tabagisme.
-
--   Les personnes les plus jeunes ont tendance à avoir un IC modere, tandisque les personnes plus agées ont un IC eleve.
-
--   Il y a une legere augmentation de la consommation d'alcool chez ceux qui ont un IC eleve
-
--   Les personnes qui sonsomment plus de fast food ont modere ( contre intuitif)
-
--   L'activité physique ne semble pas avoir d'impact sur l' IC
-
--   avec un IC élevé consomment moins de fast food
-
--   le sommeil est un facteur potentiel car un IC eleve est associé à un sommeil plus court.
-
-Dans la suite du travail, nous allons effectuer des test d'hypotheses pour voir si ces tendances sont statistiquement significatives.
-
--   Dans la suite du travail nous effectuerons un test d'hypothèse pour vérifier qu'il y a association entre ces facteurs les plus liés et l'indice de conicité.
-=======
 -   Les personnes les plus jeunes ont tendance à présenter un risque ic modéré, tandis que celles plus âgées sont susceptibles d'avoir un risque ic élevé.
 -   La consommation d'alcool est légèrement plus élevée chez ceux ayant un risque ic élevé.
 -   Les personnes qui consomment plus de fast food ont un risque modéré (contre intuitif)
 -   L'activité physique ne semble pas avoir d'impact sur le risque IC
 -   Un sommeil insuffisant (moins de 6 heures) semble être davantage associé à un risque IC élevé, ce qui suggère que ce facteur pourrait jouer un rôle important dans la gestion du risque de conicité.
 -   La consommation de sucre élevée semble être un facteur potentiellement significatif pour les personnes ayant un risque IC élevé, tandis que la consommation d'eau ne montre pas une grande différence entre les groupes.
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 ### Indice de Ide
 
 <!--% Description et formule ci-dessous. -->
 
-L'Indice Taille-Hanche est utilisé pour évaluer la répartition des graisses et le risque cardio-métabolique. Le rapport taille-hanche est un bon reflet de la répartition des graisses dans notre organisme. Son élévation témoigne d'une accumulation de tissus graisseux au niveau de la région abdominale. L'aspect général de la silhouette s'apparente à une pomme. Lorsqu'il est plus faible, la silhouette est en forme de poire : la graisse s'établit préférentiellement dans le bas du corps, au niveau des hanches, fesses et cuisses. En fonction de leur localisation dans notre corps, ces réserves d'énergie n'ont pas le même impact sur la santé.
+L'indice Taille--Poignet (ITP) est un outil anthropométrique utilisé pour estimer la **corpulence osseuse** d'un individu, ce qui peut influencer l'interprétation d'autres indices comme l'IMC. Une ossature fine, moyenne ou large peut modifier la perception des risques métaboliques associés à une même masse corporelle. L'ITP est particulièrement utile dans les populations jeunes ou en croissance, et est souvent utilisé dans les standards cliniques d'évaluation corporelle (Frisancho, 1990).
 
-reference de l'article: Waist-to-hip ratio better predicts early death than BMI -- and should replace BMI as a simple measure of healthy weight, Diabetologia, 21 septembre 2022
+reference de l'article: **Frisancho, A. R.** (1990). *Anthropometric Standards for the Assessment of Growth and Nutritional Status*. University of Michigan Press.
 
-$$ITH = \frac{\text{Tour de taille (cm)}}{\text{Tour de hanches (cm)}}$$
+$$ITP = \frac{\text{Tour de poignet (cm)}}{\text{Taille (cm)}}$$
+
+CALCUL DE LA OU DES VARIABLES REPRENANT L'INDICE SOUS FORME NUMERIQUE ( ET FACTEUR)
 
 ```{r}
 
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-# Graphique ou tableau utilisant l'indice calculé.
+biometry <- biometry %>%
+  mutate(
+    itp = tour_poignet / taille,
+    ossature = case_when(
+      genre == "F" & itp < 0.079 ~ "fine",
+      genre == "F" & itp >= 0.079 & itp <= 0.085 ~ "moyenne",
+      genre == "F" & itp > 0.085 ~ "large",
+      genre == "H" & itp < 0.090 ~ "fine",
+      genre == "H" & itp >= 0.090 & itp <= 0.095 ~ "moyenne",
+      genre == "H" & itp > 0.095 ~ "large"
+    )
+  )
 
+biometry$ossature <- factor(biometry$ossature, levels = c("fine", "moyenne", "large"))
 
-# Calcul de l'Indice Taille-Hanche
-biometry$ITH <- biometry$tour_taille / biometry$tour_hanche
-summary(biometry$ITH)  # les valeurs doivent être comprises entre 0.6 et 1.2
+# Afficher les premières lignes des colonnes 'itp' et 'ossature'
+head(biometry[, c("itp", "ossature")])
 
-# Catégorisation de l'ITH selon les seuils de l'OMS
-biometry$ITH_categorie <- cut(
-  biometry$ITH,
-  breaks = c(-Inf, 0.85, 0.90, 1.00, Inf),
-  labels = c("Faible", "Modéré", "Élevé", "Très Élevé"),
-  right = FALSE
-)
-table(biometry$ITH_categorie)
 
 ```
 
@@ -359,29 +334,31 @@ table(biometry$ITH_categorie)
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-chart(data = biometry, ~ ITH_categorie %fill=% genre) +
-  geom_bar(position = "dodge") +
+
+# Création du graphique boxplot
+chart(data = biometry, itp ~ ossature %fill=% ossature) +
+  geom_boxplot() +
   labs(
-    title = "Répartition de l'Indice Taille-Hanche par genre",
-    x = "Catégorie de risque (ITH)",
-    y = "Effectif"
-  )
+    title = "Distribution de l'indice Taille–Poignet (ITP) selon le type d'ossature",
+    x = "Type d'ossature",
+    y = "Indice Taille–Poignet (ITP)"
+  ) +
+  scale_fill_brewer(palette = "Set2") 
 
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--La majorité des femmes se situent dans la catégorie "Faible", indiquant une répartition des graisses moins à risque.
+-   Les individus à **ossature fine** sont majoritairement des femmes.
 
--Les hommes sont majoritairement représentés dans les catégories "Élevé" et "Très Élevé", associées à un risque cardiovasculaire accru.
+-   Les personnes à **ossature moyenne** présentent un niveau moyen d'activité physique légèrement plus élevé.
 
-<<<<<<< HEAD
--Les catégories "Modéré" montrent une répartition équilibrée entre les deux genres.
+-   Le **sommeil insuffisant** (moins de 6 heures) semble plus fréquent chez ceux à ossature large.
 
--Globalement, les femmes présentent un profil plus protecteur, tandis que les hommes sont plus exposés aux risques métaboliques liés à une répartition abdominale des graisses.
+-   Une **consommation élevée de sucre** est relativement bien répartie entre les catégories d'ossature, sans différence majeure.
 
-=======
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
+-   La **consommation d'eau** semble légèrement plus élevée chez les individus à ossature moyenne ou large.
+
 ## Tests d'hypothèses
 
 <!--% Dans cette partie, réalisez plusieurs tests d'hypothèses pour répondre à des questions en relation avec votre but. N'hésitez pas à employer les indices que vous avez calculés ci-dessus, ainsi que les variables de départ. Effectuez et interprétez au moins deux tests d'hypothèses pour chaque type ci-dessous. Répartissez le travail entre les étudiants : à chaque fois deux étudiants réalisent les deux tests et les deux autres les interprètent (les commits doivent bien montrer qui a fait quoi). -->
@@ -405,38 +382,25 @@ tabularise(table_contingence)
 
 <!--% Hypothèse nulle et alternative -->
 
-<<<<<<< HEAD
-H0: Il n' y a pas d'association entre le sommeil et l'indice de conicité (ic) H1: Il y a une association significative entre le sommeil et l'indice de conicité (ic)
-
-<!--% Vérification des conditions d'application -->
-
--Indépendance des observations:chaque ligne du dataset représente un individu.
-
--Les deux variables sont qualitatives: fast_food_cat est une variable catégorisée (Fréquent / Rare) et risque_ic est un facteur de risque catégorisé (Modéré / Élevé).
-
--Les effectifs attendus sont tous superieurs a 5.
-
-```{r test_chi2_1 }
-chisq.test(table_fast_food)$expected
-
-=======
 H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants
 
 <!--% Vérification des conditions d'application -->
 
 ```{r test_chi2_1 âge}
+# Vérification des conditions du test de Chi²
+test_chi <- chisq.test(table_sommeil_ic)
 
-table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
-chisq.test(table_age_ic)
+# Fréquences observées
+test_chi$observed
 
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
+# Fréquences théoriques
+test_chi$expected
+
+
 ```
 
 <!--% Interprétation statistique et biologique -->
 
-<<<<<<< HEAD
-### Test de Chi^2^ 2 by Ide
-=======
 ```{r test_chi2_1 sommeil}
 table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
@@ -459,32 +423,40 @@ chisq.test(table_sucre_ic)
 <!--% Interprétation statistique et biologique -->
 
 ### Test de Chi^2^ by Ide
->>>>>>> bec09be26d2a4641a569a1a1f3c2eea5f16f20b3
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_2}
-# Catégorisation du sommeil
-biometry$sommeil_cat <- ifelse(biometry$sommeil < 6, "<6h", "≥6h")
-biometry$sommeil_cat <- factor(biometry$sommeil_cat)
+# Créer la table de contingence
+table_ossature_sommeil <- table(biometry$ossature, biometry$sommeil_cat)
 
-# Vérification que ITH_categorie existe déjà
-table(biometry$ITH_categorie)
-# Création du tableau croisé
-table_ith_sommeil <- table(biometry$ITH_categorie, biometry$sommeil_cat)
+# Afficher le tableau
+tabularise(table_ossature_sommeil)
 
-# Affichage du tableau proprement
-tabularise(table_ith_sommeil)
 
-# Test du Chi²
-test_ith_sommeil <- chisq.test(table_ith_sommeil)
-test_ith_sommeil
+# Graphique en barres croisant les deux variables
+
+# Supprimer les lignes avec NA dans sommeil_cat ou ossature
+biometry_clean <- biometry %>%
+  filter(!is.na(sommeil_cat), !is.na(ossature))
+
+chart(data = biometry_clean, ~ sommeil_cat %fill=% ossature) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Répartition des types d’ossature selon la durée de sommeil",
+    x = "Catégorie de sommeil",
+    y = "Proportion",
+    fill = "Ossature"
+  ) 
+
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'ITH. H₁ : Il existe une association significative entre la durée de sommeil et la catégorie d'ITH.
+-   **H₀ (hypothèse nulle)** : Le type d\'ossature (indice ITP) est **indépendant** de la durée de sommeil.
+
+-   **H₁ (hypothèse alternative)** : Le type d\'ossature est **dépendant** de la durée de sommeil.
 
 <!--% Vérification des conditions d'application -->
 
@@ -544,7 +516,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil alpha de 5%, 
+La valeur p étant supérieure au seuil alpha de 5%,
 
 ### Test t de Student 2
 
@@ -558,11 +530,7 @@ La valeur p étant supérieure au seuil alpha de 5%,
 
 <!--% Vérification des conditions d'application -->
 
-La variable dépendante est quantitative.
-La variable explicative est qualitative binaire (deux groupes).
-Les deux échantillons sont indépendants.
-Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n > 30).
-Les variances des deux groupes sont égales.
+La variable dépendante est quantitative. La variable explicative est qualitative binaire (deux groupes). Les deux échantillons sont indépendants. Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n \> 30). Les variances des deux groupes sont égales.
 
 ```{r test_t_2}
 
