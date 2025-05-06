@@ -405,7 +405,7 @@ chart(data = biometry, ~ ITH_categorie %fill=% genre) +
 
 <!--% Description et formule ci-dessous. -->
 
-Le RFM (Relative Fat Mass) est un indice estimant la masse grasse corporelle à partir de la taille et du tour de taille, sans nécessiter de pesée. Il est simple à calculer et plus précis que l'IMC pour évaluer la composition corporelle. Ce n'est pas la même chose que l'IMG, car le RFM est basé uniquement sur des mesures de taille et de tour de taille, tandis que l'IMG prend en compte d'autres paramètres comme l'IMC, l'âge et le sexe.
+Le RFM (Relative Fat Mass) est un indice estimant la masse grasse corporelle à partir de la taille et du tour de taille, sans nécessiter de pesée. Il est simple à calculer et plus précis que l'IMC pour évaluer la composition corporelle. Ce n'est pas la même chose que l'indice de masse grasse (IMG), car le RFM est basé uniquement sur des mesures de taille et de tour de taille, tandis que l'IMG prend en compte d'autres paramètres comme l'IMC, l'âge et le sexe.
 
 Reference: WeCook WeCare. (n.d.). De l'IMC au RFM. https://www.wecookwecare.com/blog/perte-de-poids/minceur-surpoids/de-limc-au-rfm
 
@@ -466,7 +466,7 @@ biometry3 %>.%
 ```{r plot_chi2_1}
 
 table_contingence <- biometry %>.%
-  count(risque_ic, age_cat, sucre, sommeil_cat)
+  count(., risque_ic, age_cat, sucre, sommeil_cat)
 
 # Afficher le tableau de contingence
 print(table_contingence)
