@@ -602,10 +602,39 @@ H1 : Il existe une différence significative entre les moyennes de WHR des homme
 
 <!-- Vérification des conditions d'application -->
 
+Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
+
 ```{r test_t_1 Christelle}
+### Vérification des conditions d'application du test de Student
+
+# QQ plot pour les femmes
+qqnorm(biometry$whr[biometry$genre == "F"])
+qqline(biometry$whr[biometry$genre == "F"], col = "blue")
+
+# QQ plot pour les hommes
+qqnorm(biometry$whr[biometry$genre == "H"])
+qqline(biometry$whr[biometry$genre == "H"], col = "red")
+
+
+# Test de Bartlett pour vérifier l'égalité des variances
+bartlett.test(whr ~ genre, data = biometry)
+# p = 0.023 → variances inégales → on utilise le test de Student avec var.equal = FALSE
+
+### Test de Student avec variances inégales
+
 t.test(data = biometry, whr ~ genre, 
-  alternative = "two.sided", var.equal = TRUE )
+       alternative = "two.sided", var.equal = FALSE)
+
+# Résultat :
+# Moyenne WHR H : 0.9106
+# Moyenne WHR F : 0.8482
+# Différence significative (p < 0.001)
+
 ```
+
+> Les conditions de normalité ont été vérifiées par Q-Q plots et sont acceptées pour les deux groupes.\
+> Le test de Bartlett indique une inégalité des variances (p = 0.023), ce qui justifie l\'utilisation du test de Student avec `var.equal = FALSE`.\
+> Le test met en évidence une différence significative de WHR entre les hommes et les femmes, ce qui est cohérent avec la littérature sur la répartition de la graisse abdominale.
 
 <!-- Interprétation statistique et biologique -->
 
@@ -685,10 +714,7 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_2}
-anova(biometry_anova <- lm(data = biometry, masse_corr ~ ITH_categorie)) |>
-  as.data.frame() |>
-  tibble::rownames_to_column("Source de variation") |>
-  tabularise()
+
 ```
 
 <!--% Hypothèse nulle et alternative -->
