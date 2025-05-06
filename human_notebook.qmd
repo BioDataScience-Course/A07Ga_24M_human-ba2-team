@@ -454,9 +454,9 @@ chart(data = biometry_clean, ~ sommeil_cat %fill=% ossature) +
 
 <!--% Hypothèse nulle et alternative -->
 
--   **H₀ (hypothèse nulle)** : Le type d\'ossature (indice ITP) est **indépendant** de la durée de sommeil.
+-   **H₀ (hypothèse nulle)** : Le type d'ossature (indice ITP) est **indépendant** de la durée de sommeil.
 
--   **H₁ (hypothèse alternative)** : Le type d\'ossature est **dépendant** de la durée de sommeil.
+-   **H₁ (hypothèse alternative)** : Le type d'ossature est **dépendant** de la durée de sommeil.
 
 <!--% Vérification des conditions d'application -->
 
