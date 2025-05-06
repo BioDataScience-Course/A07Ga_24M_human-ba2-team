@@ -175,6 +175,8 @@ Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de com
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux.
 
+### Description 1 par Ide
+
 ```{r}
 give_n <- function(x)
   c(y = max(x) * 1.1, label = length(x))
@@ -247,7 +249,7 @@ biometry2 <- biometry %>%
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-biometry3 %>.%
+biometry2 %>.%
   sgroup_by(., genre, bmi_cat)%>.%
   ssummarise(.,
     mean   = fmean(bmi),
@@ -407,7 +409,7 @@ chart(data = biometry, itp ~ ossature %fill=% ossature) +
 
 <!--% Description et formule ci-dessous. -->
 
-Le RFM (Relative Fat Mass) est un indice estimant la masse grasse corporelle à partir de la taille et du tour de taille, sans nécessiter de pesée. Il est simple à calculer et plus précis que l'IMC pour évaluer la composition corporelle. Ce n'est pas la même chose que l'IMG, car le RFM est basé uniquement sur des mesures de taille et de tour de taille, tandis que l'IMG prend en compte d'autres paramètres comme l'IMC, l'âge et le sexe.
+Le RFM (Relative Fat Mass) est un indice estimant la masse grasse corporelle à partir de la taille et du tour de taille, sans nécessiter de pesée. Il est simple à calculer et plus précis que l'IMC pour évaluer la composition corporelle. Ce n'est pas la même chose que l'indice de masse grasse (IMG), car le RFM est basé uniquement sur des mesures de taille et de tour de taille, tandis que l'IMG prend en compte d'autres paramètres comme l'IMC, l'âge et le sexe.
 
 Reference: WeCook WeCare. (n.d.). De l'IMC au RFM. https://www.wecookwecare.com/blog/perte-de-poids/minceur-surpoids/de-limc-au-rfm
 
@@ -467,7 +469,7 @@ biometry3 %>.%
 ```{r plot_chi2_1}
 
 table_contingence <- biometry %>.%
-  count(risque_ic, age_cat, sucre, sommeil_cat)
+  count(., risque_ic, age_cat, sucre, sommeil_cat)
 
 # Afficher le tableau de contingence
 print(table_contingence)
@@ -497,7 +499,7 @@ test_chi$expected
 ```
 
 ```{r test_chi2_1 sommeil}
-table(biometry$sommeil_cat, biometry$risque_ic)
+table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
 
 chisq.test(table_sommeil_ic)
