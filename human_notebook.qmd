@@ -179,6 +179,8 @@ Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de com
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux.
 
+### Description 1 par Ide
+
 ```{r}
 give_n <- function(x)
   c(y = max(x) * 1.1, label = length(x))
@@ -251,7 +253,7 @@ biometry2 <- biometry %>%
 
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
-biometry3 %>.%
+biometry2 %>.%
   sgroup_by(., genre, bmi_cat)%>.%
   ssummarise(.,
     mean   = fmean(bmi),
