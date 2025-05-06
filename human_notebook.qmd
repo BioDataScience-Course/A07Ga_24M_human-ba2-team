@@ -490,7 +490,7 @@ chisq.test(table_age_ic)
 ```
 
 ```{r test_chi2_1 sommeil}
-table(biometry$sommeil_cat, biometry$risque_ic)
+table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
 
 chisq.test(table_sommeil_ic)
