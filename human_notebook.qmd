@@ -294,13 +294,9 @@ Dans cette partie de l'analyse, nous explorons les relations entre l'indice de c
 ```{r}
 
 # Regrouper l'âge en catégories
-<<<<<<< HEAD
+
 biometry <- biometry %>.%
   smutate(., age_cat = case_when(
-=======
-biometry <- biometry %>%
-   mutate(age_cat = case_when(
->>>>>>> 53e9ae9e3895119d161bf68a1734bb289837488d
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
     age > 40 ~ "> 40 ans"
@@ -482,19 +478,10 @@ H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
 
 ```{r test_chi2_1 âge}
-<<<<<<< HEAD
-#Vérification des conditions du test de Chi²
-test_chi <- chisq.test(table_sommeil_ic)
 
-# Fréquences observées
-test_chi$observed
-
-# Fréquences théoriques
-test_chi$expected
-=======
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
  chisq.test(table_age_ic)
->>>>>>> 53e9ae9e3895119d161bf68a1734bb289837488d
+
 
 ```
 
