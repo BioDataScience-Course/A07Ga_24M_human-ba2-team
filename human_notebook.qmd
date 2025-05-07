@@ -466,12 +466,12 @@ biometry3 %>.%
 ```{r plot_chi2_1}
 
 table_contingence <- biometry %>.%
-  count(., risque_ic, age_cat, sucre, sommeil_cat)
-
-# Afficher le tableau de contingence
-print(table_contingence)
-tabularise(table_contingence)
-
+   count(risque_ic, age_cat, sucre, sommeil_cat)
+ 
+ # Afficher le tableau de contingence
+ print(table_contingence)
+ tabularise(table_contingence)
+ 
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -535,8 +535,8 @@ test_ith_sommeil
 
 <!--% Hypothèse nulle et alternative -->
 
-H₀ : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'ITH. 
-H₁ : Il existe une association significative entre la durée de sommeil et la catégorie d'ITH.
+H0 : Il n'y a pas d'association entre la durée de sommeil et la catégorie d'ITH. 
+H1 : Il existe une association significative entre la durée de sommeil et la catégorie d'ITH.
 
 <!--% Vérification des conditions d'application -->
 
@@ -590,6 +590,12 @@ H1 : Il existe une différence significative entre les moyennes de WHR des homme
 
 <!-- Vérification des conditions d'application -->
 
+La variable dépendante est quantitative.
+La variable explicative est qualitative binaire (deux groupes).
+Les deux échantillons sont indépendants.
+Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n > 30).
+Les variances des deux groupes sont égales.
+
 ```{r test_t_1 Christelle}
 t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = TRUE )
@@ -597,6 +603,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
+La valeur p étant supérieure au seuil alpha de 5%, 
 # NEFISE
 
 ### Test t de Student 2
