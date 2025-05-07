@@ -464,6 +464,7 @@ table_contingence <- biometry %>.%
  # Afficher le tableau de contingence
  print(table_contingence)
  tabularise(table_contingence)
+
  
 ```
 
@@ -473,33 +474,47 @@ H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
 
 H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
+
 <!--% Vérification des conditions d'application -->  
 
 
-
-```{r test_chi2_1 âge}
-
+```{r âge}
+#EFFECTIFS OBSERVES
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
- chisq.test(table_age_ic)
+head(table_age_ic)
 
-
+ #EFFECTIFS ATTENDUS
+test_age_ic <- chisq.test(table_age_ic)
+test_age_ic$expected
 ```
 
-```{r test_chi2_1 sommeil}
+```{r sommeil}
+#EFFECTIFS OBSERVES
 table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
 
-chisq.test(table_sommeil_ic)
-
+#EFFECTIFS ATTENDUS
+test_sommeil <- chisq.test(table_sommeil_ic)
+test_sommeil$expected
 ```
 
-```{r test_chi2_1 sucre}
-
+```{r sucre}
 table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
 head(table_sucre_ic)
 
-chisq.test(table_sucre_ic)
+#EFFECTIFS ATTENDUS
+test_sucre_ic <- chisq.test(table_sucre_ic)
+test_sucre_ic$expected
+```
 
+Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n’est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5.
+Le test peut être réalisé.
+
+
+```{r test_chi2_1}
+chisq.test(table_age_ic)
+chisq.test(table_sommeil_ic)
+chisq.test(table_sucre_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -595,40 +610,41 @@ H1 : Il existe une différence significative entre les moyennes de WHR des homme
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
 ```{r test_t_1 Christelle}
-### Vérification des conditions d'application du test de Student
 
-# QQ plot pour les femmes
-qqnorm(biometry$whr[biometry$genre == "F"])
-qqline(biometry$whr[biometry$genre == "F"], col = "blue")
+qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour le groupe H")
+qqline(biometry$whr[biometry$genre == "H"], col = "lightgreen")  # Ligne de référence
 
-# QQ plot pour les hommes
-qqnorm(biometry$whr[biometry$genre == "H"])
-qqline(biometry$whr[biometry$genre == "H"], col = "red")
+# QQ plot pour le groupe F
+qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour le groupe F")
+qqline(biometry$whr[biometry$genre == "F"], col = "orange")  # Ligne de référence
 
 
-# Test de Bartlett pour vérifier l'égalité des variances
-bartlett.test(whr ~ genre, data = biometry)
-# p = 0.023 → variances inégales → on utilise le test de Student avec var.equal = FALSE
+# Test de Bartlett pour l'égalité des variances entre les groupes H et F
+bartlett.test(data = biometry, whr ~ genre)
 
-### Test de Student avec variances inégales
+```
+Hypotheses test de bartlett
+Hypothèse nulle (H₀) : Les variances des groupes sont égales.
+Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
 
+Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
+
+Nous rejetons H0 au seuil alpha de 5%, les variances de dehux groupes ne sont pas egales.
+
+En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
+
+```{r test_t_1 Christelle}
 t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = FALSE)
 
-# Résultat :
-# Moyenne WHR H : 0.9106
-# Moyenne WHR F : 0.8482
-# Différence significative (p < 0.001)
-
 ```
 
-> Les conditions de normalité ont été vérifiées par Q-Q plots et sont acceptées pour les deux groupes.\
-> Le test de Bartlett indique une inégalité des variances (p = 0.023), ce qui justifie l'utilisation du test de Student avec `var.equal = FALSE`.\
-> Le test met en évidence une différence significative de WHR entre les hommes et les femmes, ce qui est cohérent avec la littérature sur la répartition de la graisse abdominale.
 
 <!-- Interprétation statistique et biologique -->
 
 La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p < 0,001).
+
+
 
 
 ### Test t de Student 2
