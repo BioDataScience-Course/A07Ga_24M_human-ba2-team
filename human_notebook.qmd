@@ -234,7 +234,7 @@ $$IMC = \frac{\text{Poids (kg)}}{\text{Taille (m)}^2}$$
 
 ```{r}
 # Indice sous format numérique et facteur
-biometry2 <- biometry %>%
+biometry2 <- biometry %>.%
   smutate(., 
     bmi = masse / (taille/100)^2) %>.%
   smutate(., bmi_cat = case_when(
@@ -250,7 +250,7 @@ biometry2 <- biometry %>%
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 biometry2 %>.%
-  sgroup_by(., genre, bmi_cat)%>.%
+  sgroup_by(., genre, bmi_cat) %>.%
   ssummarise(.,
     mean   = fmean(bmi),
     number = fn(bmi))
@@ -302,8 +302,8 @@ Dans cette partie de l'analyse, nous explorons les relations entre l'indice de c
 ```{r}
 
 # Regrouper l'âge en catégories
-biometry <- biometry %>%
-  mutate(age_cat = case_when(
+biometry <- biometry %>.%
+  smutate(., age_cat = case_when(
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
     age > 40 ~ "> 40 ans"
@@ -315,10 +315,10 @@ biometry <- biometry %>%
       sucre == "souvent" ~ "Souvent"))
 
 # Créer le tableau avec les nouveaux facteurs de risque
-table_ic <- biometry %>%
-  filter(!is.na(risque_ic)) %>%
-  group_by(risque_ic) %>%
-  summarise(
+table_ic <- biometry %>.%
+  sfilter(., !is.na(risque_ic)) %>.%
+  sgroup_by(., risque_ic) %>.%
+  ssummarise(.,
     age_jeune = mean(age < 25, na.rm = TRUE) * 100,  # % des individus de moins de 25 ans
     alcool = mean(alcool > 0, na.rm = TRUE) * 100,  # % des individus consommant de l'alcool
     fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,  # % des individus consommant plus de 1 portion de fast food
@@ -350,7 +350,7 @@ reference de l'article: **Frisancho, A. R.** (1990). *Anthropometric Standards f
 
 $$ITP = \frac{\text{Tour de poignet (cm)}}{\text{Taille (cm)}}$$
 
-CALCUL DE LA OU DES VARIABLES REPRENANT L'INDICE SOUS FORME NUMERIQUE ( ET FACTEUR)
+# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
 
@@ -483,10 +483,12 @@ H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
 
 H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
-<!--% Vérification des conditions d'application -->
+<!--% Vérification des conditions d'application -->  
+
+
 
 ```{r test_chi2_1 âge}
-# Vérification des conditions du test de Chi²
+#Vérification des conditions du test de Chi²
 test_chi <- chisq.test(table_sommeil_ic)
 
 # Fréquences observées
@@ -494,7 +496,6 @@ test_chi$observed
 
 # Fréquences théoriques
 test_chi$expected
-
 
 ```
 
@@ -516,6 +517,8 @@ chisq.test(table_sucre_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+
 
 ### Test de Chi^2^ by Ide
 
@@ -602,7 +605,7 @@ H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hom
 
 H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
 
-<!-- Vérification des conditions d'application -->
+<!-- Vérification des conditions d'application --> 
 
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
