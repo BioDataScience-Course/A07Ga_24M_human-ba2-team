@@ -395,15 +395,15 @@ chart(data = biometry, itp ~ ossature %fill=% ossature) +
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les individus à **ossature fine** sont majoritairement des femmes.
+-   Les individus à ossature fine sont majoritairement des femmes.
 
--   Les personnes à **ossature moyenne** présentent un niveau moyen d'activité physique légèrement plus élevé.
+-   Les personnes à ossature moyenne présentent un niveau moyen d'activité physique légèrement plus élevé.
 
--   Le **sommeil insuffisant** (moins de 6 heures) semble plus fréquent chez ceux à ossature large.
+-   Le sommeil insuffisant (moins de 6 heures) semble plus fréquent chez ceux à ossature large.
 
--   Une **consommation élevée de sucre** est relativement bien répartie entre les catégories d'ossature, sans différence majeure.
+-   Une consommation élevée de sucre est relativement bien répartie entre les catégories d'ossature, sans différence majeure.
 
--   La **consommation d'eau** semble légèrement plus élevée chez les individus à ossature moyenne ou large.
+-   La consommation d'eau semble légèrement plus élevée chez les individus à ossature moyenne ou large.
 
 ### Indice de Nefise 2
 
@@ -549,9 +549,9 @@ chart(data = biometry_clean, ~ sommeil_cat %fill=% ossature) +
 
 <!--% Hypothèse nulle et alternative -->
 
--   **H₀ (hypothèse nulle)** : Le type d'ossature (indice ITP) est **indépendant** de la durée de sommeil.
+-   H₀ (hypothèse nulle) : Le type d'ossature (indice ITP) est indépendant de la durée de sommeil.
 
--   **H₁ (hypothèse alternative)** : Le type d'ossature est **dépendant** de la durée de sommeil.
+-   H₁ (hypothèse alternative) : Le type d'ossature est dépendant de la durée de sommeil.
 
 <!--% Vérification des conditions d'application -->
 
@@ -635,7 +635,7 @@ t.test(data = biometry, whr ~ genre,
 ```
 
 > Les conditions de normalité ont été vérifiées par Q-Q plots et sont acceptées pour les deux groupes.\
-> Le test de Bartlett indique une inégalité des variances (p = 0.023), ce qui justifie l\'utilisation du test de Student avec `var.equal = FALSE`.\
+> Le test de Bartlett indique une inégalité des variances (p = 0.023), ce qui justifie l'utilisation du test de Student avec `var.equal = FALSE`.\
 > Le test met en évidence une différence significative de WHR entre les hommes et les femmes, ce qui est cohérent avec la littérature sur la répartition de la graisse abdominale.
 
 <!-- Interprétation statistique et biologique -->
