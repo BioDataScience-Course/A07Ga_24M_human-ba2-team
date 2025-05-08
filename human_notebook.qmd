@@ -1,4 +1,5 @@
 ---
+0---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
 author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
@@ -54,18 +55,12 @@ Le tour de poignet est un indicateur utile de la densité osseuse et de la struc
 
 ```{r}
 
-# Catégorisation de l'activité physique (nombre d'heures par semaine)
-biometry$activite_physique_cat <- cut(
-  biometry$activite_physique,
-  breaks = c(-Inf, 2, 5, Inf),
-  labels = c("Faible", "Modéré", "Élevé"),
-  right = TRUE )
-
-# Catégorisation de l'activité physique (nombre d'heures par semaine)
-smutate(biometry, activite_physique_cat = case_when(
-  activite_physique <= 2 ~ "Faible",
-  activite_physique > 2 & activite_physique <= 5 ~ "Modéré",
-  activite_physique > 5 ~ "Élevé"))
+# Catégorisation de l'activité physique (minutes par semaine)
+biometry <- biometry %>.%
+  smutate(., activite_physique_cat = case_when(
+  activite_physique <= 150 ~ "Faible",
+  activite_physique > 150 & activite_physique <= 300 ~ "Modéré",
+  activite_physique > 300 ~ "Élevé"))
 
 chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
   geom_boxplot() +
@@ -80,9 +75,11 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 **interprétations**
 
-Les individus ayant une activité physique élevée ont un tour de poignet plus important, reflétant une ossature et une masse musculaire plus développées. Parmi eux, les carnivores affichent les poignets les plus larges, avec une médiane avoisinant les 17,5 cm. Cela pourrait s'expliquer par un apport plus élevé en protéines animales, qui favorisent le développement musculaire et osseux. Les omnivores suivent de près, avec une médiane légèrement inférieure, tandis que les herbivores, bien qu'actifs, ont les poignets les plus fins, même en comparaison avec les personnes inactives physiquement. Cela pourrait s'expliquer par un apport limité en protéines animales, qui influencerait leur masse osseuse (médiane autour de 15 cm).
+Chez les individus ayant une activité physique élevée, les omnivores présentent les tours de poignet les plus importants, avec une médiane autour de 17,5 cm, suivis par les carnivores. Les végétariens ne sont pas représentés dans cette catégorie. Cela pourrait s'expliquer par une consommation plus importante de protéines animales et vegetales chez les omnivores, favorisant le développement osseux et musculaire.
 
-Chez les personnes ayant une activité physique faible, le tour de poignet est plus petit (entre 15 et 17,5 cm), ce qui suggère une densité osseuse et une masse musculaire moindres. En revanche, dans ce groupe, les omnivores présentent une médiane plus élevée que les carnivores, tandis qu'aucun herbivore n'est représenté.
+Pour les personnes ayant une activité physique faible, les omnivores affichent une grande variabilité dans le tour de poignet, avec une médiane légèrement plus élevée que celle des carnivores. Les carnivores ont des valeurs plus dispersées, mais généralement plus faibles que celles des omnivores. Les végétariens, bien que présents, montrent des poignets plus fins avec une distribution relativement serrée.
+
+Dans la catégorie d'activité physique modérée, les végétariens ont les poignets les plus épais, avec une médiane qui dépasse celle des omnivores et des carnivores. Cette observation pourrait être liée à une alimentation équilibrée favorisant la densité osseuse chez les végétariens actifs.
 
 ### Description 2 par Nefise
 
@@ -91,15 +88,9 @@ Le tabagisme demeure un enjeu majeur de santé publique en raison de ses effets 
 ```{r}
 
 # Catégorisation de la masse corrigée (kg)
-biometry$masse_corr_cat <- cut(
-  biometry$masse_corr,
-  breaks = c(0, 60, 80, Inf),
-  labels = c("Faible", "Modéré", "Élevé"),
-  right = TRUE )
-
-# Catégorisation de la masse corrigée (kg)
-smutate(biometry, masse_corr_cat = case_when(
-  masse_corr >= 0 & masse_corr <= 50 ~ "Faible",
+biometry <- biometry %>.%
+  smutate(., masse_corr_cat = case_when(
+  masse_corr <= 50 ~ "Faible",
   masse_corr > 50 & masse_corr <= 80 ~ "Modéré",
   masse_corr > 80 ~ "Élevé"))
 
@@ -113,13 +104,13 @@ biometry %>.%
 
 ```
 
--   **interprétations**
+**interprétations**
 
--   Chez les hommes, la consommation moyenne de cigarettes augmente avec la masse : elle est nulle pour les individus à masse faible, passe à 2,73 pour ceux à masse modérée, puis à 3,41 pour ceux à masse élevée.
+-   Chez les hommes, la consommation moyenne de cigarettes par semaine augmente légèrement avec la masse corporelle: elle est de 2,5 cigarettes pour les individus de masse modérée et de 3,41 pour ceux de masse élevée.
 
--   Chez les femmes, seules celles avec une masse modérée consomment du tabac, avec une moyenne de 12 cigarettes par semaine, ce qui est nettement plus élevé que chez les hommes dans la même catégorie.
+-   Chez les femmes, seules celles avec une masse modérée consomment du tabac, avec une moyenne de 8,64 cigarettes par semaine, soit nettement plus élevé que les hommes dans la même catégorie.
 
--   L'écart-type chez les femmes à masse modérée (51,19) est très élevé, ce qui indique une forte variabilité : certaines consomment beaucoup, d'autres très peu. Chez les hommes, les écarts-types restent plus faibles (entre 6,86 et 11,67), reflétant une consommation plus homogène.
+-   L'écart-type chez les femmes de masse modérée (43,61) est très élevé, indiquant une forte variabilité: certaines consomment beaucoup, tandis que d'autres très peu. En revanche, chez les hommes, les écarts-types restent relativement faibles (6,60 pour la masse modérée et 11,67 pour la masse élevée), reflétant une consommation plus homogène.
 
 ### Description 1 par Christelle
 
@@ -234,7 +225,7 @@ $$IMC = \frac{\text{Poids (kg)}}{\text{Taille (m)}^2}$$
 
 ```{r}
 # Indice sous format numérique et facteur
-biometry2 <- biometry %>%
+biometry2 <- biometry %>.%
   smutate(., 
     bmi = masse / (taille/100)^2) %>.%
   smutate(., bmi_cat = case_when(
@@ -250,7 +241,7 @@ biometry2 <- biometry %>%
 ```{r}
 # Graphique ou tableau utilisant l'indice calculé.
 biometry2 %>.%
-  sgroup_by(., genre, bmi_cat)%>.%
+  sgroup_by(., genre, bmi_cat) %>.%
   ssummarise(.,
     mean   = fmean(bmi),
     number = fn(bmi))
@@ -258,7 +249,7 @@ biometry2 %>.%
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, la moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
+-   Les femmes sont légèrement plus représentées dans la catégorie "obésité" avec 17 femmes contre 10 hommes. Cependant, les moyenne d'IMC des hommes dans cette catégorie (34,88) est un peu plus élevée que celle des femmes (33,76), suggérant que les hommes obèses ont tendance à avoir un IMC plus élevé en moyenne que les femmes.
 
 -   Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
 
@@ -302,8 +293,9 @@ Dans cette partie de l'analyse, nous explorons les relations entre l'indice de c
 ```{r}
 
 # Regrouper l'âge en catégories
-biometry <- biometry %>%
-  mutate(age_cat = case_when(
+
+biometry <- biometry %>.%
+  smutate(., age_cat = case_when(
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
     age > 40 ~ "> 40 ans"
@@ -315,10 +307,10 @@ biometry <- biometry %>%
       sucre == "souvent" ~ "Souvent"))
 
 # Créer le tableau avec les nouveaux facteurs de risque
-table_ic <- biometry %>%
-  filter(!is.na(risque_ic)) %>%
-  group_by(risque_ic) %>%
-  summarise(
+table_ic <- biometry %>.%
+  sfilter(., !is.na(risque_ic)) %>.%
+  sgroup_by(., risque_ic) %>.%
+  ssummarise(.,
     age_jeune = mean(age < 25, na.rm = TRUE) * 100,  # % des individus de moins de 25 ans
     alcool = mean(alcool > 0, na.rm = TRUE) * 100,  # % des individus consommant de l'alcool
     fast_food = mean(fast_food > 1, na.rm = TRUE) * 100,  # % des individus consommant plus de 1 portion de fast food
@@ -344,34 +336,38 @@ head(table_ic)
 
 <!--% Description et formule ci-dessous. -->
 
-L'indice Taille--Poignet (ITP) est un outil anthropométrique utilisé pour estimer la **corpulence osseuse** d'un individu, ce qui peut influencer l'interprétation d'autres indices comme l'IMC. Une ossature fine, moyenne ou large peut modifier la perception des risques métaboliques associés à une même masse corporelle. L'ITP est particulièrement utile dans les populations jeunes ou en croissance, et est souvent utilisé dans les standards cliniques d'évaluation corporelle (Frisancho, 1990).
+L'indice Taille-Poignet (ITP) est un outil anthropométrique utilisé pour estimer la **corpulence osseuse** d'un individu, ce qui peut influencer l'interprétation d'autres indices comme l'IMC. Une ossature fine, moyenne ou large peut modifier la perception des risques métaboliques associés à une même masse corporelle. L'ITP est particulièrement utile dans les populations jeunes ou en croissance, et est souvent utilisé dans les standards cliniques d'évaluation corporelle (Frisancho, 1990).
 
 reference de l'article: **Frisancho, A. R.** (1990). *Anthropometric Standards for the Assessment of Growth and Nutritional Status*. University of Michigan Press.
 
-$$ITP = \frac{\text{Tour de poignet (cm)}}{\text{Taille (cm)}}$$
+$$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
 
-CALCUL DE LA OU DES VARIABLES REPRENANT L'INDICE SOUS FORME NUMERIQUE ( ET FACTEUR)
+# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
 
-# Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
-biometry <- biometry %>%
-  mutate(
-    itp = tour_poignet / taille,
-    ossature = case_when(
-      genre == "F" & itp < 0.079 ~ "fine",
-      genre == "F" & itp >= 0.079 & itp <= 0.085 ~ "moyenne",
-      genre == "F" & itp > 0.085 ~ "large",
-      genre == "H" & itp < 0.090 ~ "fine",
-      genre == "H" & itp >= 0.090 & itp <= 0.095 ~ "moyenne",
-      genre == "H" & itp > 0.095 ~ "large"
+# Calcul de l’indice taille/poignet
+biometry1 <- biometry %>%
+  smutate(
+    itp = taille / tour_poignet,
+    
+    constitution_osseuse = case_when(
+      genre == "F" & itp > 10.9 ~ "Fine",
+      genre == "F" & itp < 9.9 ~ "Large",
+      genre == "F" & itp >= 9.9 & itp <= 10.9 ~ "Moyenne",
+      
+      genre == "H" & itp > 10.4 ~ "Fine",
+      genre == "H" & itp < 9.6 ~ "Large",
+      genre == "H" & itp >= 9.6 & itp <= 10.4 ~ "Moyenne",
+      
+      TRUE ~ "Inconnu"
     )
   )
 
-biometry$ossature <- factor(biometry$ossature, levels = c("fine", "moyenne", "large"))
-
-# Afficher les premières lignes des colonnes 'itp' et 'ossature'
-head(biometry[, c("itp", "ossature")])
+# Affichage du tableau
+biometry1 %>% 
+    sselect(genre, taille, tour_poignet, itp, constitution_osseuse)
+tabularise(biometry1)
 
 
 ```
@@ -379,31 +375,27 @@ head(biometry[, c("itp", "ossature")])
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
-# Graphique ou tableau utilisant l'indice calculé.
-
-# Création du graphique boxplot
-chart(data = biometry, itp ~ ossature %fill=% ossature) +
-  geom_boxplot() +
+chart(data = biometry1, ~ itp |genre, fill = constitution_osseuse) +
+  geom_histogram(bins = 30, alpha = 0.7, color = "black") +
+  scale_fill_viridis_d() +
   labs(
-    title = "Distribution de l'indice Taille–Poignet (ITP) selon le type d'ossature",
-    x = "Type d'ossature",
-    y = "Indice Taille–Poignet (ITP)"
-  ) +
-  scale_fill_brewer(palette = "Set2") 
+    title = "Distribution de l'Indice Taille-Poignet (ITP)",
+    x = "ITP (taille / tour de poignet)",
+    y = "Nombre d'individus"
+  ) 
+ 
 
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les individus à ossature fine sont majoritairement des femmes.
+.Les hommes (H) ont des ITP globalement plus bas, concentrés entre 8 et 11, alors que les femmes (F) ont des ITP plus élevés, allant souvent jusqu'à 12 et plus.
 
--   Les personnes à ossature moyenne présentent un niveau moyen d'activité physique légèrement plus élevé.
+.La catégorie Fine est visuellement la plus représentée dans les deux sexes, mais particulièrement chez les femmes, où elle couvre une large partie de la distribution.
 
--   Le sommeil insuffisant (moins de 6 heures) semble plus fréquent chez ceux à ossature large.
+.Chez les hommes, la distribution est plus centrée autour de 9,5--10,5, avec peu de cas extrêmes (barres rares au-delà de 12), ce qui montre une variabilité plus faible.
 
--   Une consommation élevée de sucre est relativement bien répartie entre les catégories d'ossature, sans différence majeure.
-
--   La consommation d'eau semble légèrement plus élevée chez les individus à ossature moyenne ou large.
+.Bien que les femmes aient davantage de Fine, on observe aussi plus de diversité avec des barres visibles en Moyenne et même Large, ce qui témoigne d'une répartition plus étendue des constitutions osseuses.
 
 ### Indice de Nefise 2
 
@@ -429,7 +421,7 @@ biometry3 <- biometry %>%
     rfm <= 20 & rfm < 30 ~  "Modéré",
     rfm >= 30 & rfm < 40 ~  "Élevé",
     rfm >= 40 ~  "Très élevé")) %>.%
-  sselect(., genre, rfm, rfm_cat) ->biometry3
+  sselect(., genre, rfm, rfm_cat)
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
@@ -469,12 +461,12 @@ biometry3 %>.%
 ```{r plot_chi2_1}
 
 table_contingence <- biometry %>.%
-  count(., risque_ic, age_cat, sucre, sommeil_cat)
-
-# Afficher le tableau de contingence
-print(table_contingence)
-tabularise(table_contingence)
-
+   count(.,risque_ic, age_cat, sucre, sommeil_cat)
+ 
+ # Afficher le tableau de contingence
+ print(table_contingence)
+ tabularise(table_contingence)
+ 
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -486,14 +478,9 @@ H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 <!--% Vérification des conditions d'application -->
 
 ```{r test_chi2_1 âge}
-# Vérification des conditions du test de Chi²
-test_chi <- chisq.test(table_sommeil_ic)
 
-# Fréquences observées
-test_chi$observed
-
-# Fréquences théoriques
-test_chi$expected
+table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
+ chisq.test(table_age_ic)
 
 
 ```
@@ -522,46 +509,55 @@ chisq.test(table_sucre_ic)
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_2}
-# Créer la table de contingence
-table_ossature_sommeil <- table(biometry$ossature, biometry$sommeil_cat)
+# Créer le tableau croisé
+tableau_itp <- table(biometry1$genre, biometry1$constitution_osseuse)
 
-# Afficher le tableau
-tabularise(table_ossature_sommeil)
+# Réaliser le test d’indépendance
+test_itp <- chisq.test(tableau_itp)
 
-
-# Graphique en barres croisant les deux variables
-
-# Supprimer les lignes avec NA dans sommeil_cat ou ossature
-biometry_clean <- biometry %>%
-  filter(!is.na(sommeil_cat), !is.na(ossature))
-
-chart(data = biometry_clean, ~ sommeil_cat %fill=% ossature) +
-  geom_bar(position = "fill") +
-  labs(
-    title = "Répartition des types d’ossature selon la durée de sommeil",
-    x = "Catégorie de sommeil",
-    y = "Proportion",
-    fill = "Ossature"
-  ) 
+# Afficher les résultats
+test_itp
+test_itp$expected
 
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
--   H₀ (hypothèse nulle) : Le type d'ossature (indice ITP) est indépendant de la durée de sommeil.
+H0: Il n'y a pas de lien entre le genre (H/F) et la constitution osseuse (Fine, Moyenne, Large) → les deux variables sont indépendantes.
 
--   H₁ (hypothèse alternative) : Le type d'ossature est dépendant de la durée de sommeil.
+H1: Il existe une dépendance entre le genre et la constitution osseuse → la répartition des types osseux varie selon le genre.
+
+R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
+
+Nous décidons donc de compléter l'analyse par un test exact plus fiable(test de fisher).
+
+```{r test_chi2_2}
+# Test exact de Fisher 
+fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
+fisher_test
+
+```
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_chi2_2}
-# NEFISE
-```
+-   L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
+
+    Les modalités du tableau (genre × constitution) sont bien **qualitatives**.
+
+    Les **effectifs théoriques** sont tous **non nuls** et en majorité **≥ 5**
 
 <!--% Interprétation statistique et biologique -->
 
-***CHRIS***
+-   La valeur p \> 0.05 dans les deux tests
+
+-   Nous ne rejetons pas l'hypothèse nulle H₀
+
+```         
+Il **n\'y a pas de preuve suffisante d\'une dépendance** entre le genre et la constitution osseuse
+```
+
+-   La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -625,7 +621,7 @@ bartlett.test(whr ~ genre, data = biometry)
 ### Test de Student avec variances inégales
 
 t.test(data = biometry, whr ~ genre, 
-       alternative = "two.sided", var.equal = FALSE)
+  alternative = "two.sided", var.equal = FALSE)
 
 # Résultat :
 # Moyenne WHR H : 0.9106
@@ -640,7 +636,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-# NEFISE
+La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p \< 0,001).
 
 ### Test t de Student 2
 
@@ -672,7 +668,17 @@ H1 : Il existe une différence significative du WHR moyen selon la prise de cort
 
 <!--% Vérification des conditions d'application -->
 
+La variable dépendante est quantitative. La variable explicative est qualitative binaire (deux groupes). Les deux échantillons sont indépendants. Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n \> 30). Les variances des deux groupes sont égales.
+
 ```{r test_t_2}
+# Test de Bartlett pour vérifier l'homoscedasticité:
+
+
+# Vérification de la distribution:
+
+
+# Réalisation du test t de Student:
+t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0.95, var.equal= TRUE)
 
 ```
 
@@ -682,19 +688,21 @@ H1 : Il existe une différence significative du WHR moyen selon la prise de cort
 
 ### ANOVA à un facteur 1
 
-La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires. Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le type d'alimentation influence le nombre de verres d'alcool consommés par semaine, afin de mieux comprendre l'interaction entre les habitudes alimentaires et un facteur indirectement lié au risque d'obésité.
+La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires (facteur indirectement lié au risque d'obésité). Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le type d'alimentation influence le nombre de verres d'alcool consommés par semaine. Elle permettra de mieux comprendre la relation entre les habitudes alimentaires et la consommation d'alcool.
 
 Reference: Caducee.net. (2006, 13 février). Alcool et régime alimentaire. https://www.caducee.net/actualite-medicale/5701/alcool-et-regime-alimentaire.html
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
+
 chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
   geom_boxplot() +
   labs(title = "Consommation d'alcool selon le type d'alimentation",
        x = "Type d'alimentation", 
        y = "Nombre de verres d'alcool par semaine") + 
   coord_flip()
+
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -706,6 +714,13 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_1}
+# Test de Bartlett pour vérifier l'homoscedasticité:
+  
+
+# Vérification de la distribution:
+#
+
+# Réalisation du test t de Student:
 
 ```
 
