@@ -338,7 +338,7 @@ head(table_ic)
 
 L'indice Taille-Poignet (ITP) est un outil anthropométrique utilisé pour estimer la **corpulence osseuse** d'un individu, ce qui peut influencer l'interprétation d'autres indices comme l'IMC. Une ossature fine, moyenne ou large peut modifier la perception des risques métaboliques associés à une même masse corporelle. L'ITP est particulièrement utile dans les populations jeunes ou en croissance, et est souvent utilisé dans les standards cliniques d'évaluation corporelle (Frisancho, 1990).
 
-reference de l'article: **Frisancho, A. R.** (1990). *Anthropometric Standards for the Assessment of Growth and Nutritional Status*. University of Michigan Press.
+[@frisancho1990]
 
 $$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
 
@@ -476,19 +476,11 @@ H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
 
 H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
-<<<<<<< HEAD
 <!--% Vérification des conditions d'application -->
 
 ```{r test_chi2_1 âge}
 
-=======
-
-<!--% Vérification des conditions d'application -->  
-
-
-```{r âge}
 #EFFECTIFS OBSERVES
->>>>>>> 8ac0c51dcf9c062c2c2511f8c81a7e6a93cbd054
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
 head(table_age_ic)
 
@@ -516,9 +508,7 @@ test_sucre_ic <- chisq.test(table_sucre_ic)
 test_sucre_ic$expected
 ```
 
-Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n’est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5.
-Le test peut être réalisé.
-
+Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
 
 ```{r test_chi2_1}
 chisq.test(table_age_ic)
@@ -567,9 +557,9 @@ fisher_test
 
 -   L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
 
-    Les modalités du tableau (genre × constitution) sont bien **qualitatives**.
+    Les modalités du tableau (genre × constitution) sont bien qualitatives.
 
-    Les **effectifs théoriques** sont tous **non nuls** et en majorité **≥ 5**
+    Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
 
@@ -577,9 +567,7 @@ fisher_test
 
 -   Nous ne rejetons pas l'hypothèse nulle H₀
 
-```         
-Il **n\'y a pas de preuve suffisante d\'une dépendance** entre le genre et la constitution osseuse
-```
+Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
 
 -   La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
@@ -640,9 +628,8 @@ qqline(biometry$whr[biometry$genre == "F"], col = "orange")  # Ligne de référe
 bartlett.test(data = biometry, whr ~ genre)
 
 ```
-Hypotheses test de bartlett
-Hypothèse nulle (H₀) : Les variances des groupes sont égales.
-Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
+
+Hypotheses test de bartlett Hypothèse nulle (H₀) : Les variances des groupes sont égales. Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
 
 Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
 
@@ -656,12 +643,9 @@ t.test(data = biometry, whr ~ genre,
 
 ```
 
-
 <!-- Interprétation statistique et biologique -->
 
 La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p \< 0,001).
-
-
 
 ### Test t de Student 2
 
@@ -715,7 +699,7 @@ t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0
 
 La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires (facteur indirectement lié au risque d'obésité). Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le type d'alimentation influence le nombre de verres d'alcool consommés par semaine. Elle permettra de mieux comprendre la relation entre les habitudes alimentaires et la consommation d'alcool.
 
-Reference: Caducee.net. (2006, 13 février). Alcool et régime alimentaire. https://www.caducee.net/actualite-medicale/5701/alcool-et-regime-alimentaire.html
+[@caducee2006]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -753,45 +737,150 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 
 ### ANOVA à un facteur 2
 
+L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
+
+L'alimentation peut potentiellement influencer le développement osseux, la densité minérale, et indirectement la constitution corporelle. Par exemple, certains régimes alimentaires (riches en protéines, en calcium ou en vitamines D) peuvent favoriser une ossature plus robuste, tandis que d'autres régimes (pauvres en nutriments essentiels) pourraient s'associer à une ossature plus fine.
+
+Dans ce contexte, il est pertinent de s'interroger sur une possible différence de l'indice ITP selon les types d'alimentation (omnivore, carnivore, végétarien). Si l'alimentation avait un effet sur la morphologie, on pourrait s'attendre à des moyennes d'ITP différentes selon les régimes.
+
+Référence scientifique : Rizzoli R. et al., "Nutrition and bone health: Turning knowledge and beliefs into healthy behaviour," Current Osteoporosis Reports, 2014.
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
+> Le test de Shapiro-Wilk appliqué aux résidus du modèle ANOVA indique une valeur p très inférieure à 0.05 (p = 4.92e-06), ce qui signifie que la condition de normalité des résidus n'est pas respectée. Cette violation fragilise la validité des résultats de l'ANOVA, notamment la fiabilité de la statistique F et de la p-value associée.
+>
+> Afin de tenir compte de cette non-normalité, nous avons effectué en complément un test non paramétrique de Kruskal-Wallis, qui compare les distributions des groupes sans supposer leur forme.
+
 ```{r plot_anova1_2}
+# Supprimer les lignes avec des NA dans les colonnes utiles
+biometry_clean <- biometry1[!is.na(biometry1$itp) & !is.na(biometry1$alimentation), ]
+
+modele_anova <- lm(itp ~ alimentation, data = biometry_clean)
+shapiro.test(residuals(modele_anova))
+anova_resultats <- anova(modele_anova)
+tabularise(anova_resultats)
+
+#visualisation des resultats
+chart(data = biometry1, alimentation ~ itp %fill=% alimentation) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.3, color = "black") +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +
+  labs(
+    title = "Variation de l'ITP selon le type d'alimentation",
+    x = "Alimentation",
+    y = "Indice Taille / Poignet (ITP)"
+  ) 
+
+# test kruskal car la normalité des résidus n’est pas respectée
+kruskal.test(itp ~ alimentation, data = biometry_clean)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+-   H₀ (hypothèse nulle) : les moyennes de l'indice ITP sont égales entre les groupes d'alimentation (omnivore, carnivore, végétarien).
+
+-   H₁ (hypothèse alternative) : au moins une moyenne diffère des autres.
+
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_2}
-# NEFISE
+# QQ-plot des résidus (normalité visuelle)
+qqnorm(residuals(modele_anova))
+qqline(residuals(modele_anova), col = "blue", lwd = 2)
+
+# Test d’homogénéité des variances (Bartlett)
+bartlett.test(itp ~ alimentation, data = biometry_clean)
+
+
 ```
 
+Le test de Bartlett (p = 0.582) indique que l'hypothèse d'homogénéité des variances est respectée.
+
+Le Q-Q plot des résidus montre une distribution globalement linéaire, avec de légères déviations aux extrémités, ce qui suggère une normalité approximative mais acceptable, d'autant que l'ANOVA est un test robuste à ce type de légère déviation.
+
+L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avons pu procéder à l'analyse de variance à un facteur.
+
 <!--% Interprétation statistique et biologique -->
+
+p \> 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
+
+D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative\*\* sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
+
+Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
+
+Malgré cela, l'ANOVA à un facteur appliquée à notre modèle a donné une valeur p = 0.355, indiquant l'absence de différence significative des moyennes d'ITP selon le type d'alimentation.
+
+Afin de confirmer cette tendance sans supposer la normalité, nous avons réalisé un test non paramétrique de Kruskal-Wallis, qui a lui aussi conduit à une valeur p = 0.2315.
+
+Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
 
 ***CHRIS***
 
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
-### ANOVA à deux facteurs 1
+### ANOVA à deux facteurs 1 by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova2_1}
+# Test ANOVA à deux facteurs
+
+anova_itp_age <- aov(itp ~ age_cat * genre, data = biometry_clean)
+summary(anova_itp_age)
+
+biometry_clean %>%
+  group_by(age_cat, genre) %>%
+  summarise(mean_itp = mean(itp, na.rm = TRUE)) %>%
+  chart(., mean_itp ~ age_cat %color=% genre %group=% genre) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(
+    title = "Interaction entre genre et catégorie d'âge",
+    x = "Catégorie d'âge",
+    y = "Indice taille/poignet (ITP)",
+    color = "Genre"
+  )
+
+
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+**H₀ (hypothèse nulle)** : Il n\'y a **pas d\'effet significatif** ni du **genre**, ni de la **catégorie d\'âge**, ni de leur **interaction** sur l\'ITP (indice taille/poignet).
+
+**H₁ (hypothèse alternative)** : Il y a **au moins un effet significatif** (genre, âge ou interaction des deux) sur l\'ITP.
+
 <!--% Vérification des conditions d'application -->
 
+**Variable réponse quantitative** : ITP est une variable numérique continue.
+
+**Facteurs explicatifs (`age_cat`, `genre`)** :
+
+-   `age_cat` possède **3 modalités** : `< 25 ans`, `25–40 ans`, `> 40 ans`
+
+-   `genre` possède **2 modalités** : `H` et `F`
+
+    **Indépendance des observations** : Les données proviennent de **personnes différentes**, donc on suppose que cette condition est respectée
+
 ```{r test_anova2_1}
-#NEFISE
+
+aov(itp ~ age_cat * genre, data = biometry_clean)
+
 ```
 
 <!--% Interprétation statistique et biologique -->
 
-***CHRIS***
+L\'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d\'âge (`age_cat`) sur l\'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l\'interaction entre l\'âge et le genre (`age_cat:genre`) n\'ont pas d\'effet significatif sur l\'ITP (p \> 0.05). Cela suggère que les différences d\'ITP sont principalement liées à l\'âge, et non au genre ou à l\'interaction entre les deux.
+
+-   L\'**ITP varie significativement selon les catégories d\'âge** → certaines tranches d\'âge ont un indice taille/poignet plus élevé.
+
+    Il **n\'y a pas de différence marquée entre hommes et femmes** en moyenne.
+
+    L\'**absence d\'interaction** indique que **l\'effet de l\'âge est similaire chez les hommes et les femmes** : les courbes du graphique sont **quasi parallèles**, ce qui confirme l\'absence d\'interaction.
+
+    Ces résultats indiquent que l\'indice taille/poignet (ITP) varie significativement selon la catégorie d\'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l\'absence d\'effet du genre et de l\'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n\'influencent pas significativement l\'ITP, ou le font de manière homogène à travers les âges.
 
 ### ANOVA à deux facteurs 2 by Christelle
 
