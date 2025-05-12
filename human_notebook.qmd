@@ -163,7 +163,6 @@ geom_boxplot() +
 
 Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux.
 
@@ -470,10 +469,11 @@ table_contingence <- biometry %>.%
 
 <!--% Hypothèse nulle et alternative -->
 
-H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
+Hypothèse nulle (H₀) :
+Il n’existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes.
 
-H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
-
+Hypothèse alternative (H₁) :
+Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
 
 <!--% Vérification des conditions d'application -->  
 
@@ -481,34 +481,63 @@ H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 ```{r âge}
 #EFFECTIFS OBSERVES
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
-head(table_age_ic)
+tabularise(table_age_ic)
 
  #EFFECTIFS ATTENDUS
 test_age_ic <- chisq.test(table_age_ic)
-test_age_ic$expected
+tabularise(test_age_ic$expected) 
 ```
 
 ```{r sommeil}
 #EFFECTIFS OBSERVES
 table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
-head(table_sommeil_ic)
+tabularise(table_sommeil_ic)
 
 #EFFECTIFS ATTENDUS
 test_sommeil <- chisq.test(table_sommeil_ic)
-test_sommeil$expected
+tabularise(test_sommeil$expected)
 ```
 
 ```{r sucre}
 table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
-head(table_sucre_ic)
+tabularise(table_sucre_ic)
 
 #EFFECTIFS ATTENDUS
 test_sucre_ic <- chisq.test(table_sucre_ic)
-test_sucre_ic$expected
+tabularise(test_sucre_ic$expected)
 ```
+
+```{r graphique quantile~quantile}
+
+observes <- as.vector(table_age_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "yellow")
+
+observes <- as.vector(table_sommeil_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "red")
+
+observes <- as.vector(table_sucre_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "blue")
+
+
+
+```
+
 
 Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n’est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5.
 Le test peut être réalisé.
+
 
 
 ```{r test_chi2_1}
@@ -578,23 +607,18 @@ Le WHR est considéré comme un meilleur indicateur du risque de maladies cardia
 
 Référence : Berton, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
 
+
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
-biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
-
-biometry %>.%
-  sgroup_by(., genre) %>.%
-  ssummarise(.,mean = fmean(whr))
-
-
+   biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
 chart(data = biometry, whr ~ genre %fill=% genre) +
   geom_boxplot() +
-  labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
+  labs(title = "Comparaison du WHR selon le sexe",
        x = "Sexe",
-       y = "WHR") +
-   scale_fill_manual(values = c("lightgreen", "orange")) 
-
+       y = "Waist-to-Hip Ratio (WHR)") +
+  scale_fill_manual(values = c("orange", "lightgreen")) 
 ```
 
 Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est conforme aux tendances observées dans de nombreuses études : les hommes tendent à avoir une plus grande accumulation de graisse au niveau abdominal par rapport aux femmes, ce qui conduit à un ratio taille-hanche plus élevé.
@@ -603,24 +627,23 @@ Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est confor
 
 H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
 
-H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
+H1 : Il existe une différence significative entre les moyennes de WHR # QQ plot pour activité physique élevée
 
 <!-- Vérification des conditions d'application --> 
 
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
 ```{r test_t_1 Christelle}
+qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour les Hommes")
+qqline(biometry$whr[biometry$genre == "H"], col = "orange") 
 
-qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour le groupe H")
-qqline(biometry$whr[biometry$genre == "H"], col = "lightgreen")  # Ligne de référence
-
-# QQ plot pour le groupe F
-qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour le groupe F")
-qqline(biometry$whr[biometry$genre == "F"], col = "orange")  # Ligne de référence
+qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour les Femmes")
+qqline(biometry$whr[biometry$genre == "F"], col = "lightgreen")  # Ligne de référence
 
 
-# Test de Bartlett pour l'égalité des variances entre les groupes H et F
+# Test de Bartlett pour vérifier l'homogénéité des variances
 bartlett.test(data = biometry, whr ~ genre)
+print(bartlett_test)
 
 ```
 Hypotheses test de bartlett
@@ -629,9 +652,10 @@ Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
 
 Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
 
-Nous rejetons H0 au seuil alpha de 5%, les variances de dehux groupes ne sont pas egales.
+Nous rejetons H0 au seuil alpha de 5%, les variances de deux groupes ne sont pas égales.
 
 En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
+
 
 ```{r test_t_1 Christelle}
 t.test(data = biometry, whr ~ genre, 
@@ -643,7 +667,6 @@ t.test(data = biometry, whr ~ genre,
 <!-- Interprétation statistique et biologique -->
 
 La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p < 0,001).
-
 
 
 
@@ -785,6 +808,15 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova2_2}
+chart(data = biometry, whr ~ risque_ic + genre %fill=% genre) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_fill_manual(values = c("lightblue", "salmon")) +
+  labs(
+    title = "WHR selon Risque IC et Genre",
+    x = "Risque IC et Genre",
+    y = "WHR",
+    fill = "Genre"
+  )
 
 ```
 
@@ -792,9 +824,46 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_anova2_2}
+```{r}
+#lot(anova2_factors, which = 2)  # QQ plot des résidus
+#hapiro.test(residuals(anova2_factors))  # Test de normalité
 
 ```
+WHR par risque IC :
+H0 (hypothèse nulle) : Les variances de WHR sont homogènes (égales) entre les groupes de risque IC.
+
+H1 (hypothèse alternative) : Les variances de WHR ne sont pas homogènes (inégales) entre les groupes de risque IC.
+
+WHR par genre :
+H0 (hypothèse nulle) : Les variances de WHR sont homogènes (égales) entre les hommes et les femmes.
+
+H1 (hypothèse alternative) : Les variances de WHR ne sont pas homogènes (inégales) entre les hommes et les femmes.
+
+```{r}
+bartlett.test(whr ~ risque_ic, data = biometry)
+bartlett.test(whr ~ genre, data = biometry)
+
+```
+
+WHR par risque IC : Nous ne rejetons pas H0 au seuil alpha 5%. Le test n’est pas significatif (p = 0.2069), indiquant des variances homogènes entre les groupes de risque IC. Cela suggère que la variabilité de la répartition des graisses abdominales est comparable chez les personnes à risque modéré et élevé.
+WHR par genre : Nous rejetons H0 au seuil alpha de 5%. Le test est significatif (p = 0.02311), indiquant que les variances du WHR diffèrent entre les hommes et les femmes. Cela reflète une plus grande variabilité de la répartition des graisses chez les hommes, souvent liée à des différences hormonales et comportementales.
+
+Nous allons réaliser Un test ANOVA de Welch les moyennes de WHR entre les hommes et les femmes, en prenant en compte l'inégalité des variances détectée par le test de Bartlett.
+
+
+```{r test_anova2_2}
+# ANOVA à 2 facteurs avec Welch (en tenant compte des variances inégales)
+anova_welch <- aov(whr ~ risque_ic * genre, data = biometry)
+summary(anova_welch)
+
+```
+L’ANOVA à deux facteurs montre un effet principal significatif du risque de conicité (p < 0.001) et du genre (p < 0.001) sur le WHR.
+En revanche, l’interaction entre le risque IC et le genre n’est pas significative (p = 0.13), ce qui indique que l’effet du risque IC sur le WHR ne dépend pas du genre.
+
+Le WHR est significativement plus élevé chez les individus à risque IC élevé, ce qui reflète une plus grande accumulation de graisse abdominale.
+Il est aussi plus élevé chez les hommes, ce qui correspond à leur répartition androïde des graisses, contrairement aux femmes qui ont une répartition gynoïde.
+L’absence d’interaction signifie que ces effets sont indépendants l’un de l’autre.
+
 
 <!--% Interprétation statistique et biologique -->
 
