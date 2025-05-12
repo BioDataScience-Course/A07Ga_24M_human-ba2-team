@@ -194,14 +194,14 @@ De façon général, les médianes de masse_corr semblent être plus élevées p
 ```{r}
 chart(data = biometry, activite_physique ~ masse, color = genre) + 
   geom_point(alpha = 0.6) +
-  labs(title = "Relation entre activité physique et masse corrigée", x = "Activité physique (min/semaine)", y = "Masse corrigée")
+  labs(title = "Relation entre activité physique et masse", x = "Activité physique (min/semaine)", y = "Masse")
 ```
 
 ***interprétations***
 
--On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse corrigée.
+-On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse.
 
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses corrigées.
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses.
 
 -La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine.
 
@@ -761,7 +761,7 @@ anova_resultats <- anova(modele_anova)
 tabularise(anova_resultats)
 
 #visualisation des resultats
-chart(data = biometry1, alimentation ~ itp %fill=% alimentation) +
+chart(data = biometry1, itp ~ alimentation %fill=% alimentation) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, color = "black") +
   stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +
@@ -815,8 +815,6 @@ Afin de confirmer cette tendance sans supposer la normalité, nous avons réalis
 
 Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
 
-***CHRIS***
-
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
 ### ANOVA à deux facteurs 1 by Ide
@@ -858,15 +856,26 @@ Variable réponse quantitative : ITP est une variable numérique continue.
 
 Facteurs explicatifs (age_cat, genre) :
 
--   `age_cat` possède 3 modalités : < 25 ans, 25–40 ans, > 40 ans
+-   `age_cat` possède 3 modalités : \< 25 ans, 25--40 ans, \> 40 ans
 
 -   `genre` possède 2 modalités : H et F
 
-    **Indépendance des observations** : Les données proviennent de **personnes différentes**, donc on suppose que cette condition est respectée
+Indépendance des observations : Les données proviennent de personnes différentes, donc on suppose que cette condition est respectée.
+
+Homogénéité des variances : Le test de Bartlett donne p = 0.1208 \> 0.05 → la condition est respectée.
+
+Normalité des résidus : Le QQ-plot montre une distribution globalement linéaire, avec de légers écarts en extrémités. C'est acceptable, surtout que l'ANOVA est robuste aux petites déviations de normalité.
 
 ```{r test_anova2_1}
 
 aov(itp ~ age_cat * genre, data = biometry_clean)
+
+bartlett.test(itp ~ interaction(age_cat, genre), data = biometry_clean)
+
+residus <- residuals(modele_anova)
+qqnorm(residus)
+qqline(residus, col = "red")
+
 
 ```
 
@@ -874,13 +883,7 @@ aov(itp ~ age_cat * genre, data = biometry_clean)
 
 L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
--   L'ITP varie significativement selon les catégories d'âge → certaines tranches d'âge ont un indice taille/poignet plus élevé.
-
-    Il n'y a pas de différence marquée entre hommes et femmes en moyenne.
-
-    L'absence d'interaction indique que l'effet de l'âge est similaire chez les hommes et les femmes : les courbes du graphique sont quasi parallèles, ce qui confirme l'absence d'interaction.
-
-    Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
+-   Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
 ### ANOVA à deux facteurs 2 by Christelle
 
