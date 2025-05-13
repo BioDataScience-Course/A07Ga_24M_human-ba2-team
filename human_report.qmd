@@ -123,104 +123,19 @@ Dans l'ensemble, ces descriptions suggèrent que des comportements tels que l'ac
 
 <!--% Sélectionnez les 4 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
 
-\### Test de Chi\^2\^ 1 Indice Christelle
+1\) Test chi carré de Christelle
 
-<!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
+2\) Test t de Student de Nefise
 
-```{r}
+3\) Test Anova facteur 2 de Ide
 
-table_contingence <- biometry %>.%
-   count(.,risque_ic, age_cat, sucre, sommeil_cat)
- 
- # Afficher le tableau de contingence
- print(table_contingence)
- tabularise(table_contingence)
-```
+Dans cette étude portant sur les facteurs influençant l'obésité, plusieurs éléments clés ont été mis en évidence. L'analyse de l'impact de la cortisone n'a pas révélé de différence statistiquement significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas pris. Bien que la cortisone soit connue pour favoriser l'accumulation de graisse abdominale, cette absence de différence pourrait s'expliquer par des facteurs tels que la durée et la dose de traitement, la taille limitée de l'échantillon ou encore les différences naturelles entre les individus. Ces résultats soulignent la nécessité d'études plus approfondies pour évaluer avec précision l'impact de la cortisone sur la répartition des graisses corporelles.
 
-<!--% Hypothèse nulle et alternative -->
+D'autre part, l'analyse de l'indice taille/poignet (ITP) a montré une influence significative de l'âge sur cet indicateur morphologique, tandis que le genre et l'interaction entre l'âge et le genre n'ont pas eu d'impact notable. Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
 
-H0: Il n'existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes.
+En ce qui concerne le lien entre l'âge et le risque cardiovasculaire, les résultats indiquent une relation claire : les individus de moins de 25 ans présentent un risque cardiovasculaire plus faible, tandis que ceux de plus de 40 ans sont davantage exposés. Ce constat met en évidence l'importance de surveiller les facteurs de risque cardiovasculaire dès l'âge adulte, notamment chez les individus plus âgés. En revanche, la qualité du sommeil n'a pas montré d'effet significatif sur le risque cardiovasculaire, ce qui pourrait indiquer que d'autres facteurs liés au mode de vie ou à la génétique jouent un rôle plus déterminant.
 
-H1: Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
-
-<!--% Vérification des conditions d'application -->
-
-```{r}
-#EFFECTIFS OBSERVES
-table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
-tabularise(table_age_ic)
-
-#EFFECTIFS ATTENDUS
-test_age_ic <- chisq.test(table_age_ic)
-tabularise(test_age_ic$expected) 
-```
-
-```{r}
-#EFFECTIFS OBSERVES
-table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
-tabularise(table_sommeil_ic)
-
-#EFFECTIFS ATTENDUS
-test_sommeil <- chisq.test(table_sommeil_ic)
-tabularise(test_sommeil$expected)
-```
-
-```{r}
-#EFFECTIFS OBSERVES
-table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
-tabularise(table_sucre_ic)
-
-#EFFECTIFS ATTENDUS
-test_sucre_ic <- chisq.test(table_sucre_ic)
-tabularise(test_sucre_ic$expected)
-```
-
-```{r}
-observes <- as.vector(table_age_ic)
-qqnorm(observes,
-       main = "QQ Plot des effectifs observés",
-       xlab = "Quantiles théoriques",
-       ylab = "Effectifs observés")
-qqline(observes, col = "yellow")
-
-observes <- as.vector(table_sommeil_ic)
-qqnorm(observes,
-       main = "QQ Plot des effectifs observés",
-       xlab = "Quantiles théoriques",
-       ylab = "Effectifs observés")
-qqline(observes, col = "red")
-
-observes <- as.vector(table_sucre_ic)
-qqnorm(observes,
-       main = "QQ Plot des effectifs observés",
-       xlab = "Quantiles théoriques",
-       ylab = "Effectifs observés")
-qqline(observes, col = "blue")
-```
-
-Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
-
-```{r}
-chisq.test(table_age_ic)
-chisq.test(table_sommeil_ic)
-chisq.test(table_sucre_ic)
-```
-
-<!--% Interprétation statistique et biologique -->
-
-\*\*Âge et le risque caridovasculaire\*\*
-
-La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\\\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
-
-\*\*Sommeil et risque cardiovasculaire\*\*
-
-La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\\\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
-
-\*\*Consommation de sucre et risque cardiovasculaire\*\*
-
-La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\\\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
-
-#test student cortisone(ith) #test chi carre(ic) #test anova deux facteurs(itp)
+Enfin, la consommation de sucre apparaît comme un facteur déterminant du risque cardiovasculaire. Les individus consommant régulièrement ou fréquemment des produits sucrés présentent un risque cardiovasculaire plus élevé que ceux ayant une consommation modérée ou faible. Ce lien direct entre le sucre et la santé cardiaque confirme la nécessité de promouvoir une alimentation équilibrée pour prévenir l'obésité et les maladies métaboliques associées. En somme, cette étude souligne l'importance de la prise en compte des habitudes de vie, de l'âge et des traitements comme la cortisone dans la gestion des risques métaboliques liés à l'obésité.
 
 # Discussion et conclusions
 
