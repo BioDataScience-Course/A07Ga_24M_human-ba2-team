@@ -178,12 +178,6 @@ Dans l'ensemble, ces descriptions suggèrent que des comportements tels que l'ac
 
 <!--% Sélectionnez les 4 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
 
-1\) Test chi carré de Christelle
-
-2\) Test t de Student de Nefise
-
-3\) Test Anova facteur 2 de Ide
-
 Dans cette étude portant sur les facteurs influençant l'obésité, plusieurs éléments clés ont été mis en évidence.
 
 L'analyse de l'impact de la cortisone n'a pas révélé de différence statistiquement significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas pris. Bien que la cortisone soit connue pour favoriser le stockage de graisse abdominale, cette absence de différence pourrait s'expliquer par des facteurs tels que la durée et la dose de traitement, la taille limitée de l'échantillon ou encore les différences naturelles entre les individus. Ces résultats soulignent la nécessité d'études plus approfondies pour évaluer avec précision l'impact de la cortisone sur la répartition des graisses corporelles.
@@ -196,16 +190,15 @@ t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0
 L'analyse de l'indice taille/poignet (ITP) via une ANOVA à deux facteurs a ensuite mis en évidence une influence significative de l'âge sur cet indicateur morphologique. En revanche, ni le genre ni l'interaction entre l'âge et le genre n'ont pas eu d'impact notable. Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
 
 ```{r}
-
+biometry_clean <- biometry1[!is.na(biometry1$itp) & !is.na(biometry1$alimentation), ]
 biometry <- biometry %>.%
   smutate(., age_cat = case_when(
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
     age > 40 ~ "> 40 ans"))
-    
 biometry_clean %>.%
-  group_by(., age_cat, genre) %>.%
-  summarise(., mean_itp = mean(itp, na.rm = TRUE))
+  sgroup_by(., age_cat, genre) %>.%
+  ssummarise(., mean_itp = mean(itp, na.rm = TRUE))
 
 aov(itp ~ age_cat * genre, data = biometry_clean)
 
