@@ -1,4 +1,5 @@
 ---
+0---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
 author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
@@ -79,8 +80,6 @@ Chez les individus ayant une activité physique élevée, les omnivores présent
 Pour les personnes ayant une activité physique faible, les omnivores affichent une grande variabilité dans le tour de poignet, avec une médiane légèrement plus élevée que celle des carnivores. Les carnivores ont des valeurs plus dispersées, mais généralement plus faibles que celles des omnivores. Les végétariens, bien que présents, montrent des poignets plus fins avec une distribution relativement serrée.
 
 Dans la catégorie d'activité physique modérée, les végétariens ont les poignets les plus épais, avec une médiane qui dépasse celle des omnivores et des carnivores. Cette observation pourrait être liée à une alimentation équilibrée favorisant la densité osseuse chez les végétariens actifs.
-
-
 
 ### Description 2 par Nefise
 
@@ -338,61 +337,60 @@ head(table_ic)
 
 L'indice Taille-Poignet (ITP) est un outil anthropométrique utilisé pour estimer la **corpulence osseuse** d'un individu, ce qui peut influencer l'interprétation d'autres indices comme l'IMC. Une ossature fine, moyenne ou large peut modifier la perception des risques métaboliques associés à une même masse corporelle. L'ITP est particulièrement utile dans les populations jeunes ou en croissance, et est souvent utilisé dans les standards cliniques d'évaluation corporelle (Frisancho, 1990).
 
-reference de l'article: **Frisancho, A. R.** (1990). *Anthropometric Standards for the Assessment of Growth and Nutritional Status*. University of Michigan Press.
+[@frisancho1990]
 
-$$ITP = \frac{\text{Tour de poignet (cm)}}{\text{Taille (cm)}}$$
+$$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
 
 # Calcul de la ou des variables reprenant l'indice sous forme numérique (et facteur)
 
 ```{r}
 
-biometry <- biometry %>%
-  mutate(
-    itp = tour_poignet / taille,
-    ossature = case_when(
-      genre == "F" & itp < 0.079 ~ "fine",
-      genre == "F" & itp >= 0.079 & itp <= 0.085 ~ "moyenne",
-      genre == "F" & itp > 0.085 ~ "large",
-      genre == "H" & itp < 0.090 ~ "fine",
-      genre == "H" & itp >= 0.090 & itp <= 0.095 ~ "moyenne",
-      genre == "H" & itp > 0.095 ~ "large"
+# Calcul de l’indice taille/poignet
+biometry1 <- biometry %>%
+  smutate(
+    itp = taille / tour_poignet,
+    
+    constitution_osseuse = case_when(
+      genre == "F" & itp > 10.9 ~ "Fine",
+      genre == "F" & itp < 9.9 ~ "Large",
+      genre == "F" & itp >= 9.9 & itp <= 10.9 ~ "Moyenne",
+      
+      genre == "H" & itp > 10.4 ~ "Fine",
+      genre == "H" & itp < 9.6 ~ "Large",
+      genre == "H" & itp >= 9.6 & itp <= 10.4 ~ "Moyenne",
+      
+      TRUE ~ "Inconnu"
     )
   )
 
-biometry$ossature <- factor(biometry$ossature, levels = c("fine", "moyenne", "large"))
-
-# Afficher les premières lignes des colonnes 'itp' et 'ossature'
-head(biometry[, c("itp", "ossature")])
-
+# Affichage du tableau
+biometry1 %>% 
+    sselect(genre, taille, tour_poignet, itp, constitution_osseuse)
+tabularise(biometry1)
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
 
 ```{r}
-
-# Création du graphique boxplot
-chart(data = biometry, itp ~ ossature %fill=% ossature) +
-  geom_boxplot() +
+chart(data = biometry1, ~ itp |genre, fill = constitution_osseuse) +
+  geom_histogram(bins = 30, alpha = 0.7, color = "black") +
+  scale_fill_viridis_d() +
   labs(
-    title = "Distribution de l'indice Taille–Poignet (ITP) selon le type d'ossature",
-    x = "Type d'ossature",
-    y = "Indice Taille–Poignet (ITP)"
-  ) +
-  scale_fill_brewer(palette = "Set2") 
-
+    title = "Distribution de l'Indice Taille-Poignet (ITP)",
+    x = "ITP (taille / tour de poignet)",
+    y = "Nombre d'individus"
+  ) 
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
 
--   Les individus à **ossature fine** sont majoritairement des femmes.
+.Les hommes (H) ont des ITP globalement plus bas, concentrés entre 8 et 11, alors que les femmes (F) ont des ITP plus élevés, allant souvent jusqu'à 12 et plus.
 
--   Les personnes à **ossature moyenne** présentent un niveau moyen d'activité physique légèrement plus élevé.
+.La catégorie Fine est visuellement la plus représentée dans les deux sexes, mais particulièrement chez les femmes, où elle couvre une large partie de la distribution.
 
--   Le **sommeil insuffisant** (moins de 6 heures) semble plus fréquent chez ceux à ossature large.
+.Chez les hommes, la distribution est plus centrée autour de 9,5--10,5, avec peu de cas extrêmes (barres rares au-delà de 12), ce qui montre une variabilité plus faible.
 
--   Une **consommation élevée de sucre** est relativement bien répartie entre les catégories d'ossature, sans différence majeure.
-
--   La **consommation d'eau** semble légèrement plus élevée chez les individus à ossature moyenne ou large.
+.Bien que les femmes aient davantage de Fine, on observe aussi plus de diversité avec des barres visibles en Moyenne et même Large, ce qui témoigne d'une répartition plus étendue des constitutions osseuses.
 
 ### Indice de Nefise 2
 
@@ -471,14 +469,13 @@ table_contingence <- biometry %>.%
 
 Hypothèse nulle (H₀) :
 Il n’existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes.
-
 Hypothèse alternative (H₁) :
 Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
 
-<!--% Vérification des conditions d'application -->  
+<!--% Vérification des conditions d'application -->
 
+```{r test_chi2_1 âge}
 
-```{r âge}
 #EFFECTIFS OBSERVES
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
 tabularise(table_age_ic)
@@ -507,6 +504,7 @@ test_sucre_ic <- chisq.test(table_sucre_ic)
 tabularise(test_sucre_ic$expected)
 ```
 
+<<<<<<< HEAD
 ```{r graphique quantile~quantile}
 
 observes <- as.vector(table_age_ic)
@@ -539,7 +537,6 @@ Les conditions du test du Chi² sont respectées : les variables sont catégorie
 Le test peut être réalisé.
 
 
-
 ```{r test_chi2_1}
 chisq.test(table_age_ic)
 chisq.test(table_sommeil_ic)
@@ -548,52 +545,58 @@ chisq.test(table_sucre_ic)
 
 <!--% Interprétation statistique et biologique -->
 
-
-
 ### Test de Chi^2^ by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_chi2_2}
-# Créer la table de contingence
-table_ossature_sommeil <- table(biometry$ossature, biometry$sommeil_cat)
+# Créer le tableau croisé
+tableau_itp <- table(biometry1$genre, biometry1$constitution_osseuse)
 
-# Afficher le tableau
-tabularise(table_ossature_sommeil)
+# Réaliser le test d’indépendance
+test_itp <- chisq.test(tableau_itp)
 
+# Afficher les résultats
+test_itp
+test_itp$expected
 
-# Graphique en barres croisant les deux variables
-
-# Supprimer les lignes avec NA dans sommeil_cat ou ossature
-biometry_clean <- biometry %>%
-  filter(!is.na(sommeil_cat), !is.na(ossature))
-
-chart(data = biometry_clean, ~ sommeil_cat %fill=% ossature) +
-  geom_bar(position = "fill") +
-  labs(
-    title = "Répartition des types d’ossature selon la durée de sommeil",
-    x = "Catégorie de sommeil",
-    y = "Proportion",
-    fill = "Ossature"
-  ) 
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H0: Le type d'ossature (indice ITP) est **indépendant** de la durée de sommeil.
+H0: Il n'y a pas de lien entre le genre (H/F) et la constitution osseuse (Fine, Moyenne, Large) → les deux variables sont indépendantes.
 
-H1: Le type d'ossature est **dépendant** de la durée de sommeil.
+H1: Il existe une dépendance entre le genre et la constitution osseuse → la répartition des types osseux varie selon le genre.
+
+R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
+
+Nous décidons donc de compléter l'analyse par un test exact plus fiable(test de fisher).
+
+```{r test_chi2_2}
+# Test exact de Fisher 
+fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
+fisher_test
+
+```
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_chi2_2}
-# NEFISE
-```
+-   L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
+
+    Les modalités du tableau (genre × constitution) sont bien qualitatives.
+
+    Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
 
-***CHRIS***
+-   La valeur p \> 0.05 dans les deux tests
+
+-   Nous ne rejetons pas l'hypothèse nulle H₀
+
+Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
+
+-   La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -629,7 +632,7 @@ H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hom
 
 H1 : Il existe une différence significative entre les moyennes de WHR # QQ plot pour activité physique élevée
 
-<!-- Vérification des conditions d'application --> 
+<!-- Vérification des conditions d'application -->
 
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
@@ -646,9 +649,8 @@ bartlett.test(data = biometry, whr ~ genre)
 print(bartlett_test)
 
 ```
-Hypotheses test de bartlett
-Hypothèse nulle (H₀) : Les variances des groupes sont égales.
-Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
+
+Hypotheses test de bartlett Hypothèse nulle (H₀) : Les variances des groupes sont égales. Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
 
 Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
 
@@ -662,7 +664,6 @@ t.test(data = biometry, whr ~ genre,
   alternative = "two.sided", var.equal = FALSE)
 
 ```
-
 
 <!-- Interprétation statistique et biologique -->
 
@@ -716,16 +717,13 @@ t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0
 
 <!--% Interprétation statistique et biologique -->
 
-
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
-
 
 ### ANOVA à un facteur 1
 
-La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires (facteur indirectement lié au risque d'obésité). 
-Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le type d'alimentation influence le nombre de verres d'alcool consommés par semaine. Elle permettra de mieux comprendre la relation entre les habitudes alimentaires et la consommation d'alcool.
+La consommation d'alcool est un facteur comportemental fréquemment associé à une prise de poids, en raison de son apport énergétique élevé et de son influence sur les habitudes alimentaires (facteur indirectement lié au risque d'obésité). Il a été observé que les individus suivant un régime carnivore ont tendance à consommer davantage d'alcool que ceux ayant un régime herbivore. Cette analyse vise à déterminer si le type d'alimentation influence le nombre de verres d'alcool consommés par semaine. Elle permettra de mieux comprendre la relation entre les habitudes alimentaires et la consommation d'alcool.
 
-Reference: Caducee.net. (2006, 13 février). Alcool et régime alimentaire. https://www.caducee.net/actualite-medicale/5701/alcool-et-regime-alimentaire.html
+[@caducee2006]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -763,52 +761,158 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 
 ### ANOVA à un facteur 2
 
+L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
+
+L'alimentation peut potentiellement influencer le développement osseux, la densité minérale, et indirectement la constitution corporelle. Par exemple, certains régimes alimentaires (riches en protéines, en calcium ou en vitamines D) peuvent favoriser une ossature plus robuste, tandis que d'autres régimes (pauvres en nutriments essentiels) pourraient s'associer à une ossature plus fine.
+
+Dans ce contexte, il est pertinent de s'interroger sur une possible différence de l'indice ITP selon les types d'alimentation (omnivore, carnivore, végétarien). Si l'alimentation avait un effet sur la morphologie, on pourrait s'attendre à des moyennes d'ITP différentes selon les régimes.
+
+Référence scientifique : Rizzoli R. et al., "Nutrition and bone health: Turning knowledge and beliefs into healthy behaviour," Current Osteoporosis Reports, 2014.
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
+> Le test de Shapiro-Wilk appliqué aux résidus du modèle ANOVA indique une valeur p très inférieure à 0.05 (p = 4.92e-06), ce qui signifie que la condition de normalité des résidus n'est pas respectée. Cette violation fragilise la validité des résultats de l'ANOVA, notamment la fiabilité de la statistique F et de la p-value associée.
+>
+> Afin de tenir compte de cette non-normalité, nous avons effectué en complément un test non paramétrique de Kruskal-Wallis, qui compare les distributions des groupes sans supposer leur forme.
+
 ```{r plot_anova1_2}
+# Supprimer les lignes avec des NA dans les colonnes utiles
+biometry_clean <- biometry1[!is.na(biometry1$itp) & !is.na(biometry1$alimentation), ]
+
+modele_anova <- lm(itp ~ alimentation, data = biometry_clean)
+shapiro.test(residuals(modele_anova))
+anova_resultats <- anova(modele_anova)
+tabularise(anova_resultats)
+
+#visualisation des resultats
+chart(data = biometry1, alimentation ~ itp %fill=% alimentation) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.3, color = "black") +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +
+  labs(
+    title = "Variation de l'ITP selon le type d'alimentation",
+    x = "Alimentation",
+    y = "Indice Taille / Poignet (ITP)"
+  ) 
+
+# test kruskal car la normalité des résidus n’est pas respectée
+kruskal.test(itp ~ alimentation, data = biometry_clean)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+-   H₀ (hypothèse nulle) : les moyennes de l'indice ITP sont égales entre les groupes d'alimentation (omnivore, carnivore, végétarien).
+
+-   H₁ (hypothèse alternative) : au moins une moyenne diffère des autres.
+
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_2}
-# NEFISE
+# QQ-plot des résidus (normalité visuelle)
+qqnorm(residuals(modele_anova))
+qqline(residuals(modele_anova), col = "blue", lwd = 2)
+
+# Test d’homogénéité des variances (Bartlett)
+bartlett.test(itp ~ alimentation, data = biometry_clean)
+
+
 ```
 
+Le test de Bartlett (p = 0.582) indique que l'hypothèse d'homogénéité des variances est respectée.
+
+Le Q-Q plot des résidus montre une distribution globalement linéaire, avec de légères déviations aux extrémités, ce qui suggère une normalité approximative mais acceptable, d'autant que l'ANOVA est un test robuste à ce type de légère déviation.
+
+L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avons pu procéder à l'analyse de variance à un facteur.
+
 <!--% Interprétation statistique et biologique -->
+
+p \> 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
+
+D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative\*\* sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
+
+Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
+
+Malgré cela, l'ANOVA à un facteur appliquée à notre modèle a donné une valeur p = 0.355, indiquant l'absence de différence significative des moyennes d'ITP selon le type d'alimentation.
+
+Afin de confirmer cette tendance sans supposer la normalité, nous avons réalisé un test non paramétrique de Kruskal-Wallis, qui a lui aussi conduit à une valeur p = 0.2315.
+
+Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
 
 ***CHRIS***
 
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
-### ANOVA à deux facteurs 1
+### ANOVA à deux facteurs 1 by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova2_1}
+# Test ANOVA à deux facteurs
+
+anova_itp_age <- aov(itp ~ age_cat * genre, data = biometry_clean)
+summary(anova_itp_age)
+
+biometry_clean %>%
+  group_by(age_cat, genre) %>%
+  summarise(mean_itp = mean(itp, na.rm = TRUE)) %>%
+  chart(., mean_itp ~ age_cat %color=% genre %group=% genre) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(
+    title = "Interaction entre genre et catégorie d'âge",
+    x = "Catégorie d'âge",
+    y = "Indice taille/poignet (ITP)",
+    color = "Genre"
+  )
+
+
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
+H₀ (hypothèse nulle) : Il n'y a pas d'effet significatif ni du genre, ni de la catégorie d'âge, ni de leur interaction sur l'ITP (indice taille/poignet).
+
+H₁ (hypothèse alternative) : Il y a au moins un effet significatif (genre, âge ou interaction des deux) sur l'ITP.
+
 <!--% Vérification des conditions d'application -->
 
+Variable réponse quantitative : ITP est une variable numérique continue.
+
+Facteurs explicatifs (age_cat, genre) :
+
+-   `age_cat` possède 3 modalités : < 25 ans, 25–40 ans, > 40 ans
+
+-   `genre` possède 2 modalités : H et F
+
+    **Indépendance des observations** : Les données proviennent de **personnes différentes**, donc on suppose que cette condition est respectée
+
 ```{r test_anova2_1}
-#NEFISE
+
+aov(itp ~ age_cat * genre, data = biometry_clean)
+
 ```
 
 <!--% Interprétation statistique et biologique -->
 
-***CHRIS***
+L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
+
+-   L'ITP varie significativement selon les catégories d'âge → certaines tranches d'âge ont un indice taille/poignet plus élevé.
+
+    Il n'y a pas de différence marquée entre hommes et femmes en moyenne.
+
+    L'absence d'interaction indique que l'effet de l'âge est similaire chez les hommes et les femmes : les courbes du graphique sont quasi parallèles, ce qui confirme l'absence d'interaction.
+
+    Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
 ### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova2_2}
-chart(data = biometry, whr ~ risque_ic + genre %fill=% genre) +
+biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
+chart(data = biometry_clean, whr ~ interaction(risque_ic, genre) %fill=% genre) +
   geom_boxplot(position = position_dodge(width = 0.8)) +
   scale_fill_manual(values = c("lightblue", "salmon")) +
   labs(
@@ -819,8 +923,8 @@ chart(data = biometry, whr ~ risque_ic + genre %fill=% genre) +
   )
 
 ```
+le whr augmente avec le risque ic pour les deux genres.
 
-<!--% Hypothèse nulle et alternative -->
 
 <!--% Vérification des conditions d'application -->
 
@@ -829,42 +933,33 @@ chart(data = biometry, whr ~ risque_ic + genre %fill=% genre) +
 #hapiro.test(residuals(anova2_factors))  # Test de normalité
 
 ```
-WHR par risque IC :
-H0 (hypothèse nulle) : Les variances de WHR sont homogènes (égales) entre les groupes de risque IC.
+<!--% Hypothèses test de Bartlett -->
+H₀ : les variances des groupes sont égales.
+H₁ : au moins une des variances est différente.
 
-H1 (hypothèse alternative) : Les variances de WHR ne sont pas homogènes (inégales) entre les groupes de risque IC.
 
-WHR par genre :
-H0 (hypothèse nulle) : Les variances de WHR sont homogènes (égales) entre les hommes et les femmes.
-
-H1 (hypothèse alternative) : Les variances de WHR ne sont pas homogènes (inégales) entre les hommes et les femmes.
-
-```{r}
-bartlett.test(whr ~ risque_ic, data = biometry)
-bartlett.test(whr ~ genre, data = biometry)
+```{r bartlett anova2}
+bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
 
 ```
 
-WHR par risque IC : Nous ne rejetons pas H0 au seuil alpha 5%. Le test n’est pas significatif (p = 0.2069), indiquant des variances homogènes entre les groupes de risque IC. Cela suggère que la variabilité de la répartition des graisses abdominales est comparable chez les personnes à risque modéré et élevé.
-WHR par genre : Nous rejetons H0 au seuil alpha de 5%. Le test est significatif (p = 0.02311), indiquant que les variances du WHR diffèrent entre les hommes et les femmes. Cela reflète une plus grande variabilité de la répartition des graisses chez les hommes, souvent liée à des différences hormonales et comportementales.
+Nous ne rejetons pas H₀ au seuil de alpha (p-value = 0.2677). Les variances sont homogènes entre les 4 groupes (modéré.H, élevé.H, modéré.F, élevé.F). Condition respectée pour le test Anova.
 
-Nous allons réaliser Un test ANOVA de Welch les moyennes de WHR entre les hommes et les femmes, en prenant en compte l'inégalité des variances détectée par le test de Bartlett.
+```{r qqplot}
+modele <- aov(data = biometry, whr ~ interaction(risque_ic, genre))
 
-
-```{r test_anova2_2}
-# ANOVA à 2 facteurs avec Welch (en tenant compte des variances inégales)
-anova_welch <- aov(whr ~ risque_ic * genre, data = biometry)
-summary(anova_welch)
+qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
+qqline(residuals(modele), col = "mangeta")
 
 ```
-L’ANOVA à deux facteurs montre un effet principal significatif du risque de conicité (p < 0.001) et du genre (p < 0.001) sur le WHR.
-En revanche, l’interaction entre le risque IC et le genre n’est pas significative (p = 0.13), ce qui indique que l’effet du risque IC sur le WHR ne dépend pas du genre.
+les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
 
-Le WHR est significativement plus élevé chez les individus à risque IC élevé, ce qui reflète une plus grande accumulation de graisse abdominale.
-Il est aussi plus élevé chez les hommes, ce qui correspond à leur répartition androïde des graisses, contrairement aux femmes qui ont une répartition gynoïde.
-L’absence d’interaction signifie que ces effets sont indépendants l’un de l’autre.
+```{r test_anova2_2}  
+anova_interaction <- aov(data = biometry, whr ~ risque_ic * genre)
+summary(anova_interaction)
+```
 
-
+Les résultats montrent un effet significatif du risque IC (p < 0.001) et du genre (p < 0.001) sur le WHR. En revanche, l’interaction entre risque IC et genre n’est pas significative (p = 0.13), ce qui suggère que l’effet du risque IC sur le WHR ne dépend pas du sexe.
 <!--% Interprétation statistique et biologique -->
 
 #NEFISE

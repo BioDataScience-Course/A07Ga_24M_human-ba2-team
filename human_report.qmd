@@ -99,12 +99,11 @@ Les principales bibliothèques employées dans le traitement des données sont :
 
 -   **ggplot2** pour la visualisation graphique,
 
-```{=html}
-<!-- -->
-```
--   ainsi que **svFlow**, **SciViews**, **chart**.
+-   ainsi que **SciViews**, **chart**.
 
 L'ensemble des traitements a été réalisé dans un environnement reproductible, et les scripts sont disponibles sur demande.
+
+Le seuil de tous les tests est fixé à 5%.
 
 # Résultats
 
