@@ -168,28 +168,32 @@ Les résultats de ces analyses montrent que la consommation élevée de sucre et
 
 ### Description 1 par Ide
 
+Dans le cadre de notre étude sur les comportements alimentaires et leur impact sur la morphologie corporelle, nous avons examiné la répartition de la masse corporelle selon le type de régime alimentaire (carnivore, omnivore, végétarien), en distinguant également les résultats par genre. Le graphique ci-dessous présente des boxplots illustrant la distribution des masses corrigées pour chaque catégorie alimentaire, avec une différenciation visuelle entre les hommes et les femmes.
+
 ```{r}
 give_n <- function(x)
   c(y = max(x) * 1.1, label = length(x))
-chart(data = biometry, masse_corr ~ alimentation %fill=% genre) +
+chart(data = biometry, masse ~ alimentation %fill=% genre) +
   geom_boxplot() +
   stat_summary(fun.data = give_n, geom = "text", hjust = 0.5, 
                position = position_dodge(0.75)) +
-  labs(title = "Masse corrigée en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse corrigée")
+  labs(title = "Masse en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse")
 
 ```
 
 ***interprétations***
 
--   Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
+-   Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes. La masse varie davantage chez les hommes que chez les femmes, suggérant une plus grande dispersion des valeurs masculines.
 
--   Omnivores: C'est la catégorie avec le plus d'individus (72 pour les femmes et 56 pour les hommes), et la distribution est plus étendue. Des valeurs extrêmes sont présentes dans cette catégorie.
+-   Omnivores: C'est la catégorie avec le plus d'individus (72 pour les femmes et 56 pour les hommes), et la distribution est plus étendue avec plusieurs valeurs extrêmes, indiquant une grande hétérogénéité des masses.
 
--   Végétariens: Il y a uniquement des femmes dans l'échantillon, avec une distribution serrée autour d'une masse corrigée faible.
+-   Végétariens: Il y a uniquement des femmes dans l'échantillon, avec des masses relativement faibles et peu dispersées et une distribution serrée autour d'une masse faible. Ce qui traduit une certaine homogénéité.
 
-De façon général, les médianes de masse_corr semblent être plus élevées pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
+De façon générale, les médianes de masse semblent être plus élevées pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
 
 ### Description 2 par Ide
+
+L'activité physique est un levier essentiel dans la prévention de l'obésité et des pathologies métaboliques. Dans cette optique, nous avons cherché à examiner si un lien se dégage entre le niveau d'activité physique hebdomadaire et la masse corporelle des participants. L'objectif est de déterminer si les individus les plus actifs présentent une masse significativement différente des moins actifs, et si des différences apparaissent selon le genre.
 
 ```{r}
 chart(data = biometry, activite_physique ~ masse, color = genre) + 
@@ -199,11 +203,12 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
 
 ***interprétations***
 
--On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse.
+-On observe aucune tendance claire (linéaire ou exponentielle) n’apparaît entre la masse et l’activité physique. Les points sont dispersés de façon aléatoire.
 
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses.
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses, mais cela semble indépendant du volume d’activité.
 
--La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine.
+-La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine, ce qui pourrait expliquer l’absence d’effet clair : les niveaux d’activité sont peut-être trop homogènes pour permettre une différenciation statistique.
+
 
 ## Calcul d'indices
 
