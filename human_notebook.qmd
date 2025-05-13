@@ -162,7 +162,6 @@ geom_boxplot() +
 
 Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
 
-Des tests statistiques supplémentaires, tels qu'un test ANOVA ou un test de comparaison des moyennes, seraient nécessaires pour évaluer la signification statistique de ces différences.
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux.
 
@@ -239,6 +238,8 @@ biometry2 <- biometry %>.%
     bmi >= 25 & bmi < 30 ~ "surpoids",
     bmi >= 30 ~ "obèse")) %>.%
   sselect(., genre, bmi, bmi_cat)
+
+head(biometry2)
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
@@ -373,8 +374,6 @@ biometry1 <- biometry %>%
 biometry1 %>% 
     sselect(genre, taille, tour_poignet, itp, constitution_osseuse)
 tabularise(biometry1)
-
-
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
@@ -388,8 +387,6 @@ chart(data = biometry1, ~ itp |genre, fill = constitution_osseuse) +
     x = "ITP (taille / tour de poignet)",
     y = "Nombre d'individus"
   ) 
- 
-
 ```
 
 <!--% Interprétation en quelques points du graphique ou tableau. -->
@@ -477,9 +474,10 @@ table_contingence <- biometry %>.%
 
 <!--% Hypothèse nulle et alternative -->
 
-H0 : l'âge/le sommeil/le sucre et le risque_ic sont indépendants.
-
-H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
+Hypothèse nulle (H₀) :
+Il n’existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes.
+Hypothèse alternative (H₁) :
+Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
 
 <!--% Vérification des conditions d'application -->
 
@@ -487,39 +485,65 @@ H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 
 #EFFECTIFS OBSERVES
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
-head(table_age_ic)
+tabularise(table_age_ic)
 
 #EFFECTIFS ATTENDUS
 test_age_ic <- chisq.test(table_age_ic)
-test_age_ic$expected
-
+tabularise(test_age_ic$expected) 
 ```
 
 ```{r sommeil}
 
 #EFFECTIFS OBSERVES
 table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
-head(table_sommeil_ic)
+tabularise(table_sommeil_ic)
 
 #EFFECTIFS ATTENDUS
 test_sommeil <- chisq.test(table_sommeil_ic)
-test_sommeil$expected
-
+tabularise(test_sommeil$expected)
 ```
 
 ```{r sucre}
 
 #EFFECTIFS OBSERVES
 table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
-head(table_sucre_ic)
+tabularise(table_sucre_ic)
 
 #EFFECTIFS ATTENDUS
 test_sucre_ic <- chisq.test(table_sucre_ic)
-test_sucre_ic$expected
+tabularise(test_sucre_ic$expected)
 
 ```
 
-Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
+
+```{r graphique quantile~quantile}
+observes <- as.vector(table_age_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "yellow")
+
+observes <- as.vector(table_sommeil_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "red")
+
+observes <- as.vector(table_sucre_ic)
+qqnorm(observes,
+       main = "QQ Plot des effectifs observés",
+       xlab = "Quantiles théoriques",
+       ylab = "Effectifs observés")
+qqline(observes, col = "blue")
+
+```
+
+
+Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n’est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5.
+Le test peut être réalisé.
+
 
 ```{r test_chi2_1}
 chisq.test(table_age_ic)
@@ -528,6 +552,21 @@ chisq.test(table_sucre_ic)
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+**Âge et le risque caridovasculaire**
+
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. 
+En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
+
+**Sommeil et risque cardiovasculaire**
+
+La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. 
+Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
+
+**Consommation de sucre et risque cardiovasculaire**
+
+La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire.
+En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
 
 ### Test de Chi^2^ by Ide
 
@@ -545,7 +584,6 @@ test_itp <- chisq.test(tableau_itp)
 test_itp
 test_itp$expected
 
-
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -556,13 +594,12 @@ H1: Il existe une dépendance entre le genre et la constitution osseuse → la r
 
 R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
 
-Nous décidons donc de compléter l'analyse par un test exact plus fiable(test de fisher).
+Nous décidons donc de compléter l'analyse par un test exact plus fiable: le test de Fisher.
 
 ```{r test_chi2_2}
 # Test exact de Fisher 
 fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
 fisher_test
-
 ```
 
 <!--% Vérification des conditions d'application -->
@@ -587,23 +624,18 @@ Le WHR est considéré comme un meilleur indicateur du risque de maladies cardia
 
 Référence : Berton, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
 
+
+
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
-biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
-
-biometry %>.%
-  sgroup_by(., genre) %>.%
-  ssummarise(.,mean = fmean(whr))
-
-
+   biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
 chart(data = biometry, whr ~ genre %fill=% genre) +
   geom_boxplot() +
-  labs(title = "Comparaison du WHR entre les Hommes et les Femmes",
+  labs(title = "Comparaison du WHR selon le sexe",
        x = "Sexe",
-       y = "WHR") +
-   scale_fill_manual(values = c("lightgreen", "orange")) 
-
+       y = "Waist-to-Hip Ratio (WHR)") +
+  scale_fill_manual(values = c("orange", "lightgreen")) 
 ```
 
 Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est conforme aux tendances observées dans de nombreuses études : les hommes tendent à avoir une plus grande accumulation de graisse au niveau abdominal par rapport aux femmes, ce qui conduit à un ratio taille-hanche plus élevé.
@@ -612,24 +644,23 @@ Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est confor
 
 H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
 
-H1 : Il existe une différence significative entre les moyennes de WHR des hommes et des femmes.
+H1 : Il existe une différence significative entre les moyennes de WHR # QQ plot pour activité physique élevée
 
 <!-- Vérification des conditions d'application -->
 
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
 ```{r test_t_1 Christelle}
+qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour les Hommes")
+qqline(biometry$whr[biometry$genre == "H"], col = "orange") 
 
-qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour le groupe H")
-qqline(biometry$whr[biometry$genre == "H"], col = "lightgreen")  # Ligne de référence
-
-# QQ plot pour le groupe F
-qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour le groupe F")
-qqline(biometry$whr[biometry$genre == "F"], col = "orange")  # Ligne de référence
+qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour les Femmes")
+qqline(biometry$whr[biometry$genre == "F"], col = "lightgreen")  # Ligne de référence
 
 
-# Test de Bartlett pour l'égalité des variances entre les groupes H et F
+# Test de Bartlett pour vérifier l'homogénéité des variances
 bartlett.test(data = biometry, whr ~ genre)
+print(bartlett_test)
 
 ```
 
@@ -637,9 +668,10 @@ Hypotheses test de bartlett Hypothèse nulle (H₀) : Les variances des groupes 
 
 Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
 
-Nous rejetons H0 au seuil alpha de 5%, les variances de dehux groupes ne sont pas egales.
+Nous rejetons H0 au seuil alpha de 5%, les variances de deux groupes ne sont pas égales.
 
 En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
+
 
 ```{r test_t_1 Christelle}
 t.test(data = biometry, whr ~ genre, 
@@ -649,20 +681,22 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p \< 0,001).
+La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p < 0,001).
+
+
 
 ### Test t de Student 2
 
 La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses abdominales lorsqu'elle est administrée sur le long terme. Sachant que le Waist-to-Hip Ratio (WHR) est un indicateur utilisé pour évaluer la répartition des graisses corporelles et le risque métabolique associé, il est pertinent de se demander si la prise de cortisone influence significativement le WHR. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
 
-Référence : Corbaz, A. (2024, 13 novembre). Le cortisol affecte-t-il la prise de poids ? Nutrition by Aurélia. https://www.nutrition-by-aurelia.ch/blog/le-cortisol-affecte-t-il-la-prise-de-poids
+[@corbaz2024]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_2}
 
 # La variable WHR a déjà été céer dans le test t de Student précedent.
-# 
+
 # Réalisation graphique:
 chart(data = biometry, cortisone ~ whr %fill=% genre) +
   geom_boxplot() +
@@ -685,10 +719,21 @@ La variable dépendante est quantitative. La variable explicative est qualitativ
 
 ```{r test_t_2}
 # Test de Bartlett pour vérifier l'homoscedasticité:
+# H0: Les variances des échantillons comparés sont égales (homoscèdasticité)
+# H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
 
+bartlett.test (data=biometry, whr ~cortisone)
 
-# Vérification de la distribution:
+# La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
 
+# Vérification de la distribution de la variable quantitative "whr":
+
+car::qqPlot(biometry[["whr"]], distribution = "norm",
+  envelope = 0.95, col = "Black", ylab = "log(area [mm^2])")
+
+# Les points se rapprochent de la droite de normalité, indiquant que la distribution suit une loi normale.
+
+# Les conditions du test t de Student étant vérifiés, on réalise le test t de Student bilatéral.
 
 # Réalisation du test t de Student:
 t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0.95, var.equal= TRUE)
@@ -709,6 +754,8 @@ La consommation d'alcool est un facteur comportemental fréquemment associé à 
 
 ```{r plot_anova1_1}
 
+ smutate(., bmi = masse / (taille/100)^2)
+
 chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
   geom_boxplot() +
   labs(title = "Consommation d'alcool selon le type d'alimentation",
@@ -727,7 +774,13 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_1}
-# Test de Bartlett pour vérifier l'homoscedasticité:
+# Test de Bartlett pour vérifier l'homoscèdasticité:
+# H0: Les variances des échantillons comparés sont égales (homoscèdasticité)
+# H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
+
+bartlett.test (data= biometry, alcool ~ alimentation)
+
+# La valeur p est inférieur au seuil alpha de 5 % donc H0 est rejetée. Il n'y a pas homoscèdasticité. 
   
 
 # Vérification de la distribution:
@@ -844,7 +897,6 @@ biometry_clean %>.%
     color = "Genre"
   )
 
-
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -893,17 +945,55 @@ L'analyse de la variance à deux facteurs a révélé un effet significatif de l
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova2_2}
+biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
+chart(data = biometry_clean, whr ~ interaction(risque_ic, genre) %fill=% genre) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_fill_manual(values = c("lightblue", "salmon")) +
+  labs(
+    title = "WHR selon Risque IC et Genre",
+    x = "Risque IC et Genre",
+    y = "WHR",
+    fill = "Genre"
+  )
 
 ```
+le whr augmente avec le risque ic pour les deux genres.
 
-<!--% Hypothèse nulle et alternative -->
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_anova2_2}
+```{r}
+#lot(anova2_factors, which = 2)  # QQ plot des résidus
+#hapiro.test(residuals(anova2_factors))  # Test de normalité
+
+```
+<!--% Hypothèses test de Bartlett -->
+H₀ : les variances des groupes sont égales.
+H₁ : au moins une des variances est différente.
+
+
+```{r bartlett anova2}
+bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
 
 ```
 
+Nous ne rejetons pas H₀ au seuil de alpha (p-value = 0.2677). Les variances sont homogènes entre les 4 groupes (modéré.H, élevé.H, modéré.F, élevé.F). Condition respectée pour le test Anova.
+
+```{r qqplot}
+modele <- aov(data = biometry, whr ~ interaction(risque_ic, genre))
+
+qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
+qqline(residuals(modele), col = "mangeta")
+
+```
+les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
+
+```{r test_anova2_2}  
+anova_interaction <- aov(data = biometry, whr ~ risque_ic * genre)
+summary(anova_interaction)
+```
+
+Les résultats montrent un effet significatif du risque IC (p < 0.001) et du genre (p < 0.001) sur le WHR. En revanche, l’interaction entre risque IC et genre n’est pas significative (p = 0.13), ce qui suggère que l’effet du risque IC sur le WHR ne dépend pas du sexe.
 <!--% Interprétation statistique et biologique -->
 
 #NEFISE
