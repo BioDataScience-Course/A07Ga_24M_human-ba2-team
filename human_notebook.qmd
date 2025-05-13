@@ -526,35 +526,21 @@ chisq.test(table_sucre_ic)
 
 **Âge et le risque caridovasculaire**
 
-La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire.
-En comparant les effectifs observés avec les effectifs théoriques :
-- Pour les moins de 25 ans, nous devrions observer 53 personnes à risque modéré et 24 à risque élevé, mais nous observons 71 à risque modéré et seulement 6 à risque élevé.
-- Pour les plus de 40 ans, nous devrions observer 32 à risque modéré et 15 à risque élevé, mais nous observons 15 à risque modéré et 32 à risque élevé.
-- Pour les 25-40 ans, nous devrions avoir 13 à risque modéré et 6 à risque élevé, mais nous observons 12 et 7.
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques : - Pour les moins de 25 ans, nous devrions observer 53 personnes à risque modéré et 24 à risque élevé, mais nous observons 71 à risque modéré et seulement 6 à risque élevé. - Pour les plus de 40 ans, nous devrions observer 32 à risque modéré et 15 à risque élevé, mais nous observons 15 à risque modéré et 32 à risque élevé. - Pour les 25-40 ans, nous devrions avoir 13 à risque modéré et 6 à risque élevé, mais nous observons 12 et 7.
 
-Ces différences montrent que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L’âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ^2 d’indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
-
+Ces différences montrent que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
 
 **Sommeil et risque cardiovasculaire**
 
-La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire.
-Les effectifs observés sont proches des effectifs théoriques :
-- Pour un sommeil insuffisant, nous devrions observer 29 à risque modéré et 19 à risque élevé, et nous avons 31 et 17.
-- Pour un sommeil modéré, nous devrions avoir 9 à risque modéré et 5 à risque élevé, et nous observons 7 et 7.
+La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés sont proches des effectifs théoriques : - Pour un sommeil insuffisant, nous devrions observer 29 à risque modéré et 19 à risque élevé, et nous avons 31 et 17. - Pour un sommeil modéré, nous devrions avoir 9 à risque modéré et 5 à risque élevé, et nous observons 7 et 7.
 
-Ces résultats montrent que la qualité du sommeil n’a pas d’effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ^2 d’indépendance = 0,454, ddl = 1, valeur p = 0,5004).
+Ces résultats montrent que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
 
 **Consommation de sucre et risque cardiovasculaire**
 
-La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n’y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire.
-En comparant les effectifs observés avec les effectifs théoriques :
-- Pour une consommation faible, nous devrions observer 13 à risque modéré et 6 à risque élevé, mais nous avons 7 à risque modéré et 12 à risque élevé.
-- Pour une consommation régulière, nous devrions avoir 29 à risque modéré et 13 à risque élevé, mais nous observons 34 et 8.
-- Pour une consommation fréquente, nous attendrions 56 à risque modéré et 26 à risque élevé, et nous observons 57 et 25.
+La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques : - Pour une consommation faible, nous devrions observer 13 à risque modéré et 6 à risque élevé, mais nous avons 7 à risque modéré et 12 à risque élevé. - Pour une consommation régulière, nous devrions avoir 29 à risque modéré et 13 à risque élevé, mais nous observons 34 et 8. - Pour une consommation fréquente, nous attendrions 56 à risque modéré et 26 à risque élevé, et nous observons 57 et 25.
 
-Ces résultats montrent que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ^2 d’indépendance = 11,89, ddl = 2, valeur p = 0,0026).
-
-
+Ces résultats montrent que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
 
 ### Test de Chi^2^ by Ide
 
@@ -570,7 +556,6 @@ test_itp <- chisq.test(tableau_itp)
 # Afficher les résultats
 test_itp
 test_itp$expected
-
 
 ```
 
@@ -689,7 +674,7 @@ La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rap
 
 La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses abdominales lorsqu'elle est administrée sur le long terme. Sachant que le Waist-to-Hip Ratio (WHR) est un indicateur utilisé pour évaluer la répartition des graisses corporelles et le risque métabolique associé, il est pertinent de se demander si la prise de cortisone influence significativement le WHR. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
 
-Référence : Corbaz, A. (2024, 13 novembre). Le cortisol affecte-t-il la prise de poids ? Nutrition by Aurélia. https://www.nutrition-by-aurelia.ch/blog/le-cortisol-affecte-t-il-la-prise-de-poids
+[@corbaz2024]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -879,8 +864,6 @@ biometry_clean %>%
     y = "Indice taille/poignet (ITP)",
     color = "Genre"
   )
-
-
 
 ```
 
