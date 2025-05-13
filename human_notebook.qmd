@@ -349,25 +349,21 @@ $$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
 
 # Calcul de l’indice taille/poignet
 biometry1 <- biometry %>%
-  smutate(
-    itp = taille / tour_poignet,
-    
+  smutate(., itp = taille / tour_poignet,
     constitution_osseuse = case_when(
       genre == "F" & itp > 10.9 ~ "Fine",
       genre == "F" & itp < 9.9 ~ "Large",
       genre == "F" & itp >= 9.9 & itp <= 10.9 ~ "Moyenne",
-      
       genre == "H" & itp > 10.4 ~ "Fine",
       genre == "H" & itp < 9.6 ~ "Large",
       genre == "H" & itp >= 9.6 & itp <= 10.4 ~ "Moyenne",
-      
       TRUE ~ "Inconnu"
+      )
     )
-  )
 
 # Affichage du tableau
 biometry1 %>% 
-    sselect(genre, taille, tour_poignet, itp, constitution_osseuse)
+  sselect(., genre, taille, tour_poignet, itp, constitution_osseuse)
 tabularise(biometry1)
 ```
 
@@ -756,14 +752,13 @@ La consommation d'alcool est un facteur comportemental fréquemment associé à 
 
 ```{r plot_anova1_1}
 
- smutate(., bmi = masse / (taille/100)^2)
-
 chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
   geom_boxplot() +
   labs(title = "Consommation d'alcool selon le type d'alimentation",
        x = "Type d'alimentation", 
        y = "Nombre de verres d'alcool par semaine") + 
   coord_flip()
+
 
 ```
 
@@ -783,7 +778,10 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 bartlett.test (data= biometry, alcool ~ alimentation)
 
 # La valeur p est inférieur au seuil alpha de 5 % donc H0 est rejetée. Il n'y a pas homoscèdasticité. 
-  
+# Les variances augmentent avec les moyennes donc pour avoir homoscédasticité, nous transformons les variables avec log:
+
+biometry <- smutate (biometry, log_alcool = ln(alcool))
+bartlett.test (data = biometry, log_alcool ~ alimentation)
 
 # Vérification de la distribution:
 #
