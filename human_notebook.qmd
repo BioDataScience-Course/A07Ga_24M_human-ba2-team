@@ -932,28 +932,11 @@ qqline(residus, col = "red")
 
 <!--% Interprétation statistique et biologique -->
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
-
-Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
-
-=======
-<<<<<<< HEAD
-Autrement dit, l’ITP semble évoluer en fonction de l’âge, possiblement en lien avec des modifications physiologiques ou morphologiques au fil du temps, comme la densité osseuse ou la répartition corporelle. Le fait que le genre n’ait pas d’influence significative, que ce soit seul ou en interaction avec l’âge, suggère que dans cette population, les différences morphologiques entre hommes et femmes n’ont pas d’impact notable sur cet indice — ou alors, elles s’expriment de façon comparable quel que soit l’âge.
-=======
-=======
->>>>>>> 1259eda991fc3bfd93bdaf7d5c08b37fd0976ef1
 L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p < 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p > 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
 Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
-<<<<<<< HEAD
 
->>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
->>>>>>> a9cd00cf32b0d178f7d1fa9e5388d65a42d94d53
-=======
->>>>>>> 1259eda991fc3bfd93bdaf7d5c08b37fd0976ef1
 ### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
