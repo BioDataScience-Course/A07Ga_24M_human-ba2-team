@@ -997,7 +997,15 @@ qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
 qqline(residuals(modele), col = "magenta")
 
 ```
-Les points suivent à peu près la ligne droite: la normalité des résidus est acceptée.
+
+Il n' y a pas d'interaction. Les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
+<!--% Hypothèses -->
+
+Hypothèse nulle (H₀) :
+Il n'y a pas d'effet significatif du facteur risque_ic, du facteur genre, ni de l'interaction entre risque_ic et genre sur le WHR. Autrement dit, les moyennes du WHR sont égales pour toutes les catégories de risque_ic, tous les genres et il n’y a pas d’interaction entre les deux facteurs.
+
+Hypothèse alternative (H₁) :
+Il existe au moins un effet significatif parmi les facteurs risque_ic, genre ou leur interaction sur le WHR. Cela signifie que les moyennes du WHR diffèrent selon les catégories de risque_ic, les genres, ou que l'effet de risque_ic sur le WHR dépend du genre.
 
 ```{r test_anova2_2}
 anova_model <- lm(data = biometry, whr ~ risque_ic + genre)
