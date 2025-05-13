@@ -531,6 +531,7 @@ chisq.test(table_sucre_ic)
 ```{r plot_chi2_2}
 # Créer le tableau croisé
 tableau_itp <- table(biometry1$genre, biometry1$constitution_osseuse)
+head(tableau_itp)
 
 # Réaliser le test d’indépendance
 test_itp <- chisq.test(tableau_itp)
@@ -568,14 +569,6 @@ fisher_test
     Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
-
--   La valeur p \> 0.05 dans les deux tests
-
--   Nous ne rejetons pas l'hypothèse nulle H₀
-
-Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
-
--   La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -741,7 +734,7 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 
 <!--% Interprétation statistique et biologique -->
 
-### ANOVA à un facteur 2
+### ANOVA à un facteur 2 by IDE
 
 L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
 
@@ -833,9 +826,9 @@ Ce second test confirme l'absence de lien statistiquement significatif entre l'a
 anova_itp_age <- aov(itp ~ age_cat * genre, data = biometry_clean)
 summary(anova_itp_age)
 
-biometry_clean %>%
-  group_by(age_cat, genre) %>%
-  summarise(mean_itp = mean(itp, na.rm = TRUE)) %>%
+biometry_clean %>.%
+  group_by(., age_cat, genre) %>.%
+  summarise(., mean_itp = mean(itp, na.rm = TRUE)) %>.%
   chart(., mean_itp ~ age_cat %color=% genre %group=% genre) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -845,7 +838,6 @@ biometry_clean %>%
     y = "Indice taille/poignet (ITP)",
     color = "Genre"
   )
-
 
 
 ```
