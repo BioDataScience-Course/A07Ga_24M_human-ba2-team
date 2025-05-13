@@ -1,5 +1,5 @@
 ---
-0---
+---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
 author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
@@ -73,7 +73,7 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 ```
 
-**interprétations**
+**Interprétations**
 
 Chez les individus ayant une activité physique élevée, les omnivores présentent les tours de poignet les plus importants, avec une médiane autour de 17,5 cm, suivis par les carnivores. Les végétariens ne sont pas représentés dans cette catégorie. Cela pourrait s'expliquer par une consommation plus importante de protéines animales et vegetales chez les omnivores, favorisant le développement osseux et musculaire.
 
@@ -215,7 +215,7 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
-L'Indice de Masse Corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (IMC \<18,5), poids normal (18,5\<IMC\<24,9), surpoids (25\>IMC\<29,9), et obésité (IMC≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
+L'indice de masse corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (IMC\<18,5), poids normal (18,5\<=IMC\<25), surpoids (25\<=IMC\<30), et obésité (IMC≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
 
 Référence: PasseportSanté. (n.d.). IMC : calcul, catégories et limites de l'indice de masse corporelle. PasseportSanté. Consulté le 30 mars 2025, à partir de https://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=IMC
 
@@ -253,7 +253,7 @@ biometry2 %>.%
 
 -   Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
 
--   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
+-   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus en sous-poids des deux genres ont des IMC similaires.
 
 -   Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
@@ -484,12 +484,14 @@ H1 : l'âge/le sommeil/le sucre et le risque_ic sont dépendants.
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
 head(table_age_ic)
 
- #EFFECTIFS ATTENDUS
+#EFFECTIFS ATTENDUS
 test_age_ic <- chisq.test(table_age_ic)
 test_age_ic$expected
+
 ```
 
 ```{r sommeil}
+
 #EFFECTIFS OBSERVES
 table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
 head(table_sommeil_ic)
@@ -497,15 +499,19 @@ head(table_sommeil_ic)
 #EFFECTIFS ATTENDUS
 test_sommeil <- chisq.test(table_sommeil_ic)
 test_sommeil$expected
+
 ```
 
 ```{r sucre}
+
+#EFFECTIFS OBSERVES
 table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
 head(table_sucre_ic)
 
 #EFFECTIFS ATTENDUS
 test_sucre_ic <- chisq.test(table_sucre_ic)
 test_sucre_ic$expected
+
 ```
 
 Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
