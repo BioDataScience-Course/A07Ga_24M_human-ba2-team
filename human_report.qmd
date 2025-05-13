@@ -111,11 +111,66 @@ La description des données c'est dans le but de mieux comprendre les liens entr
 
 La première analyse s'est concentrée sur la relation entre l'activité physique, le type de régime alimentaire et le tour de poignet. Il est apparu que chez les personnes ayant une activité physique élevée, les omnivores présentaient un tour de poignet plus important que les autres régimes, tandis que chez les individus modérément actifs, les végétariens affichaient des tours de poignet plus élevés. Ces résultats suggèrent une influence combinée de l'activité physique et du régime alimentaire sur la densité osseuse ou la morphologie distale.
 
+```{r}
+biometry <- biometry %>.%
+  smutate(., activite_physique_cat = case_when(
+  activite_physique <= 150 ~ "Faible",
+  activite_physique > 150 & activite_physique <= 300 ~ "Modéré",
+  activite_physique > 300 ~ "Élevé"))
+
+chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
+  geom_boxplot() +
+  labs(
+    title = "Répartition du tour de poignet selon l'activité physique et l'alimentation",
+    x = "Catégories d'activité physique",
+    y = "Tour de poignet (cm)",
+    fill = "Type d'alimentation"
+  )
+
+
+```
+
 La seconde analyse portait sur la consommation de tabac selon le genre et la masse corporelle corrigée. Il en ressort que les hommes consomment en moyenne moins de cigarettes par semaine que les femmes, bien que cette tendance s'inverse pour les masses corporelles plus élevées. Chez les femmes ayant une masse modérée, la variabilité est très forte, certaines fumant beaucoup tandis que d'autres pas du tout.
+
+```{r}
+biometry <- biometry %>.%
+  smutate(., masse_corr_cat = case_when(
+  masse_corr <= 50 ~ "Faible",
+  masse_corr > 50 & masse_corr <= 80 ~ "Modéré",
+  masse_corr > 80 ~ "Élevé"))
+
+
+biometry %>.%
+  sgroup_by(., genre, masse_corr_cat) %>.%
+  ssummarise(.,
+    mean_fumeur = fmean(fumeur),
+    sd_fumeur = fsd(fumeur),
+    nobs = fnobs(fumeur))
+
+```
 
 Une autre analyse s'est focalisée sur le tour de taille en fonction de la consommation de sucre. Les individus ayant une consommation fréquente de sucre présentaient un tour de taille plus élevé, ce qui pourrait refléter une accumulation de graisse viscérale, un facteur de risque reconnu pour les maladies métaboliques.
 
+```{r}
+chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +  
+  geom_violin(alpha = 0.7, color = "black") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Variations du tour de taille en fonction 
+      de la consommation de sucre")
+```
+
 Enfin, nous avons examiné la masse corporelle selon le type d'alimentation, en distinguant les hommes et les femmes. Les omnivores représentaient la majorité de l'échantillon, avec une grande variabilité dans les valeurs. Les hommes présentaient des masses généralement plus élevées, particulièrement chez les carnivores. Les végétariens étaient toutes des femmes et affichaient une masse plus faible et plus homogène.
+
+```{r}
+give_n <- function(x)
+  c(y = max(x) * 1.1, label = length(x))
+chart(data = biometry, masse ~ alimentation %fill=% genre) +
+  geom_boxplot() +
+  stat_summary(fun.data = give_n, geom = "text", hjust = 0.5, 
+               position = position_dodge(0.75)) +
+  labs(title = "Masse en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse")
+
+```
 
 Dans l'ensemble, ces descriptions suggèrent que des comportements tels que l'activité physique, l'alimentation ou la consommation de sucre ou de fast-food peuvent être liés à certaines caractéristiques morphologiques. Toutefois, ces tendances doivent être validées par des tests statistiques appropriés.
 
@@ -129,13 +184,68 @@ Dans l'ensemble, ces descriptions suggèrent que des comportements tels que l'ac
 
 3\) Test Anova facteur 2 de Ide
 
-Dans cette étude portant sur les facteurs influençant l'obésité, plusieurs éléments clés ont été mis en évidence. L'analyse de l'impact de la cortisone n'a pas révélé de différence statistiquement significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas pris. Bien que la cortisone soit connue pour favoriser l'accumulation de graisse abdominale, cette absence de différence pourrait s'expliquer par des facteurs tels que la durée et la dose de traitement, la taille limitée de l'échantillon ou encore les différences naturelles entre les individus. Ces résultats soulignent la nécessité d'études plus approfondies pour évaluer avec précision l'impact de la cortisone sur la répartition des graisses corporelles.
+Dans cette étude portant sur les facteurs influençant l'obésité, plusieurs éléments clés ont été mis en évidence.
 
-D'autre part, l'analyse de l'indice taille/poignet (ITP) a montré une influence significative de l'âge sur cet indicateur morphologique, tandis que le genre et l'interaction entre l'âge et le genre n'ont pas eu d'impact notable. Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
+L'analyse de l'impact de la cortisone n'a pas révélé de différence statistiquement significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas pris. Bien que la cortisone soit connue pour favoriser le stockage de graisse abdominale, cette absence de différence pourrait s'expliquer par des facteurs tels que la durée et la dose de traitement, la taille limitée de l'échantillon ou encore les différences naturelles entre les individus. Ces résultats soulignent la nécessité d'études plus approfondies pour évaluer avec précision l'impact de la cortisone sur la répartition des graisses corporelles.
 
-En ce qui concerne le lien entre l'âge et le risque cardiovasculaire, les résultats indiquent une relation claire : les individus de moins de 25 ans présentent un risque cardiovasculaire plus faible, tandis que ceux de plus de 40 ans sont davantage exposés. Ce constat met en évidence l'importance de surveiller les facteurs de risque cardiovasculaire dès l'âge adulte, notamment chez les individus plus âgés. En revanche, la qualité du sommeil n'a pas montré d'effet significatif sur le risque cardiovasculaire, ce qui pourrait indiquer que d'autres facteurs liés au mode de vie ou à la génétique jouent un rôle plus déterminant.
+```{r}
+biometry <- smutate(biometry, whr = tour_taille/tour_hanche) 
+t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0.95, var.equal= TRUE)
+```
 
-Enfin, la consommation de sucre apparaît comme un facteur déterminant du risque cardiovasculaire. Les individus consommant régulièrement ou fréquemment des produits sucrés présentent un risque cardiovasculaire plus élevé que ceux ayant une consommation modérée ou faible. Ce lien direct entre le sucre et la santé cardiaque confirme la nécessité de promouvoir une alimentation équilibrée pour prévenir l'obésité et les maladies métaboliques associées. En somme, cette étude souligne l'importance de la prise en compte des habitudes de vie, de l'âge et des traitements comme la cortisone dans la gestion des risques métaboliques liés à l'obésité.
+L'analyse de l'indice taille/poignet (ITP) via une ANOVA à deux facteurs a ensuite mis en évidence une influence significative de l'âge sur cet indicateur morphologique. En revanche, ni le genre ni l'interaction entre l'âge et le genre n'ont pas eu d'impact notable. Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
+
+```{r}
+
+biometry <- biometry %>.%
+  smutate(., age_cat = case_when(
+    age < 25 ~ "< 25 ans",
+    age >= 25 & age <= 40 ~ "25-40 ans",
+    age > 40 ~ "> 40 ans"))
+    
+biometry_clean %>.%
+  group_by(., age_cat, genre) %>.%
+  summarise(., mean_itp = mean(itp, na.rm = TRUE))
+
+aov(itp ~ age_cat * genre, data = biometry_clean)
+
+```
+
+Un test du chi² a également permis de mieux comprendre les relations entre l'âge et le risque cardiovasculaire. Il montre clairement que le risque augmente avec l'âge : les plus jeunes sont globalement moins exposés, tandis que les plus de 40 ans présentent un risque accru. Cette tendance met en lumière l'importance de la prévention dès l'entrée dans l'âge adulte.
+
+Enfin, un autre test du chi² a révélé un lien significatif entre la consommation de sucre et le risque cardiovasculaire. Les personnes consommant régulièrement du sucre avaient davantage de risques, comparées à celles ayant une consommation plus modérée. En revanche, la qualité du sommeil ne semblait pas liée à ce risque, du moins dans cet échantillon.
+
+```{r}
+biometry <- biometry %>.%
+  smutate(.,
+    ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
+  ) %>.%
+  smutate(.,
+    risque_ic = case_when(
+      ic < 1.25 ~ "modéré",
+      ic >= 1.25 ~ "élevé"))
+
+biometry <- biometry %>.%
+  smutate(.,sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
+      sommeil >= 7 & sommeil > 8 ~ "Modéré",
+      sommeil > 8 ~ "Suffisant"), sucre_cat = case_when(
+      sucre %in% c("jamais", "rarement") ~ "Faible",
+      sucre == "régulièrement" ~ "Régulièrement",
+      sucre == "souvent" ~ "Souvent"))
+
+table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
+table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
+table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
+
+
+
+chisq.test(table_age_ic)
+chisq.test(table_sommeil_ic)
+chisq.test(table_sucre_ic)
+
+```
+
+En somme, cette étude souligne l'importance de la prise en compte des habitudes de vie, de l'âge et des traitements comme la cortisone dans la gestion des risques métaboliques liés à l'obésité.
 
 # Discussion et conclusions
 
@@ -145,7 +255,7 @@ Les résultats de notre étude révèlent une relation complexe entre les habitu
 
 L'influence de la consommation de sucre sur la santé métabolique est particulièrement marquée. Nos résultats montrent une association claire entre une consommation élevée de sucre ajouté et une augmentation du tour de taille, un indicateur de la graisse viscérale. Cette graisse abdominale, liée à un risque accru de maladies cardiovasculaires, souligne l'importance de la réduction de l'apport en sucre comme stratégie de prévention de l'obésité et des complications métaboliques.
 
-De même, l'analyse de la consommation de fast food et de la qualité du sommeil révèle un lien potentiel entre une alimentation déséquilibrée et des troubles du sommeil, notamment chez les hommes. Cette perturbation du sommeil pourrait indirectement contribuer à la prise de poids et à l'obésité, renforçant l'importance d'une alimentation équilibrée et de bonnes habitudes de sommeil pour la prévention des troubles métaboliques.
+De même, l'analyse de la consommation de fast food et food et de la qualité du sommeil révèle un lien potentiel entre une alimentation déséquilibrée et des troubles du sommeil, notamment chez les hommes. Cette perturbation du sommeil pourrait indirectement contribuer à la prise de poids et à l'obésité, renforçant l'importance d'une alimentation équilibrée et de bonnes habitudes de sommeil pour la prévention des troubles métaboliques.
 
 Enfin, le Waist-to-Hip Ratio (WHR), indicateur de la distribution de la graisse corporelle, présente des différences significatives entre les sexes, les hommes affichant généralement un WHR plus élevé que les femmes. De plus, ce ratio est influencé par le risque cardiovasculaire (IC), les individus à risque élevé ayant un WHR plus important. Ces résultats confirment la pertinence du WHR comme outil de dépistage des risques métaboliques, tout en soulignant l'importance de tenir compte du sexe et du risque IC dans son interprétation.
 

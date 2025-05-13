@@ -1022,16 +1022,3 @@ Les résultats montrent un effet significatif du risque IC (p \< 0.001) et du ge
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   La consommation de cigarettes semble avoir un lien avec la masse corporelle. Bien que la nicotine puisse influencer temporairement le poids, cette relation diffère en fonction du genre et du niveau de masse corporelle. Cela indique que l'impact du tabagisme sur l'obésité nécessite des recherches supplémentaires pour mieux comprendre ces effets et leur évolution au fil du temps.
-
--   La consommation de sucre ajouté est fortement associée à un tour de taille élevé, favorisant l'accumulation de graisse abdominale, un facteur clé dans le développement de l'obésité et des maladies métaboliques. Cette relation est également liée à un risque accru de maladies cardiovasculaires. Ainsi, réduire l'apport en sucre est essentiel pour limiter la graisse viscérale et prévenir les risques de santé associés, notamment l'obésité et les troubles cardiaques.
-
--   Une consommation élevée de fast food semble perturber la qualité du sommeil, particulièrement chez les hommes, ce qui pourrait être un facteur indirect influençant la prise de poids et l'obésité.
-
--   Le Waist-to-Hip Ratio (WHR), indicateur clé de la distribution de la graisse corporelle, révèle des différences significatives entre les sexes, avec les hommes présentant généralement un WHR plus élevé que les femmes. Ce ratio est également influencé par le risque cardiovasculaire (IC), les individus à risque élevé affichant généralement un WHR plus important. Ces résultats soulignent l'importance de prendre en compte à la fois le sexe et le risque IC dans l'évaluation du risque métabolique et la prévention des complications associées.
-
-<!--# Important : ce document doit compiler SANS ERREURS avec le bouton 'Rendu' sinon le travail sera sanctionné lourdement. La compilation du document Quarto est maintenant considérée comme acquise. -->
-
-# Référence
-
-<!--% N'indiquez rien ci-dessous. Quarto se chargera de rajouter vos références bibliographiques automatiquement. -->
