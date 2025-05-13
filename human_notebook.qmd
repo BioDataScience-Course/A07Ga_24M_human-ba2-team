@@ -645,11 +645,6 @@ Nous rejetons H0 au seuil alpha de 5%, les variances de deux groupes ne sont pas
 
 En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
 
-```{r test_t_1 Christelle}
-t.test(data = biometry, whr ~ genre, 
-  alternative = "two.sided", var.equal = FALSE)
-
-```
 
 <!-- Interprétation statistique et biologique -->
 
