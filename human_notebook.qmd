@@ -593,7 +593,7 @@ fisher_test
 
 <!--% Interprétation statistique et biologique -->
 
-La valeur p est supérieure au seuil alpha de 5 % dans les deux tests ; nous ne rejetons donc pas l’hypothèse nulle (H₀). Il n’y a pas de preuve suffisante d’une dépendance entre le genre et la constitution osseuse. Ainsi, la répartition des morphotypes osseux (fin, moyen, large) ne varie pas significativement selon le genre dans notre échantillon.
+La valeur p est supérieure au seuil alpha de 5 % dans les deux tests ; nous ne rejetons donc pas l'hypothèse nulle (H₀). Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse. Ainsi, la répartition des morphotypes osseux (fin, moyen, large) ne varie pas significativement selon le genre dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -729,7 +729,7 @@ En moyenne, les individus sous cortisone présentent un WHR plus élevé (0.9185
 
 ### ANOVA à un facteur 1
 
-Les habitudes alimentaires jouent un rôle crucial dans la variation de l\'IMC, et différents types de régimes peuvent influencer cette mesure de manière significative. Par exemple, les individus suivant un régime carnivore peuvent présenter un IMC différent de ceux adoptant un régime herbivore ou mixte, en raison des variations dans la densité calorique, la composition nutritionnelle et les habitudes de consommation alimentaire. Ainsi, cette analyse vise à déterminer si le type de régime alimentaire influence l\'IMC.
+Les habitudes alimentaires jouent un rôle crucial dans la variation de l'IMC, et différents types de régimes peuvent influencer cette mesure de manière significative. Par exemple, les individus suivant un régime carnivore peuvent présenter un IMC différent de ceux adoptant un régime herbivore ou mixte, en raison des variations dans la densité calorique, la composition nutritionnelle et les habitudes de consommation alimentaire. Ainsi, cette analyse vise à déterminer si le type de régime alimentaire influence l'IMC.
 
 [@caducee2006]
 
@@ -784,7 +784,6 @@ kruskal.test(data = biometry4, bmi ~ alimentation)
 <!--% Interprétation statistique et biologique -->
 
 Le test de Kruskal-Wallis a donné une valeur p supérieure au seuil alpha de 5 %, ce qui signifie que nous ne rejetons pas H0. Ainsi, il n'y a pas de différence significative dans les distributions de bmi entre les différents groupes d'alimentation. Cela suggère que le type d'alimentation étudié n'a pas un effet significatif sur l'indice de masse corporelle (bmi) dans cet échantillon.
-
 
 ### ANOVA à un facteur 2 by IDE
 
@@ -932,10 +931,9 @@ qqline(residus, col = "red")
 
 <!--% Interprétation statistique et biologique -->
 
-L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p < 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p > 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
+L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
 Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
-
 
 ### ANOVA à deux facteurs 2 by Christelle
 
@@ -968,8 +966,7 @@ Le whr augmente avec le risque ic pour les deux genres.
 
 Hypothèses test de Bartlett
 
-H0: Les variances des groupes sont égales. 
-H1: au moins une des variances est différente.
+H0: Les variances des groupes sont égales. H1: au moins une des variances est différente.
 
 ```{r bartlett anova2}
 bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
@@ -1002,11 +999,9 @@ Il n' y a pas d'interaction. Les points suivent à peu près la ligne droite, la
 
 <!--% Hypothèses -->
 
-Hypothèse nulle (H₀) :
-Il n'y a pas d'effet significatif du facteur risque_ic, du facteur genre, ni de l'interaction entre risque_ic et genre sur le WHR. Autrement dit, les moyennes du WHR sont égales pour toutes les catégories de risque_ic, tous les genres et il n’y a pas d’interaction entre les deux facteurs.
+Hypothèse nulle (H₀) : Il n'y a pas d'effet significatif du facteur risque_ic, du facteur genre, ni de l'interaction entre risque_ic et genre sur le WHR. Autrement dit, les moyennes du WHR sont égales pour toutes les catégories de risque_ic, tous les genres et il n'y a pas d'interaction entre les deux facteurs.
 
-Hypothèse alternative (H₁) :
-Il existe au moins un effet significatif parmi les facteurs risque_ic, genre ou leur interaction sur le WHR. Cela signifie que les moyennes du WHR diffèrent selon les catégories de risque_ic, les genres, ou que l'effet de risque_ic sur le WHR dépend du genre.
+Hypothèse alternative (H₁) : Il existe au moins un effet significatif parmi les facteurs risque_ic, genre ou leur interaction sur le WHR. Cela signifie que les moyennes du WHR diffèrent selon les catégories de risque_ic, les genres, ou que l'effet de risque_ic sur le WHR dépend du genre.
 
 ```{r test_anova2_2}
 anova_model <- lm(data = biometry, whr ~ risque_ic + genre)
