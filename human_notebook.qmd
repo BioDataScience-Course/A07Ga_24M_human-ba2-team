@@ -769,7 +769,6 @@ bartlett.test (data=biometry4, bmi ~ alimentation )
 # La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
 
 
-<<<<<<< HEAD
 # Vérification de la distribution de la variable quantitative "bmi":
 
 car::qqPlot(biometry4[["bmi"]], distribution = "norm",
@@ -786,9 +785,6 @@ car::qqPlot(biometry4[["bmi"]], distribution = "norm",
 kruskal.test(data = biometry4, bmi ~ alimentation)
 
 # La valeur de p est supérieur au seuil alpha de 5 %. On ne rejette donc pas H0 et les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
-
-=======
->>>>>>> 2938c268e2b33e6892a9b750794043511cba19ee
 ```
 
 <!--% Interprétation statistique et biologique -->
@@ -803,7 +799,6 @@ L'alimentation peut potentiellement influencer le développement osseux, la dens
 
 Dans ce contexte, il est pertinent de s'interroger sur une possible différence de l'indice ITP selon les types d'alimentation (omnivore, carnivore, végétarien). Si l'alimentation avait un effet sur la morphologie, on pourrait s'attendre à des moyennes d'ITP différentes selon les régimes.
 
-Référence scientifique : Rizzoli R. et al., "Nutrition and bone health: Turning knowledge and beliefs into healthy behaviour," Current Osteoporosis Reports, 2014.
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 

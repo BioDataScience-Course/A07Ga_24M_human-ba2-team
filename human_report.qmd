@@ -113,11 +113,17 @@ Le seuil de tous les tests est fixé à 5%.
 
 <!--# N'oubliez pas que ce document doit pouvoir compiler indépendamment du reste. Cela implique que vous ajoutiez un chunk d'importation des données et que vous recalculiez tout ce qui doit l'être... Par contre, un simple copier-coller de toute la partie résultats du bloc-notes ne sera pas considéré comme un travail réalisé : vous devez sélectionner, et éventuellement remanier un peu le code, pour ne conserver que ce qui est utile ici. -->
 
-L'échantillon comprend 144 individus avec un taux de complétion élevé pour la majorité des variables. Les variables quantitatives (comme la masse, la taille, le tour de taille ou encore l'indice ITP) sont toutes bien renseignées et permettent des calculs fiables. L'ensemble des données permet de calculer différents indices corporels (IMC, IC, ITP, RFM, WHR), utilisés dans notre projet.
+La description des données c'est dans le but de mieux comprendre les liens entre les habitudes de vie et la morphologie corporelle, nous avons sélectionné plusieurs éléments descriptifs tirés de l’exploration de notre base de données.
 
-Les distributions des variables clés (comme le tour de poignet, le sommeil, la consommation de sucre, etc.) sont globalement normales ou proches de la normale. On observe une diversité marquée selon les sexes et les habitudes de vie (ex. activité physique, consommation de fast food, tabac, etc.). Certaines catégories sont faiblement représentées (ex. végétariens), ce qui limite parfois les comparaisons statistiques entre sous-groupes.
+La première analyse s’est concentrée sur la relation entre l’activité physique, le type de régime alimentaire et le tour de poignet. Il est apparu que chez les personnes ayant une activité physique élevée, les omnivores présentaient un tour de poignet plus important que les autres régimes, tandis que chez les individus modérément actifs, les végétariens affichaient des tours de poignet plus élevés. Ces résultats suggèrent une influence combinée de l’activité physique et du régime alimentaire sur la densité osseuse ou la morphologie distale.
 
-Les valeurs moyennes de masse, de taille et de tour de taille sont cohérentes avec ce que l'on peut attendre d'une population adulte. On note que la majorité des participants sont omnivores, que l'activité physique est globalement faible à modérée, et que la consommation de fast food reste fréquente.
+La seconde analyse portait sur la consommation de tabac selon le genre et la masse corporelle corrigée. Il en ressort que les hommes consomment en moyenne moins de cigarettes par semaine que les femmes, bien que cette tendance s'inverse pour les masses corporelles plus élevées. Chez les femmes ayant une masse modérée, la variabilité est très forte, certaines fumant beaucoup tandis que d'autres pas du tout.
+
+Une autre analyse s’est focalisée sur le tour de taille en fonction de la consommation de sucre. Les individus ayant une consommation fréquente de sucre présentaient un tour de taille plus élevé, ce qui pourrait refléter une accumulation de graisse viscérale, un facteur de risque reconnu pour les maladies métaboliques.
+
+Enfin, nous avons examiné la masse corporelle selon le type d’alimentation, en distinguant les hommes et les femmes. Les omnivores représentaient la majorité de l’échantillon, avec une grande variabilité dans les valeurs. Les hommes présentaient des masses généralement plus élevées, particulièrement chez les carnivores. Les végétariens étaient toutes des femmes et affichaient une masse plus faible et plus homogène.
+
+Dans l’ensemble, ces descriptions suggèrent que des comportements tels que l’activité physique, l’alimentation ou la consommation de sucre ou de fast-food peuvent être liés à certaines caractéristiques morphologiques. Toutefois, ces tendances doivent être validées par des tests statistiques appropriés.
 
 ## Tests d'hypothèses
 
@@ -128,20 +134,6 @@ Les valeurs moyennes de masse, de taille et de tour de taille sont cohérentes a
 #test student cortisone(ith)
 #test chi carre(ic)
 #test anova deux facteurs(itp)
-
-Tests d'hypothèses afin de comprendre les liens entre les indices corporels et les comportements de vie, plusieurs tests d'hypothèse ont été réalisés à l'aide des indices calculés.
-
-Le test du Chi² a été utilisé pour vérifier la dépendance entre le risque cardiovasculaire (IC) et les facteurs de mode de vie comme l'âge, le sommeil et la consommation de sucre. Ce test a montré une association significative entre l'âge et le risque IC (p \< 0.001), ainsi qu'entre la consommation de sucre et le risque IC (p = 0.0026). En revanche, aucune dépendance significative n'a été observée entre le sommeil et le risque IC (p \> 0.5).
-
-Un autre test du Chi² (avec test exact de Fisher en complément) a été utilisé pour examiner la relation entre le sexe et la constitution osseuse (catégories ITP). Aucune association significative n'a été détectée (p \> 0.48), ce qui suggère une répartition équitable des types d'ossature entre les sexes dans notre échantillon.
-
-Le test t de Student (version de Welch) a révélé une différence statistiquement significative de WHR entre hommes et femmes (p \< 0.001), avec une moyenne plus élevée chez les hommes, indiquant un risque métabolique accru. En revanche, la prise de cortisone n'a pas montré d'effet significatif sur le WHR (p = 0.221).
-
-Deux ANOVA à un facteur ont été menées. L'une portait sur la consommation d'alcool selon le régime alimentaire, mais les résultats n'ont pas été explicitement significatifs. La seconde ANOVA visait à tester l'effet du régime sur l'indice ITP. Comme les conditions de normalité des résidus n'étaient pas respectées (p = 4.92e-06), un test de Kruskal-Wallis a été réalisé, confirmant l'absence de différence significative (p = 0.23).
-
-Enfin, une ANOVA à deux facteurs a été réalisée pour tester l'effet de l'âge, du sexe et de leur interaction sur l'ITP. L'effet de la catégorie d'âge est significatif (p \< 0.001), indiquant que l'ITP varie en fonction de l'âge. Ni le sexe ni l'interaction n'ont montré d'effet significatif (p \> 0.29), suggérant une stabilité de cet indice entre les sexes à âge donné.
-
-Ces résultats soutiennent l'idée que certains comportements de vie (âge, sucre) influencent la morphologie corporelle et les risques métaboliques, alors que d'autres comme la consommation de fast food ou de cortisone ne montrent pas d'effet clair à travers nos tests.
 
 # Discussion et conclusions
 
