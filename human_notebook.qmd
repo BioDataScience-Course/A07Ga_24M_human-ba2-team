@@ -128,7 +128,7 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
 
 **interprétations**
 
-La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
+La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2.
 
 ### Description 2 par Christelle
 
@@ -161,7 +161,6 @@ geom_boxplot() +
 ***interprétations***
 
 Femmes : Il y a une légère tendance à un meilleur sommeil chez celles ayant une forte consommation de fast food. Toutefois, le nombre d'individus dans cette catégorie est très faible, ce qui doit être pris en compte dans l'interprétation des résultats. Hommes : Il semble y avoir une relation inverse entre la consommation de fast food et le sommeil chez les hommes, avec une tendance à dormir moins lorsqu'ils consomment plus de fast food. Cependant, la taille du groupe pour la consommation élevée de fast food est petite, ce qui limite l'interprétation.
-
 
 Les résultats de ces analyses montrent que la consommation élevée de sucre et de fast food, ainsi qu'un sommeil insuffisant, semblent influencer la répartition des graisses corporelles et la santé métabolique. Cependant, ces tendances doivent être confirmées par des tests statistiques plus rigoureux.
 
@@ -354,25 +353,21 @@ $$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
 
 # Calcul de l’indice taille/poignet
 biometry1 <- biometry %>%
-  smutate(
-    itp = taille / tour_poignet,
-    
+  smutate(., itp = taille / tour_poignet,
     constitution_osseuse = case_when(
       genre == "F" & itp > 10.9 ~ "Fine",
       genre == "F" & itp < 9.9 ~ "Large",
       genre == "F" & itp >= 9.9 & itp <= 10.9 ~ "Moyenne",
-      
       genre == "H" & itp > 10.4 ~ "Fine",
       genre == "H" & itp < 9.6 ~ "Large",
       genre == "H" & itp >= 9.6 & itp <= 10.4 ~ "Moyenne",
-      
       TRUE ~ "Inconnu"
+      )
     )
-  )
 
 # Affichage du tableau
 biometry1 %>% 
-    sselect(genre, taille, tour_poignet, itp, constitution_osseuse)
+  sselect(., genre, taille, tour_poignet, itp, constitution_osseuse)
 tabularise(biometry1)
 ```
 
@@ -468,16 +463,12 @@ table_contingence <- biometry %>.%
  # Afficher le tableau de contingence
  print(table_contingence)
  tabularise(table_contingence)
-
  
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-Hypothèse nulle (H₀) :
-Il n’existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes.
-Hypothèse alternative (H₁) :
-Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
+Hypothèse nulle (H₀) : Il n'existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes. Hypothèse alternative (H₁) : Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
 
 <!--% Vérification des conditions d'application -->
 
@@ -515,7 +506,6 @@ tabularise(test_sucre_ic$expected)
 
 ```
 
-
 ```{r graphique quantile~quantile}
 observes <- as.vector(table_age_ic)
 qqnorm(observes,
@@ -540,10 +530,7 @@ qqline(observes, col = "blue")
 
 ```
 
-
-Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n’est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5.
-Le test peut être réalisé.
-
+Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
 
 ```{r test_chi2_1}
 chisq.test(table_age_ic)
@@ -555,18 +542,15 @@ chisq.test(table_sucre_ic)
 
 **Âge et le risque caridovasculaire**
 
-La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. 
-En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
 
 **Sommeil et risque cardiovasculaire**
 
-La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. 
-Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
+La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
 
 **Consommation de sucre et risque cardiovasculaire**
 
-La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire.
-En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
+La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
 
 ### Test de Chi^2^ by Ide
 
@@ -631,8 +615,6 @@ Le WHR est considéré comme un meilleur indicateur du risque de maladies cardia
 
 Référence : Berton, A. G., Burke, G. L., & Sidney, S. (2009). Waist-to-hip ratio and risk of cardiovascular disease in the coronary artery risk development in young adults study. American Journal of Epidemiology, 170(2), 212-218. https://doi.org/10.1093/aje/kwp137
 
-
-
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_1}
@@ -651,7 +633,7 @@ Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est confor
 
 H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
 
-H1 : Il existe une différence significative entre les moyennes de WHR # QQ plot pour activité physique élevée
+H1 : Il existe une différence significative entre les moyennes de WHR \# QQ plot pour activité physique élevée
 
 <!-- Vérification des conditions d'application -->
 
@@ -679,7 +661,6 @@ Nous rejetons H0 au seuil alpha de 5%, les variances de deux groupes ne sont pas
 
 En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
 
-
 ```{r test_t_1 Christelle}
 t.test(data = biometry, whr ~ genre, 
   alternative = "two.sided", var.equal = FALSE)
@@ -688,9 +669,7 @@ t.test(data = biometry, whr ~ genre,
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p < 0,001).
-
-
+La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p \< 0,001).
 
 ### Test t de Student 2
 
@@ -761,14 +740,13 @@ La consommation d'alcool est un facteur comportemental fréquemment associé à 
 
 ```{r plot_anova1_1}
 
- smutate(., bmi = masse / (taille/100)^2)
-
 chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
   geom_boxplot() +
   labs(title = "Consommation d'alcool selon le type d'alimentation",
        x = "Type d'alimentation", 
        y = "Nombre de verres d'alcool par semaine") + 
   coord_flip()
+
 
 ```
 
@@ -788,12 +766,10 @@ H1: Il existe une différence significative du nombre de verres d'alcool consomm
 bartlett.test (data= biometry, alcool ~ alimentation)
 
 # La valeur p est inférieur au seuil alpha de 5 % donc H0 est rejetée. Il n'y a pas homoscèdasticité. 
-  
+# Les variances augmentent avec les moyennes donc pour avoir homoscédasticité, nous transformons les variables avec log:
 
-# Vérification de la distribution:
-#
-
-# Réalisation du test t de Student:
+biometry <- smutate (biometry, log_alcool = ln(alcool))
+bartlett.test (data = biometry, log_alcool ~ alimentation)
 
 ```
 
@@ -953,6 +929,12 @@ L'analyse de la variance à deux facteurs a révélé un effet significatif de l
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
+Le **rapport taille-hanches (WHR)** reflète la répartition de la graisse corporelle et est lié au risque de maladies cardiovasculaires. Un WHR élevé indique une accumulation de graisse abdominale, facteur de risque important pour la santé.
+
+Ce risque, évalué par le WHR, peut varier selon le **genre**, en raison de différences biologiques dans le stockage des graisses.
+
+Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s'il existe une **interaction** entre ces deux facteurs.
+
 ```{r plot_anova2_2}
 biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
 chart(data = biometry_clean, whr ~ interaction(risque_ic, genre) %fill=% genre) +
@@ -966,8 +948,8 @@ chart(data = biometry_clean, whr ~ interaction(risque_ic, genre) %fill=% genre) 
   )
 
 ```
-le whr augmente avec le risque ic pour les deux genres.
 
+le whr augmente avec le risque ic pour les deux genres.
 
 <!--% Vérification des conditions d'application -->
 
@@ -976,10 +958,10 @@ le whr augmente avec le risque ic pour les deux genres.
 #hapiro.test(residuals(anova2_factors))  # Test de normalité
 
 ```
-<!--% Hypothèses test de Bartlett -->
-H₀ : les variances des groupes sont égales.
-H₁ : au moins une des variances est différente.
 
+<!--% Hypothèses test de Bartlett -->
+
+H₀ : les variances des groupes sont égales. H₁ : au moins une des variances est différente.
 
 ```{r bartlett anova2}
 bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
@@ -995,15 +977,15 @@ qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
 qqline(residuals(modele), col = "mangeta")
 
 ```
+
 les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
 
-```{r test_anova2_2}  
+```{r test_anova2_2}
 anova_interaction <- aov(data = biometry, whr ~ risque_ic * genre)
 summary(anova_interaction)
 ```
 
-Les résultats montrent un effet significatif du risque IC (p < 0.001) et du genre (p < 0.001) sur le WHR. En revanche, l’interaction entre risque IC et genre n’est pas significative (p = 0.13), ce qui suggère que l’effet du risque IC sur le WHR ne dépend pas du sexe.
-<!--% Interprétation statistique et biologique -->
+Les résultats montrent un effet significatif du risque IC (p \< 0.001) et du genre (p \< 0.001) sur le WHR. En revanche, l'interaction entre risque IC et genre n'est pas significative (p = 0.13), ce qui suggère que l'effet du risque IC sur le WHR ne dépend pas du sexe. <!--% Interprétation statistique et biologique -->
 
 #NEFISE
 
@@ -1011,7 +993,7 @@ Les résultats montrent un effet significatif du risque IC (p < 0.001) et du gen
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   ...
+-   Nos résultats soulignent l\'importance de facteurs modifiables comme l\'alimentation, l\'activité physique, le sommeil et notamment la **consommation de sucre**, dans la prévention des risques cardiovasculaires. L\'âge et le genre influencent également certains indicateurs comme le WHR et l\'IC. La surveillance de ces variables peut contribuer à une meilleure évaluation du risque et à la mise en place de **stratégies de prévention ciblées et personnalisées**.
 
 -   ...
 
