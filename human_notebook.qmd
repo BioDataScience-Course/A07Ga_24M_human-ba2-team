@@ -128,7 +128,7 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
 
 **interprétations**
 
-La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
+La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2.
 
 ### Description 2 par Christelle
 
@@ -166,42 +166,47 @@ Les résultats de ces analyses montrent que la consommation élevée de sucre et
 
 ### Description 1 par Ide
 
+Dans le cadre de notre étude sur les comportements alimentaires et leur impact sur la morphologie corporelle, nous avons examiné la répartition de la masse corporelle selon le type de régime alimentaire (carnivore, omnivore, végétarien), en distinguant également les résultats par genre. Le graphique ci-dessous présente des boxplots illustrant la distribution des masses corrigées pour chaque catégorie alimentaire, avec une différenciation visuelle entre les hommes et les femmes.
+
 ```{r}
 give_n <- function(x)
   c(y = max(x) * 1.1, label = length(x))
-chart(data = biometry, masse_corr ~ alimentation %fill=% genre) +
+chart(data = biometry, masse ~ alimentation %fill=% genre) +
   geom_boxplot() +
   stat_summary(fun.data = give_n, geom = "text", hjust = 0.5, 
                position = position_dodge(0.75)) +
-  labs(title = "Masse corrigée en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse corrigée")
+  labs(title = "Masse en fonction du régime alimentaire", x = "Régime alimentaire", y = "Masse")
 
 ```
 
 ***interprétations***
 
--   Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes.
+-   Carnivores: Les hommes semblent avoir une variabilité plus grande que les femmes. La masse varie davantage chez les hommes que chez les femmes, suggérant une plus grande dispersion des valeurs masculines.
 
--   Omnivores: C'est la catégorie avec le plus d'individus (72 pour les femmes et 56 pour les hommes), et la distribution est plus étendue. Des valeurs extrêmes sont présentes dans cette catégorie.
+-   Omnivores: C'est la catégorie avec le plus d'individus (72 pour les femmes et 56 pour les hommes), et la distribution est plus étendue avec plusieurs valeurs extrêmes, indiquant une grande hétérogénéité des masses.
 
--   Végétariens: Il y a uniquement des femmes dans l'échantillon, avec une distribution serrée autour d'une masse corrigée faible.
+-   Végétariens: Il y a uniquement des femmes dans l'échantillon, avec des masses relativement faibles et peu dispersées et une distribution serrée autour d'une masse faible. Ce qui traduit une certaine homogénéité.
 
-De façon général, les médianes de masse_corr semblent être plus élevées pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
+De façon générale, les médianes de masse semblent être plus élevées pour les hommes que pour les femmes dans les régimes carnivores et omnivores.
 
 ### Description 2 par Ide
+
+L'activité physique est un levier essentiel dans la prévention de l'obésité et des pathologies métaboliques. Dans cette optique, nous avons cherché à examiner si un lien se dégage entre le niveau d'activité physique hebdomadaire et la masse corporelle des participants. L'objectif est de déterminer si les individus les plus actifs présentent une masse significativement différente des moins actifs, et si des différences apparaissent selon le genre.
 
 ```{r}
 chart(data = biometry, activite_physique ~ masse, color = genre) + 
   geom_point(alpha = 0.6) +
-  labs(title = "Relation entre activité physique et masse corrigée", x = "Activité physique (min/semaine)", y = "Masse corrigée")
+  labs(title = "Relation entre activité physique et masse", x = "Activité physique (min/semaine)", y = "Masse")
 ```
 
 ***interprétations***
 
--On observe aucune tendance claire (linéaire ou exponentielle), suggérant que l'activité physique est directement liée a la masse corrigée.
+-On observe aucune tendance claire (linéaire ou exponentielle) n’apparaît entre la masse et l’activité physique. Les points sont dispersés de façon aléatoire.
 
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses corrigées.
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses, mais cela semble indépendant du volume d’activité.
 
--La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine.
+-La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine, ce qui pourrait expliquer l’absence d’effet clair : les niveaux d’activité sont peut-être trop homogènes pour permettre une différenciation statistique.
+
 
 ## Calcul d'indices
 
@@ -554,6 +559,7 @@ La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y
 ```{r plot_chi2_2}
 # Créer le tableau croisé
 tableau_itp <- table(biometry1$genre, biometry1$constitution_osseuse)
+head(tableau_itp)
 
 # Réaliser le test d’indépendance
 test_itp <- chisq.test(tableau_itp)
@@ -589,14 +595,13 @@ fisher_test
     Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
+La valeur p > 0.05 dans les deux tests
 
--   La valeur p \> 0.05 dans les deux tests
-
--   Nous ne rejetons pas l'hypothèse nulle H₀
+Nous ne rejetons pas l'hypothèse nulle H₀
 
 Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
 
--   La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
+La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -762,6 +767,7 @@ bartlett.test (data=biometry4, bmi ~ alimentation )
 # La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
 
 
+<<<<<<< HEAD
 # Vérification de la distribution de la variable quantitative "bmi":
 
 car::qqPlot(biometry4[["bmi"]], distribution = "norm",
@@ -779,13 +785,19 @@ kruskal.test(data = biometry4, bmi ~ alimentation)
 
 # La valeur de p est supérieur au seuil alpha de 5 %. On ne rejette donc pas H0 et les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
 
+=======
+>>>>>>> 2938c268e2b33e6892a9b750794043511cba19ee
 ```
 
 <!--% Interprétation statistique et biologique -->
 
 
+<<<<<<< HEAD
 
 ### ANOVA à un facteur 2
+=======
+### ANOVA à un facteur 2 by IDE
+>>>>>>> 2938c268e2b33e6892a9b750794043511cba19ee
 
 L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
 
@@ -811,7 +823,7 @@ anova_resultats <- anova(modele_anova)
 tabularise(anova_resultats)
 
 #visualisation des resultats
-chart(data = biometry1, alimentation ~ itp %fill=% alimentation) +
+chart(data = biometry1, itp ~ alimentation %fill=% alimentation) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, color = "black") +
   stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +
@@ -853,9 +865,10 @@ L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avo
 
 <!--% Interprétation statistique et biologique -->
 
-p \> 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
+p > 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
 
-D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative\*\* sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
+D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative
+sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
 
 Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
 
@@ -864,8 +877,6 @@ Malgré cela, l'ANOVA à un facteur appliquée à notre modèle a donné une val
 Afin de confirmer cette tendance sans supposer la normalité, nous avons réalisé un test non paramétrique de Kruskal-Wallis, qui a lui aussi conduit à une valeur p = 0.2315.
 
 Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
-
-***CHRIS***
 
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
@@ -879,9 +890,9 @@ Ce second test confirme l'absence de lien statistiquement significatif entre l'a
 anova_itp_age <- aov(itp ~ age_cat * genre, data = biometry_clean)
 summary(anova_itp_age)
 
-biometry_clean %>%
-  group_by(age_cat, genre) %>%
-  summarise(mean_itp = mean(itp, na.rm = TRUE)) %>%
+biometry_clean %>.%
+  group_by(., age_cat, genre) %>.%
+  summarise(., mean_itp = mean(itp, na.rm = TRUE)) %>.%
   chart(., mean_itp ~ age_cat %color=% genre %group=% genre) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -910,11 +921,22 @@ Facteurs explicatifs (age_cat, genre) :
 
 -   `genre` possède 2 modalités : H et F
 
-    **Indépendance des observations** : Les données proviennent de **personnes différentes**, donc on suppose que cette condition est respectée
+Indépendance des observations : Les données proviennent de personnes différentes, donc on suppose que cette condition est respectée.
+
+Homogénéité des variances : Le test de Bartlett donne p = 0.1208 \> 0.05 → la condition est respectée.
+
+Normalité des résidus : Le QQ-plot montre une distribution globalement linéaire, avec de légers écarts en extrémités. C'est acceptable, surtout que l'ANOVA est robuste aux petites déviations de normalité.
 
 ```{r test_anova2_1}
 
 aov(itp ~ age_cat * genre, data = biometry_clean)
+
+bartlett.test(itp ~ interaction(age_cat, genre), data = biometry_clean)
+
+residus <- residuals(modele_anova)
+qqnorm(residus)
+qqline(residus, col = "red")
+
 
 ```
 
@@ -922,13 +944,7 @@ aov(itp ~ age_cat * genre, data = biometry_clean)
 
 L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
--   L'ITP varie significativement selon les catégories d'âge → certaines tranches d'âge ont un indice taille/poignet plus élevé.
-
-    Il n'y a pas de différence marquée entre hommes et femmes en moyenne.
-
-    L'absence d'interaction indique que l'effet de l'âge est similaire chez les hommes et les femmes : les courbes du graphique sont quasi parallèles, ce qui confirme l'absence d'interaction.
-
-    Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
+-   Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
 ### ANOVA à deux facteurs 2 by Christelle
 
@@ -938,7 +954,7 @@ Le **rapport taille-hanches (WHR)** reflète la répartition de la graisse corpo
 
 Ce risque, évalué par le WHR, peut varier selon le **genre**, en raison de différences biologiques dans le stockage des graisses.
 
-Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s\'il existe une **interaction** entre ces deux facteurs.
+Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s'il existe une **interaction** entre ces deux facteurs.
 
 ```{r plot_anova2_2}
 biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
@@ -998,7 +1014,7 @@ Les résultats montrent un effet significatif du risque IC (p \< 0.001) et du ge
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   ...
+-   Nos résultats soulignent l\'importance de facteurs modifiables comme l\'alimentation, l\'activité physique, le sommeil et notamment la **consommation de sucre**, dans la prévention des risques cardiovasculaires. L\'âge et le genre influencent également certains indicateurs comme le WHR et l\'IC. La surveillance de ces variables peut contribuer à une meilleure évaluation du risque et à la mise en place de **stratégies de prévention ciblées et personnalisées**.
 
 -   ...
 
