@@ -593,7 +593,7 @@ fisher_test
 
 <!--% Interprétation statistique et biologique -->
 
-La valeur p est supérieure au seuil alpha de 5% dans les deux test, donc nous ne rejetons pas l'hypothèse nulle H0. Il n'y a pas de preuve suffisante pour une dépendance entre les genres et la constitution osseuse. On détermine donc que la répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le genre dans notre échantillon.
+La valeur p est supérieure au seuil alpha de 5 % dans les deux tests ; nous ne rejetons donc pas l’hypothèse nulle (H₀). Il n’y a pas de preuve suffisante d’une dépendance entre le genre et la constitution osseuse. Ainsi, la répartition des morphotypes osseux (fin, moyen, large) ne varie pas significativement selon le genre dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -764,14 +764,16 @@ bartlett.test (data=biometry4, bmi ~ alimentation )
 
 # La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
 # Vérification de la distribution de la variable quantitative "bmi":
 
 car::qqPlot(biometry4[["bmi"]], distribution = "norm",
   envelope = 0.95, col = "Black", ylab = "bmi)")
 
 # La distribution s’éloigne un peu aux extrêmes de la distribution normale. Nous sommes dans un cas un peu limite. Nous effectuons donc un test non paramétrique: le test de Kruskal-Wallis, plutôt que le test d'Anova.
-
 
 # Test de Kruskal-Wallis: 
 
@@ -786,8 +788,11 @@ kruskal.test(data = biometry4, bmi ~ alimentation)
 
 <!--% Interprétation statistique et biologique -->
 
+<<<<<<< HEAD
+=======
 Le test de Kruskal-Wallis a donné une valeur p supérieure au seuil alpha de 5 %, ce qui signifie que nous ne rejetons pas H0. Ainsi, il n'y a pas de différence significative dans les distributions de bmi entre les différents groupes d'alimentation. Cela suggère que le type d'alimentation étudié n'a pas un effet significatif sur l'indice de masse corporelle (bmi) dans cet échantillon.
 
+>>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
 ### ANOVA à un facteur 2 by IDE
 
 L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
@@ -933,11 +938,24 @@ qqline(residus, col = "red")
 ```
 
 <!--% Interprétation statistique et biologique -->
+L’analyse de la variance à deux facteurs révèle que la catégorie d’âge (age_cat) a un effet significatif sur l’indice taille/poignet (ITP), avec F(2,137) = 9.299 et p < 0.001. En revanche, ni le genre (genre), ni l’interaction entre l’âge et le genre (age_cat:genre) n’ont montré d’effet significatif sur l’ITP (p > 0.05). Cela signifie que les variations de l’ITP observées sont principalement liées à l’âge, et non au genre ou à l’effet combiné des deux.
 
+<<<<<<< HEAD
 L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
 Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
+=======
+<<<<<<< HEAD
+Autrement dit, l’ITP semble évoluer en fonction de l’âge, possiblement en lien avec des modifications physiologiques ou morphologiques au fil du temps, comme la densité osseuse ou la répartition corporelle. Le fait que le genre n’ait pas d’influence significative, que ce soit seul ou en interaction avec l’âge, suggère que dans cette population, les différences morphologiques entre hommes et femmes n’ont pas d’impact notable sur cet indice — ou alors, elles s’expriment de façon comparable quel que soit l’âge.
+=======
+L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p < 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p > 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
+
+Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
+
+
+>>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
+>>>>>>> a9cd00cf32b0d178f7d1fa9e5388d65a42d94d53
 ### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
@@ -950,9 +968,10 @@ Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le
 
 ```{r plot_anova2_2}
 biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
-chart(data = biometry_clean, whr ~ interaction(risque_ic, genre) %fill=% genre) +
+chart(data = biometry_clean, whr ~ interaction(risque_ic, genre)) +
   geom_boxplot(position = position_dodge(width = 0.8)) +
-  scale_fill_manual(values = c("lightblue", "salmon")) +
+  geom_jitter(width = 0.05, alpha = 0.3) +
+  stat_summary(geom = "point", fun = "mean", color = "magenta", size = 3)+
   labs(
     title = "WHR selon Risque IC et Genre",
     x = "Risque IC et Genre",
@@ -966,13 +985,14 @@ Le whr augmente avec le risque ic pour les deux genres.
 
 <!--% Vérification des conditions d'application -->
 
+<<<<<<< HEAD
+=======
 ```{r}
 #lot(anova2_factors, which = 2) # QQ plot des résidus
 #hapiro.test(residuals(anova2_factors)) # Test de normalité
+>>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
 
-```
-
-<!--% Hypothèses test de Bartlett -->
+Hypothèses test de Bartlett
 
 H0: Les variances des groupes sont égales.
 
@@ -988,16 +1008,34 @@ Nous ne rejetons pas H0 au seuil alpha de 5 % (p-value = 0.2677). Les variances 
 ```{r qqplot}
 modele <- aov(data = biometry, whr ~ interaction(risque_ic, genre))
 
+biometry_clean %>.%
+  sgroup_by(., risque_ic, genre) %>.%
+  ssummarise(., mean_whr = mean(whr, na.rm = TRUE)) %>.%
+  chart(., mean_whr ~ risque_ic %color=% genre %group=% genre) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  labs(
+    title = "Interaction entre genre et catégorie d'âge",
+    x = "Catégorie d'âge",
+    y = "Indice taille/poignet (ITP)",
+    color = "Genre"
+  )
+
 qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
-qqline(residuals(modele), col = "mangeta")
+qqline(residuals(modele), col = "magenta")
 
 ```
 
+<<<<<<< HEAD
+Il n' y a pas d'interaction. Les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
+=======
 Les points suivent à peu près la ligne droite: la normalité des résidus est acceptée.
+>>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
 
 ```{r test_anova2_2}
-anova_interaction <- aov(data = biometry, whr ~ risque_ic * genre)
-summary(anova_interaction)
+anova_model <- lm(data = biometry, whr ~ risque_ic + genre)
+
+anova(anova_model) %>.% tabularise(.)
 ```
 
 <!--% Interprétation statistique et biologique -->
