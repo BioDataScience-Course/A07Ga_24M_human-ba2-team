@@ -47,15 +47,11 @@ Dans ce projet, nous avons analysé un jeu de données combinant des données co
 
 <!--% Formulez ici de façon concise et précise votre question de recherche en 1 à 2 phrases. -->
 
-...Votre but ici...
-
 Ce travail vise à analyser l'influence des comportements de vie sur l'état corporel d'un échantillon d'étudiants, tel qu'évalué par quatre indicateurs anthropométriques (IMC, WHR, IC, ITP). L'objectif est d'identifier les associations significatives entre les habitudes quotidiennes et la répartition de la masse corporelle, afin de mieux comprendre les profils de risque individuels.
 
 # Matériel et méthodes
 
 <!--% Cette section doit comprendre une explication technique sur les mesures effectuées et sur le protocole relatif à l'acquisition des données en 3 à 4 paragraphes. Vous ajouterez aussi un paragraphe qui détaille les outils logiciels et statistiques utilisés (logiciels et versions des logiciels). Un simple copier-coller du matériel et méthodes du bloc-notes ne sera PAS considéré comme acceptable. -->
-
-...Votre matmet ici...
 
 #### 1. Collecte des données
 
@@ -122,12 +118,12 @@ Les valeurs moyennes de masse, de taille et de tour de taille sont cohérentes a
 ## Tests d'hypothèses
 
 <!--% Sélectionnez les 4 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
+
 ```{r}
 
 ```
-#test student cortisone(ith)
-#test chi carre(ic)
-#test anova deux facteurs(itp)
+
+#test student cortisone(ith) #test chi carre(ic) #test anova deux facteurs(itp)
 
 Tests d'hypothèses afin de comprendre les liens entre les indices corporels et les comportements de vie, plusieurs tests d'hypothèse ont été réalisés à l'aide des indices calculés.
 
