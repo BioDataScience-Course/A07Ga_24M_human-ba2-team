@@ -233,6 +233,8 @@ biometry2 <- biometry %>.%
     bmi >= 25 & bmi < 30 ~ "surpoids",
     bmi >= 30 ~ "obèse")) %>.%
   sselect(., genre, bmi, bmi_cat)
+
+head(biometry2)
 ```
 
 <!--% Graphique ou tableau utilisant l'indice calculé.-->
@@ -586,13 +588,12 @@ H1: Il existe une dépendance entre le genre et la constitution osseuse → la r
 
 R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
 
-Nous décidons donc de compléter l'analyse par un test exact plus fiable(test de fisher).
+Nous décidons donc de compléter l'analyse par un test exact plus fiable: le test de Fisher.
 
 ```{r test_chi2_2}
 # Test exact de Fisher 
 fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
 fisher_test
-
 ```
 
 <!--% Vérification des conditions d'application -->
@@ -697,7 +698,7 @@ La cortisone est une hormone stéroïdienne souvent prescrite pour des effets an
 ```{r plot_t_2}
 
 # La variable WHR a déjà été céer dans le test t de Student précedent.
-# 
+
 # Réalisation graphique:
 chart(data = biometry, cortisone ~ whr %fill=% genre) +
   geom_boxplot() +
@@ -754,6 +755,8 @@ La consommation d'alcool est un facteur comportemental fréquemment associé à 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
+
+ smutate(., bmi = masse / (taille/100)^2)
 
 chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
   geom_boxplot() +
