@@ -1,5 +1,5 @@
 ---
-0---
+---
 title: "Santé humaine liée à l'obésité (bloc-notes)"
 author: "Tercan Nefise, Tchuileng Ide, Baseka Manzabe Christelle"
 date: "`r Sys.Date()`"
@@ -73,7 +73,7 @@ chart(biometry, tour_poignet ~ activite_physique_cat %fill=% alimentation) +
 
 ```
 
-**interprétations**
+**Interprétations**
 
 Chez les individus ayant une activité physique élevée, les omnivores présentent les tours de poignet les plus importants, avec une médiane autour de 17,5 cm, suivis par les carnivores. Les végétariens ne sont pas représentés dans cette catégorie. Cela pourrait s'expliquer par une consommation plus importante de protéines animales et vegetales chez les omnivores, favorisant le développement osseux et musculaire.
 
@@ -214,7 +214,7 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
 
 <!--% Description et formule ci-dessous. -->
 
-L'Indice de Masse Corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (IMC \<18,5), poids normal (18,5\<IMC\<24,9), surpoids (25\>IMC\<29,9), et obésité (IMC≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
+L'indice de masse corporelle (IMC) évalue la corpulence d'une personne en fonction de sa taille et de son poids, permettant ainsi de classifier son état pondéral en quatre catégories : insuffisance pondérale (IMC\<18,5), poids normal (18,5\<=IMC\<25), surpoids (25\<=IMC\<30), et obésité (IMC≥30). Bien qu'il soit utile pour évaluer les risques de maladies liées au poids, comme le diabète et les maladies cardiovasculaires, il ne distingue pas la masse musculaire du gras. Il doit donc être interprété avec prudence, surtout chez les athlètes, les personnes âgées, ou celles enceintes.
 
 Référence: PasseportSanté. (n.d.). IMC : calcul, catégories et limites de l'indice de masse corporelle. PasseportSanté. Consulté le 30 mars 2025, à partir de https://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=IMC
 
@@ -252,7 +252,7 @@ biometry2 %>.%
 
 -   Les hommes sont plus nombreux à être en surpoids (24 hommes contre 22 femmes). Cependant, les moyennes d'IMC dans cette catégorie sont quasi identiques, avec 26,53 pour les hommes et 26,89 pour les femmes, indiquant que les différences sont faibles en termes d'IMC moyen.
 
--   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus sous-poids des deux genres ont des IMC similaires.
+-   Les femmes sont également plus nombreuses dans la catégorie "sous-poids" avec 9 femmes contre 4 hommes. Les moyennes d'IMC sont proches (autour de 17,5 pour les femmes et 17,9 pour les hommes), ce qui montre que les individus en sous-poids des deux genres ont des IMC similaires.
 
 -   Le nombre d'individus présentent dans la catégorie "poids normal" est élevé, avec 27 hommes et 31 femmes. La moyenne d'IMC pour ces personnes est d'environ 22.
 
@@ -480,12 +480,13 @@ Il existe une association significative entre la variable (âge / sommeil / sucr
 table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
 tabularise(table_age_ic)
 
- #EFFECTIFS ATTENDUS
+#EFFECTIFS ATTENDUS
 test_age_ic <- chisq.test(table_age_ic)
 tabularise(test_age_ic$expected) 
 ```
 
 ```{r sommeil}
+
 #EFFECTIFS OBSERVES
 table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
 tabularise(table_sommeil_ic)
@@ -496,17 +497,19 @@ tabularise(test_sommeil$expected)
 ```
 
 ```{r sucre}
+
+#EFFECTIFS OBSERVES
 table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
 tabularise(table_sucre_ic)
 
 #EFFECTIFS ATTENDUS
 test_sucre_ic <- chisq.test(table_sucre_ic)
 tabularise(test_sucre_ic$expected)
+
 ```
 
-<<<<<<< HEAD
-```{r graphique quantile~quantile}
 
+```{r graphique quantile~quantile}
 observes <- as.vector(table_age_ic)
 qqnorm(observes,
        main = "QQ Plot des effectifs observés",
@@ -528,8 +531,6 @@ qqnorm(observes,
        ylab = "Effectifs observés")
 qqline(observes, col = "blue")
 
-
-
 ```
 
 
@@ -545,6 +546,24 @@ chisq.test(table_sucre_ic)
 
 <!--% Interprétation statistique et biologique -->
 
+**Âge et le risque caridovasculaire**
+
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques : - Pour les moins de 25 ans, nous devrions observer 53 personnes à risque modéré et 24 à risque élevé, mais nous observons 71 à risque modéré et seulement 6 à risque élevé. - Pour les plus de 40 ans, nous devrions observer 32 à risque modéré et 15 à risque élevé, mais nous observons 15 à risque modéré et 32 à risque élevé. - Pour les 25-40 ans, nous devrions avoir 13 à risque modéré et 6 à risque élevé, mais nous observons 12 et 7.
+
+Ces différences montrent que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
+
+**Sommeil et risque cardiovasculaire**
+
+La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés sont proches des effectifs théoriques : - Pour un sommeil insuffisant, nous devrions observer 29 à risque modéré et 19 à risque élevé, et nous avons 31 et 17. - Pour un sommeil modéré, nous devrions avoir 9 à risque modéré et 5 à risque élevé, et nous observons 7 et 7.
+
+Ces résultats montrent que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
+
+**Consommation de sucre et risque cardiovasculaire**
+
+La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques : - Pour une consommation faible, nous devrions observer 13 à risque modéré et 6 à risque élevé, mais nous avons 7 à risque modéré et 12 à risque élevé. - Pour une consommation régulière, nous devrions avoir 29 à risque modéré et 13 à risque élevé, mais nous observons 34 et 8. - Pour une consommation fréquente, nous attendrions 56 à risque modéré et 26 à risque élevé, et nous observons 57 et 25.
+
+Ces résultats montrent que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
+
 ### Test de Chi^2^ by Ide
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
@@ -559,7 +578,6 @@ test_itp <- chisq.test(tableau_itp)
 # Afficher les résultats
 test_itp
 test_itp$expected
-
 
 ```
 
@@ -675,7 +693,7 @@ La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rap
 
 La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses abdominales lorsqu'elle est administrée sur le long terme. Sachant que le Waist-to-Hip Ratio (WHR) est un indicateur utilisé pour évaluer la répartition des graisses corporelles et le risque métabolique associé, il est pertinent de se demander si la prise de cortisone influence significativement le WHR. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
 
-Référence : Corbaz, A. (2024, 13 novembre). Le cortisol affecte-t-il la prise de poids ? Nutrition by Aurélia. https://www.nutrition-by-aurelia.ch/blog/le-cortisol-affecte-t-il-la-prise-de-poids
+[@corbaz2024]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
@@ -866,8 +884,6 @@ biometry_clean %>%
     color = "Genre"
   )
 
-
-
 ```
 
 <!--% Hypothèse nulle et alternative -->
@@ -882,7 +898,7 @@ Variable réponse quantitative : ITP est une variable numérique continue.
 
 Facteurs explicatifs (age_cat, genre) :
 
--   `age_cat` possède 3 modalités : < 25 ans, 25–40 ans, > 40 ans
+-   `age_cat` possède 3 modalités : \< 25 ans, 25--40 ans, \> 40 ans
 
 -   `genre` possède 2 modalités : H et F
 
