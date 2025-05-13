@@ -631,7 +631,14 @@ H1 : Il existe une différence significative entre les moyennes de WHR \# QQ plo
 
 Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
 
-```{r test_t_1 Christelle}
+```{r test_t_1 }
+qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour les Hommes")
+qqline(biometry$whr[biometry$genre == "H"], col = "orange")   # Ligne de référence
+
+qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour les Femmes")
+qqline(biometry$whr[biometry$genre == "F"], col = "lightgreen")  # Ligne de référence
+
+
 # Test de Bartlett pour vérifier l'homogénéité des variances
 bartlett.test(data = biometry, whr ~ genre)
 
