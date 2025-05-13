@@ -985,14 +985,8 @@ Le whr augmente avec le risque ic pour les deux genres.
 
 Hypothèses test de Bartlett
 
-<<<<<<< HEAD
-H0: Les variances des groupes sont égales.
-
-H1: Au moins une des variances est différente.
-=======
 H0: Les variances des groupes sont égales. 
 H1: au moins une des variances est différente.
->>>>>>> 1259eda991fc3bfd93bdaf7d5c08b37fd0976ef1
 
 ```{r bartlett anova2}
 bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
@@ -1020,12 +1014,7 @@ qqnorm(residuals(modele), main = "QQ-plot des résidus de l'ANOVA")
 qqline(residuals(modele), col = "magenta")
 
 ```
-
-<<<<<<< HEAD
-Il n' y a pas d'interaction. Les points suivent à peu près la ligne droite, la normalité des résidus est acceptée.
-=======
 Les points suivent à peu près la ligne droite: la normalité des résidus est acceptée.
->>>>>>> 6a310c3a82d3fec97b16fab502a7206bef81c152
 
 ```{r test_anova2_2}
 anova_model <- lm(data = biometry, whr ~ risque_ic + genre)
