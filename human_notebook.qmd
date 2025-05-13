@@ -766,11 +766,6 @@ bartlett.test (data= biometry, alcool ~ alimentation)
 biometry <- smutate (biometry, log_alcool = ln(alcool))
 bartlett.test (data = biometry, log_alcool ~ alimentation)
 
-# Vérification de la distribution:
-#
-
-# Réalisation du test t de Student:
-
 ```
 
 <!--% Interprétation statistique et biologique -->
