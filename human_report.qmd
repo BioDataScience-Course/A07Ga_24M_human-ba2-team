@@ -35,13 +35,13 @@ SciViews::R("infer", lang = "fr")
 
 Le mode de vie moderne, entre malbouffe et sédentarité, est devenu un terreau fertile pour une épidémie silencieuse : l'obésité.
 
-L'obésité constitue aujourd'hui un enjeu de santé publique mondial majeur. Elle est associée à une augmentation du risque de nombreuses maladies chroniques, notamment les maladies cardiovasculaires, le diabète de type 2 et certains cancers. D'après l'Organisation mondiale de la Santé (OMS), plus de 650 millions d'adultes dans le monde étaient obèses en 2016, un chiffre qui ne cesse d'augmenter chaque année (OMS, 2022). Cette tendance est attribuée à plusieurs facteurs, tels qu'une alimentation déséquilibrée, un mode de vie de plus en plus sédentaire et une activité physique insuffisante.
+L'obésité constitue aujourd'hui un enjeu de santé publique mondial majeur. Elle est associée à une augmentation du risque de nombreuses maladies chroniques, notamment les maladies cardiovasculaires, le diabète de type 2, et certains cancers. D'après l'Organisation mondiale de la Santé (OMS), plus de 650 millions d'adultes dans le monde étaient obèses en 2016, un chiffre qui ne cesse d'augmenter chaque année (OMS, 2022). Cette progression alarmante est attribuée à plusieurs facteurs tels qu'une alimentation déséquilibrée, un mode de vie sédentaire et une activité physique insuffisante.
 
-Pour évaluer l'état de santé lié à l'obésité, plusieurs indicateurs anthropométriques sont utilisés. L'**indice de masse corporelle (IMC)** reste le plus courant ; il permet de classer les individus selon des catégories de poids, mais il ne renseigne pas sur la répartition de la masse grasse. C'est pourquoi d'autres mesures comme le **rapport taille/hanche (WHR)** et l'**indice de conicité** sont souvent utilisées en complément. Le WHR permet d'évaluer la répartition de la graisse abdominale, un facteur de risque important pour les maladies métaboliques. L'indice de conicité, quant à lui, est un indicateur plus récent, proposé pour mesurer de manière plus précise la **distribution centrale de la masse adipeuse** (Valdez, 1991).
+Pour évaluer l'état de santé lié à l'obésité, plusieurs indicateurs anthropométriques sont utilisés. L'indice de masse corporelle (IMC) est le plus répandu ; il permet de catégoriser les individus selon leur corpulence, mais ne fournit aucune information sur la répartition de la masse grasse. C'est pourquoi d'autres mesures complémentaires comme le rapport taille/hanche (WHR), l'indice de conicité (IC), et l'indice taille/poignet (ITP) sont de plus en plus mobilisées. Le WHR permet d'évaluer la graisse abdominale, un facteur de risque métabolique important. L'IC, proposé par Valdez (1991), offre une estimation plus fine de l'accumulation centrale de la masse adipeuse. L'ITP, quant à lui, est un indicateur du morphotype corporel qui peut être utile pour évaluer la constitution physique individuelle, notamment dans une approche de prévention ciblée.
 
-Ces indicateurs peuvent être mis en relation avec d'autres variables comportementales comme le niveau d'activité physique ou le temps passé assis. Plusieurs études montrent que des comportements sédentaires prolongés sont associés à une détérioration de ces indices corporels, indépendamment de l'IMC (Katzmarzyk et al., 2019). Ainsi, une approche intégrée qui combine des mesures anthropométriques et comportementales permet une évaluation plus fine du risque de santé chez l'individu.
+Ces indices peuvent être influencés par des comportements de vie tels que le niveau d'activité physique, la sédentarité, l'alimentation ou encore le sommeil. Des études récentes montrent que des comportements sédentaires prolongés sont associés à une détérioration de ces indicateurs, indépendamment de l'IMC (Katzmarzyk et al., 2019). Une approche intégrée qui combine des mesures anthropométriques variées à des variables comportementales permet donc une évaluation plus précise du risque de santé.
 
-Dans ce projet, nous avons analysé un jeu de données combinant des **données corporelles** (IMC, WHR, indice de conicité) et **comportementales** (activité physique, alimentation, sédentarité) afin d'examiner comment ces différents aspects interagissent et influencent l'état de santé global. Notre objectif est de mieux comprendre les profils de risque individuels en fonction des comportements de vie mesurés.
+Dans ce projet, nous avons analysé un jeu de données combinant des données corporelles (IMC, WHR, IC, ITP) et comportementales (activité physique, alimentation, sédentarité, sommeil, etc.) afin d'examiner comment ces éléments interagissent et influencent l'état de santé global.
 
 # But
 
@@ -49,7 +49,7 @@ Dans ce projet, nous avons analysé un jeu de données combinant des **données 
 
 ...Votre but ici...
 
-Ce projet vise à examiner comment différents comportements de vie (activité physique, alimentation, consommation de sucre, de fast-food, etc.) influencent l'état de santé corporel des individus, tel qu'estimé à partir de trois indicateurs : l'IMC, le rapport taille/hanche (WHR) et l'indice de conicité. L'objectif est d'identifier les liens significatifs entre ces habitudes quotidiennes et la répartition de la masse corporelle chez un échantillon d'étudiants.
+Ce travail vise à analyser l'influence des comportements de vie sur l'état corporel d'un échantillon d'étudiants, tel qu'évalué par quatre indicateurs anthropométriques (IMC, WHR, IC, ITP). L'objectif est d'identifier les associations significatives entre les habitudes quotidiennes et la répartition de la masse corporelle, afin de mieux comprendre les profils de risque individuels.
 
 # Matériel et méthodes
 
@@ -61,41 +61,34 @@ Ce projet vise à examiner comment différents comportements de vie (activité p
 
 Les données utilisées dans ce projet ont été recueillies dans le cadre d'un travail collaboratif entre étudiants, dans la province du Hainaut (Belgique). Chaque étudiant a collecté des mesures anthropométriques et des informations comportementales auprès de ses proches ou de connaissances, dans un cadre non clinique mais encadré par une méthodologie commune. Les participants ont donné leur consentement éclairé avant de répondre aux questionnaires ou de procéder aux mesures.
 
-La masse corporelle a été mesurée à l'aide d'une balance de référence mise à disposition par la faculté. Ensuite, chaque participant a été pesé avec la balance personnelle de l'étudiant, ce qui a permis d'ajuster les valeurs à l'aide d'un facteur de correction basé sur la différence constatée entre les deux balances.
+La masse corporelle a été mesurée à l'aide d'une balance de référence mise à disposition par la faculté. Ensuite, chaque participant a été pesé avec la balance personnelle de l'étudiant, ce qui a permis d'ajuster les valeurs à l'aide d'un facteur de correction basé sur la différence constatée entre les deux balances. Les autres mesures ont été prises avec des outils de base (mètre ruban) selon les consignes fournies.
 
-Les mesures anthropométriques recueillies comprenaient :
+Les données comprenaient à la fois des variables corporelles et comportementales, comme détaillé dans le tableau ci-dessous;
 
--   La masse corporelle ajustée (en kg),
-
--   La taille (en cm),
-
--   Le tour de taille, de hanche et de poignet (en cm).
-
-Les questionnaires comportaient des questions sur les habitudes de vie, notamment :
-
--   Le niveau d'activité physique (sédentaire, modérée, active),
-
--   La fréquence de consommation de fast-food, de sucre, d'eau et d'alcool,
-
--   La durée et la qualité du sommeil,
-
--   La présence d'intolérances alimentaires (gluten, lactose),
-
--   Le tabagisme et la prise éventuelle de cortisone.
-
-Des informations démographiques ont aussi été relevées : âge, sexe, et un identifiant anonyme. Les données ainsi collectées ont été saisies dans un fichier partagé, puis consolidées en un seul jeu de données pour l'analyse statistique.
+```{r}
+biometry <- read("data/biometry.rds")
+skimr::skim(biometry)
+```
 
 #### 2. Calcul des indices corporels
 
-À partir des mesures anthropométriques, plusieurs indicateurs ont été calculés pour chaque individu afin d'estimer leur état de santé lié à la composition corporelle :
+À partir des mesures anthropométriques recueillies, quatre indicateurs ont été calculés pour chaque participant afin d'estimer leur composition corporelle et leur risque potentiel pour certaines pathologies :
 
--   **Indice de Masse Corporelle (IMC)** = masse (kg) / taille² (m²), utilisé pour classer l'individu dans une catégorie de poids (normale, surpoids, obésité, etc.).
+-   **Indice de Masse Corporelle (IMC)** : calculé comme masse (kg) / taille² (m²), il permet de catégoriser les individus selon leur poids (corpulence normale, surpoids, obésité, etc.).
 
--   **Rapport Taille/Hanche (WHR)** = tour de taille (cm) / tour de hanche (cm), utile pour estimer la répartition abdominale de la graisse.
+-   **Rapport Taille/Hanche (WHR)** : défini comme le tour de taille (cm) divisé par le tour de hanche (cm), il permet d'estimer la répartition abdominale de la masse grasse.
 
--   **Indice de Conicité (IC)** = tour de taille (m) / \[0,109 × √(masse (kg) / taille (m))\], selon la formule de Valdez (1991), servant à quantifier la concentration centrale de masse adipeuse.
+-   **Indice de Conicité (IC)** : calculé selon la formule de Valdez (1991) :
 
-Ces indices sont reconnus dans la littérature scientifique comme des indicateurs pertinents pour évaluer les risques de maladies métaboliques et cardiovasculaires.
+```         
+IC=tour de taille (m)0,109×masse (kg)taille (m)IC = \frac{\text{tour de taille (m)}}{0{,}109 \times \sqrt{\frac{\text{masse (kg)}}{\text{taille (m)}}}}IC=0,109×taille (m)masse (kg)​​tour de taille (m)​
+
+Il quantifie la concentration centrale de la masse adipeuse.
+```
+
+-   **Indice Taille/Poignet (ITP)** : rapport entre la taille (cm) et le tour de poignet (cm), utilisé comme indicateur de corpulence en lien avec la masse osseuse.
+
+Ces indices sont reconnus dans la littérature scientifique comme des marqueurs pertinents pour évaluer le risque de maladies métaboliques et cardiovasculaires.
 
 ### 3. Outils statistiques et logiciels
 
@@ -106,13 +99,11 @@ Les principales bibliothèques employées dans le traitement des données sont :
 
 -   **ggplot2** pour la visualisation graphique,
 
--   **lme4** pour l'ajustement des modèles linéaires mixtes (bien que non chargé dans l'environnement affiché, ce package est essentiel à ce type d'analyse).
-
-L'analyse a porté sur l'effet de plusieurs comportements de vie sur les indices corporels, en s'appuyant sur des **modèles linéaires mixtes**. Ces modèles permettent de distinguer les **effets fixes** (comportements de vie tels que l'activité physique, la consommation de fast-food, le sommeil, etc.) des **effets aléatoires liés aux individus**, afin de mieux comprendre la variabilité interindividuelle et de limiter les biais.
-
--   ainsi que **svFlow**, **SciViews**, **chart**, et d'autres packages développés dans un cadre pédagogique.
+-   ainsi que **SciViews**, **chart**.
 
 L'ensemble des traitements a été réalisé dans un environnement reproductible, et les scripts sont disponibles sur demande.
+
+Le seuil de tous les tests est fixé à 5%.
 
 # Résultats
 
