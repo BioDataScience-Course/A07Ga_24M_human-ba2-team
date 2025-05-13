@@ -128,7 +128,7 @@ chart(data = biometry, tour_taille ~ sucre %fill=% sucre) +
 
 **interprétations**
 
-La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2. Ces résultats soulignent l'importance de limiter la consommation de sucre pour prévenir les risques métaboliques.
+La consommation fréquente de sucre, notamment les sucres ajoutés, est associée à une augmentation du tour de taille, suggérant un lien entre une alimentation sucrée et l'accumulation de graisse abdominale. Cette graisse viscérale est un facteur de risque majeur pour des maladies chroniques comme les maladies cardiaques et le diabète de type 2.
 
 ### Description 2 par Christelle
 
@@ -928,7 +928,7 @@ Le **rapport taille-hanches (WHR)** reflète la répartition de la graisse corpo
 
 Ce risque, évalué par le WHR, peut varier selon le **genre**, en raison de différences biologiques dans le stockage des graisses.
 
-Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s\'il existe une **interaction** entre ces deux facteurs.
+Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s'il existe une **interaction** entre ces deux facteurs.
 
 ```{r plot_anova2_2}
 biometry_clean <- biometry[!is.na(biometry$risque_ic) & !is.na(biometry$genre), ]
@@ -988,7 +988,7 @@ Les résultats montrent un effet significatif du risque IC (p \< 0.001) et du ge
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   ...
+-   Nos résultats soulignent l\'importance de facteurs modifiables comme l\'alimentation, l\'activité physique, le sommeil et notamment la **consommation de sucre**, dans la prévention des risques cardiovasculaires. L\'âge et le genre influencent également certains indicateurs comme le WHR et l\'IC. La surveillance de ces variables peut contribuer à une meilleure évaluation du risque et à la mise en place de **stratégies de prévention ciblées et personnalisées**.
 
 -   ...
 
