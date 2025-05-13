@@ -190,17 +190,32 @@ t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0
 L'analyse de l'indice taille/poignet (ITP) via une ANOVA à deux facteurs a ensuite mis en évidence une influence significative de l'âge sur cet indicateur morphologique. En revanche, ni le genre ni l'interaction entre l'âge et le genre n'ont pas eu d'impact notable. Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
 
 ```{r}
-biometry_clean <- biometry1[!is.na(biometry1$itp) & !is.na(biometry1$alimentation), ]
-biometry <- biometry %>.%
+biometry1 <- biometry %>%
+  smutate(., itp = taille / tour_poignet,
+    constitution_osseuse = case_when(
+      genre == "F" & itp > 10.9 ~ "Fine",
+      genre == "F" & itp < 9.9 ~ "Large",
+      genre == "F" & itp >= 9.9 & itp <= 10.9 ~ "Moyenne",
+      genre == "H" & itp > 10.4 ~ "Fine",
+      genre == "H" & itp < 9.6 ~ "Large",
+      genre == "H" & itp >= 9.6 & itp <= 10.4 ~ "Moyenne",
+      TRUE ~ "Inconnu"
+      )
+    )
+
+biometry_clean <- biometry1 %>.%
+  sfilter(.,!is.na(itp), !is.na(alimentation)) %>%
   smutate(., age_cat = case_when(
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
-    age > 40 ~ "> 40 ans"))
+    age > 40 ~ "> 40 ans"
+  ))
+
 biometry_clean %>.%
   sgroup_by(., age_cat, genre) %>.%
   ssummarise(., mean_itp = mean(itp, na.rm = TRUE))
 
-aov(itp ~ age_cat * genre, data = biometry_clean)
+summary(aov(itp ~ age_cat * genre, data = biometry_clean))
 
 ```
 
