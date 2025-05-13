@@ -126,6 +126,14 @@ Dans l’ensemble, ces descriptions suggèrent que des comportements tels que l�
 ```{r}
 
 ```
+```{r}
+
+```
+```{r}
+
+```
+
+
 
 #test student cortisone(ith) #test chi carre(ic) #test anova deux facteurs(itp)
 
