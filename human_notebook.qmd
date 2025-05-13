@@ -468,7 +468,9 @@ table_contingence <- biometry %>.%
 
 <!--% Hypothèse nulle et alternative -->
 
-Hypothèse nulle (H₀) : Il n'existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes. Hypothèse alternative (H₁) : Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
+H0: Il n'existe aucune association entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont indépendantes. 
+
+H1: Il existe une association significative entre la variable (âge / sommeil / sucre) et le risque IC → les deux variables sont dépendantes.
 
 <!--% Vérification des conditions d'application -->
 
@@ -588,20 +590,15 @@ fisher_test
 
 <!--% Vérification des conditions d'application -->
 
--   L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
+-  L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
 
     Les modalités du tableau (genre × constitution) sont bien qualitatives.
 
     Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
-La valeur p > 0.05 dans les deux tests
 
-Nous ne rejetons pas l'hypothèse nulle H₀
-
-Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
-
-La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
+La valeur p est supérieure au seuil alpha de 5% dans les deux test, donc nous ne rejetons pas l'hypothèse nulle H0. Il n'y a pas de preuve suffisante pour une dépendance entre les genres et la constitution osseuse. On détermine donc que la répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le genre dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
