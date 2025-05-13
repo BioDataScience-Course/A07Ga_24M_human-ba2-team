@@ -122,6 +122,12 @@ Les valeurs moyennes de masse, de taille et de tour de taille sont cohérentes a
 ## Tests d'hypothèses
 
 <!--% Sélectionnez les 4 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
+```{r}
+
+```
+#test student cortisone(ith)
+#test chi carre(ic)
+#test anova deux facteurs(itp)
 
 Tests d'hypothèses afin de comprendre les liens entre les indices corporels et les comportements de vie, plusieurs tests d'hypothèse ont été réalisés à l'aide des indices calculés.
 

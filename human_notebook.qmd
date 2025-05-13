@@ -611,6 +611,13 @@ fisher_test
     Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
+La valeur p > 0.05 dans les deux tests
+
+Nous ne rejetons pas l'hypothèse nulle H₀
+
+Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse
+
+La répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le sexe dans notre échantillon.
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -792,6 +799,7 @@ bartlett.test (data= biometry, alcool ~ alimentation)
 
 <!--% Interprétation statistique et biologique -->
 
+
 ### ANOVA à un facteur 2 by IDE
 
 L'indice taille/poignet (ITP) est un indicateur morphologique lié à la proportion entre la stature et l'ossature distale. Il est souvent utilisé comme un marqueur indirect de la constitution corporelle ou de la morphologie osseuse.
@@ -860,9 +868,10 @@ L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avo
 
 <!--% Interprétation statistique et biologique -->
 
-p \> 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
+p > 0.05 : on ne rejette pas H₀ → Aucune différence significative des moyennes d'ITP entre les types d'alimentation.
 
-D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative\*\* sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
+D'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative
+sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
 
 Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
 
