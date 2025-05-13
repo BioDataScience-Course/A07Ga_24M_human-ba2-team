@@ -136,19 +136,19 @@ Les valeurs moyennes de masse, de taille et de tour de taille sont cohérentes a
 
 ...Vos tests d'hypothèses ici...
 
-Tests d'hypothèses afin de comprendre les liens entre les indices corporels et les comportements de vie, plusieurs tests d'hypothèse ont été réalisés à l\'aide des indices calculés.
+Tests d'hypothèses afin de comprendre les liens entre les indices corporels et les comportements de vie, plusieurs tests d'hypothèse ont été réalisés à l'aide des indices calculés.
 
-Le test du Chi² a été utilisé pour vérifier la dépendance entre le risque cardiovasculaire (IC) et les facteurs de mode de vie comme l'âge, le sommeil et la consommation de sucre. Ce test a montré une association significative entre l\'âge et le risque IC (p \< 0.001), ainsi qu\'entre la consommation de sucre et le risque IC (p = 0.0026). En revanche, aucune dépendance significative n\'a été observée entre le sommeil et le risque IC (p \> 0.5).
+Le test du Chi² a été utilisé pour vérifier la dépendance entre le risque cardiovasculaire (IC) et les facteurs de mode de vie comme l'âge, le sommeil et la consommation de sucre. Ce test a montré une association significative entre l'âge et le risque IC (p \< 0.001), ainsi qu'entre la consommation de sucre et le risque IC (p = 0.0026). En revanche, aucune dépendance significative n'a été observée entre le sommeil et le risque IC (p \> 0.5).
 
-Un autre test du Chi² (avec test exact de Fisher en complément) a été utilisé pour examiner la relation entre le sexe et la constitution osseuse (catégories ITP). Aucune association significative n\'a été détectée (p \> 0.48), ce qui suggère une répartition équitable des types d\'ossature entre les sexes dans notre échantillon.
+Un autre test du Chi² (avec test exact de Fisher en complément) a été utilisé pour examiner la relation entre le sexe et la constitution osseuse (catégories ITP). Aucune association significative n'a été détectée (p \> 0.48), ce qui suggère une répartition équitable des types d'ossature entre les sexes dans notre échantillon.
 
-Le test t de Student (version de Welch) a révélé une différence statistiquement significative de WHR entre hommes et femmes (p \< 0.001), avec une moyenne plus élevée chez les hommes, indiquant un risque métabolique accru. En revanche, la prise de cortisone n\'a pas montré d\'effet significatif sur le WHR (p = 0.221).
+Le test t de Student (version de Welch) a révélé une différence statistiquement significative de WHR entre hommes et femmes (p \< 0.001), avec une moyenne plus élevée chez les hommes, indiquant un risque métabolique accru. En revanche, la prise de cortisone n'a pas montré d'effet significatif sur le WHR (p = 0.221).
 
-Deux ANOVA à un facteur ont été menées. L\'une portait sur la consommation d\'alcool selon le régime alimentaire, mais les résultats n\'ont pas été explicitement significatifs. La seconde ANOVA visait à tester l'effet du régime sur l\'indice ITP. Comme les conditions de normalité des résidus n\'étaient pas respectées (p = 4.92e-06), un test de Kruskal-Wallis a été réalisé, confirmant l'absence de différence significative (p = 0.23).
+Deux ANOVA à un facteur ont été menées. L'une portait sur la consommation d'alcool selon le régime alimentaire, mais les résultats n'ont pas été explicitement significatifs. La seconde ANOVA visait à tester l'effet du régime sur l'indice ITP. Comme les conditions de normalité des résidus n'étaient pas respectées (p = 4.92e-06), un test de Kruskal-Wallis a été réalisé, confirmant l'absence de différence significative (p = 0.23).
 
-Enfin, une ANOVA à deux facteurs a été réalisée pour tester l'effet de l\'âge, du sexe et de leur interaction sur l\'ITP. L\'effet de la catégorie d\'âge est significatif (p \< 0.001), indiquant que l\'ITP varie en fonction de l\'âge. Ni le sexe ni l\'interaction n\'ont montré d\'effet significatif (p \> 0.29), suggérant une stabilité de cet indice entre les sexes à âge donné.
+Enfin, une ANOVA à deux facteurs a été réalisée pour tester l'effet de l'âge, du sexe et de leur interaction sur l'ITP. L'effet de la catégorie d'âge est significatif (p \< 0.001), indiquant que l'ITP varie en fonction de l'âge. Ni le sexe ni l'interaction n'ont montré d'effet significatif (p \> 0.29), suggérant une stabilité de cet indice entre les sexes à âge donné.
 
-Ces résultats soutiennent l\'idée que certains comportements de vie (âge, sucre) influencent la morphologie corporelle et les risques métaboliques, alors que d\'autres comme la consommation de fast food ou de cortisone ne montrent pas d\'effet clair à travers nos tests.
+Ces résultats soutiennent l'idée que certains comportements de vie (âge, sucre) influencent la morphologie corporelle et les risques métaboliques, alors que d'autres comme la consommation de fast food ou de cortisone ne montrent pas d'effet clair à travers nos tests.
 
 # Discussion et conclusions
 
