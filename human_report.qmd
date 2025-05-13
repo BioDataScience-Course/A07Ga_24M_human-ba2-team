@@ -31,8 +31,6 @@ SciViews::R("infer", lang = "fr")
 
 <!--# Ce projet porte sur la santé humaine liée à l'obésité, à la façon de se nourrir et aux activités réalisées (plus ou moins sédentaire ou actif) ... Réalisez des recherches bibliographiques afin d'avoir une vision précise de la thématique. Existe-t-il des indicateurs calculables pour quantifier l'état de santé d'un individu, par exemple ? Naturellement, ces indicateurs doivent être calculables sur bases des variables mesurées dans votre jeu de données. Focalisez-vous donc sur ces variables-là. -->
 
-...Votre introduction ici...
-
 Le mode de vie moderne, entre malbouffe et sédentarité, est devenu un terreau fertile pour une épidémie silencieuse : l'obésité.
 
 L'obésité constitue aujourd'hui un enjeu de santé publique mondial majeur. Elle est associée à une augmentation du risque de nombreuses maladies chroniques, notamment les maladies cardiovasculaires, le diabète de type 2, et certains cancers. D'après l'Organisation mondiale de la Santé (OMS), plus de 650 millions d'adultes dans le monde étaient obèses en 2016, un chiffre qui ne cesse d'augmenter chaque année (OMS, 2022). Cette progression alarmante est attribuée à plusieurs facteurs tels qu'une alimentation déséquilibrée, un mode de vie sédentaire et une activité physique insuffisante.
@@ -135,7 +133,15 @@ Dans l’ensemble, ces descriptions suggèrent que des comportements tels que l�
 
 <!--% Reprenez les résultats obtenus, discutez-les d'un point de vue biologique en 4 à 5 paragraphes et concluez votre travail. Vous pouvez les mettre également en relation avec vos recherches bibliographiques dans cette section. -->
 
-...Vos conclusions ici...
+Les résultats de notre étude révèlent une relation complexe entre les habitudes de vie et les indicateurs de santé métabolique, soulignant l'importance de plusieurs facteurs dans le développement de l'obésité et des maladies associées. La consommation de cigarettes, bien qu'elle soit souvent associée à une réduction temporaire de la masse corporelle en raison de la nicotine, montre une relation variable selon le genre et le niveau de masse corporelle. Cette observation met en lumière la nécessité d'une compréhension plus fine des effets du tabagisme sur le poids, en tenant compte des différences individuelles.
+
+L'influence de la consommation de sucre sur la santé métabolique est particulièrement marquée. Nos résultats montrent une association claire entre une consommation élevée de sucre ajouté et une augmentation du tour de taille, un indicateur de la graisse viscérale. Cette graisse abdominale, liée à un risque accru de maladies cardiovasculaires, souligne l'importance de la réduction de l'apport en sucre comme stratégie de prévention de l'obésité et des complications métaboliques.
+
+De même, l'analyse de la consommation de fast food et de la qualité du sommeil révèle un lien potentiel entre une alimentation déséquilibrée et des troubles du sommeil, notamment chez les hommes. Cette perturbation du sommeil pourrait indirectement contribuer à la prise de poids et à l'obésité, renforçant l'importance d'une alimentation équilibrée et de bonnes habitudes de sommeil pour la prévention des troubles métaboliques.
+
+Enfin, le Waist-to-Hip Ratio (WHR), indicateur de la distribution de la graisse corporelle, présente des différences significatives entre les sexes, les hommes affichant généralement un WHR plus élevé que les femmes. De plus, ce ratio est influencé par le risque cardiovasculaire (IC), les individus à risque élevé ayant un WHR plus important. Ces résultats confirment la pertinence du WHR comme outil de dépistage des risques métaboliques, tout en soulignant l'importance de tenir compte du sexe et du risque IC dans son interprétation.
+
+En conclusion, nos résultats mettent en évidence l'importance des habitudes de vie modifiables comme la consommation de sucre, le tabagisme, l'alimentation et la qualité du sommeil dans la gestion des risques métaboliques. Par ailleurs, des facteurs biologiques comme l'âge et le sexe influencent également des indicateurs clés tels que le WHR. Une évaluation personnalisée, prenant en compte ces facteurs, est cruciale pour une prévention efficace des maladies métaboliques.
 
 <!--# Important : ce document doit compiler SANS ERREURS avec le bouton 'Rendu' sinon le travail sera sanctionné lourdement. La compilation du document Quarto est maintenant considérée comme acquise. -->
 
