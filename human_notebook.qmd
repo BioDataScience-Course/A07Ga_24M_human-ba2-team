@@ -587,11 +587,9 @@ fisher_test
 
 <!--% Vérification des conditions d'application -->
 
--   L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
-
-    Les modalités du tableau (genre × constitution) sont bien qualitatives.
-
-    Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
+-L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
+-Les modalités du tableau (genre × constitution) sont bien qualitatives.
+-Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
 
@@ -641,7 +639,6 @@ qqline(biometry$whr[biometry$genre == "F"], col = "lightgreen")  # Ligne de réf
 
 # Test de Bartlett pour vérifier l'homogénéité des variances
 bartlett.test(data = biometry, whr ~ genre)
-print(bartlett_test)
 
 ```
 
@@ -707,7 +704,7 @@ bartlett.test (data=biometry, whr ~cortisone)
 # Vérification de la distribution de la variable quantitative "whr":
 
 car::qqPlot(biometry[["whr"]], distribution = "norm",
-  envelope = 0.95, col = "Black", ylab = "log(area [mm^2])")
+  envelope = 0.95, col = "Black", ylab = "whr (cm)")
 
 # Les points se rapprochent de la droite de normalité, indiquant que la distribution suit une loi normale.
 
@@ -726,6 +723,7 @@ Bien que la cortisone soit connue pour favoriser l'accumulation de graisse abdom
 
 En moyenne, les individus sous cortisone présentent un WHR plus élevé (0.9185) que ceux sans cortisone (0.8749), mais l'écart n'est pas suffisant pour être significatif statistiquement.
 
+
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
 
 ### ANOVA à un facteur 1
@@ -737,41 +735,60 @@ La consommation d'alcool est un facteur comportemental fréquemment associé à 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
+biometry4 <- biometry %>.%
+  smutate(., bmi = masse / (taille/100)^2) %>.%
+  sselect(., genre, bmi, alimentation)
 
-chart(data = biometry, alimentation ~ alcool %fill=% alimentation) +
-  geom_boxplot() +
-  labs(title = "Consommation d'alcool selon le type d'alimentation",
-       x = "Type d'alimentation", 
-       y = "Nombre de verres d'alcool par semaine") + 
-  coord_flip()
-
+chart(data=biometry4, bmi ~ alimentation %fill=% alimentation) +
+  geom_boxplot()
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H0: Il n'y a pas de différence significative du nombre de verres d'alcool consommés par semaine entre les individus ayant un régime alimentaire herbivore, carnivore ou omnivore.
+H0: Il n'y a pas de différence significative entre les moyennes de bmi et les différents groupes de alimentation. 
 
-H1: Il existe une différence significative du nombre de verres d'alcool consommés par semaine entre les individus ayant un régime alimentaire herbivore, carnivore ou omnivore.
+H1: Il existe au moins une différence significative entre les moyennes de bmi pour les groupes de alimentation.
 
 <!--% Vérification des conditions d'application -->
 
 ```{r test_anova1_1}
-# Test de Bartlett pour vérifier l'homoscèdasticité:
+
+# Test de Bartlett pour vérifier l'homoscèdasticité: 
+
 # H0: Les variances des échantillons comparés sont égales (homoscèdasticité)
 # H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
 
-bartlett.test (data= biometry, alcool ~ alimentation)
+bartlett.test (data=biometry4, bmi ~ alimentation )
 
-# La valeur p est inférieur au seuil alpha de 5 % donc H0 est rejetée. Il n'y a pas homoscèdasticité. 
-# Les variances augmentent avec les moyennes donc pour avoir homoscédasticité, nous transformons les variables avec log:
+# La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
 
-biometry <- smutate (biometry, log_alcool = ln(alcool))
-bartlett.test (data = biometry, log_alcool ~ alimentation)
 
+<<<<<<< HEAD
+# Vérification de la distribution de la variable quantitative "bmi":
+
+car::qqPlot(biometry4[["bmi"]], distribution = "norm",
+  envelope = 0.95, col = "Black", ylab = "bmi)")
+
+# La distribution s’éloigne un peu aux extrêmes de la distribution normale. Nous sommes dans un cas un peu limite. Nous effectuons donc un test non paramétrique: le test de Kruskal-Wallis, plutôt que le test d'Anova.
+
+
+# Test de Kruskal-Wallis: 
+
+# H0: Les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
+# H1: Au moins une des distributions des rangs est différente entre les groupes.
+ 
+kruskal.test(data = biometry4, bmi ~ alimentation)
+
+# La valeur de p est supérieur au seuil alpha de 5 %. On ne rejette donc pas H0 et les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
+
+=======
+>>>>>>> 2938c268e2b33e6892a9b750794043511cba19ee
 ```
 
 <!--% Interprétation statistique et biologique -->
+
+Le test de Kruskal-Wallis a donné une valeur p supérieure au seuil alpha de 5 %, ce qui signifie que nous ne rejetons pas H0. Ainsi, il n'y a pas de différence significative dans les distributions de bmi entre les différents groupes d'alimentation. Cela suggère que le type d'alimentation étudié n'a pas un effet significatif sur l'indice de masse corporelle (bmi) dans cet échantillon.
 
 ### ANOVA à un facteur 2 by IDE
 
