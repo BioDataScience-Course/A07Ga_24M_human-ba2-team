@@ -201,12 +201,11 @@ chart(data = biometry, activite_physique ~ masse, color = genre) +
 
 ***interprétations***
 
--On observe aucune tendance claire (linéaire ou exponentielle) n’apparaît entre la masse et l’activité physique. Les points sont dispersés de façon aléatoire.
+-On observe aucune tendance claire (linéaire ou exponentielle) n'apparaît entre la masse et l'activité physique. Les points sont dispersés de façon aléatoire.
 
--Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses, mais cela semble indépendant du volume d’activité.
+-Les deux groupes sont mélangés et donc le genre n'est pas un facteur déterminant dans cette relation. Néanmoins, les hommes semblent avoir plus de valeurs élevées en vue des masses, mais cela semble indépendant du volume d'activité.
 
--La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine, ce qui pourrait expliquer l’absence d’effet clair : les niveaux d’activité sont peut-être trop homogènes pour permettre une différenciation statistique.
-
+-La majorité des individus ont une activité physique située entre 60 et 100 min/ semaine. Très peu dépassent les 120min/ semaine, ce qui pourrait expliquer l'absence d'effet clair : les niveaux d'activité sont peut-être trop homogènes pour permettre une différenciation statistique.
 
 ## Calcul d'indices
 
@@ -590,15 +589,14 @@ fisher_test
 
 <!--% Vérification des conditions d'application -->
 
--  L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
-
-    Les modalités du tableau (genre × constitution) sont bien qualitatives.
-
-    Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
+-L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement).
+-Les modalités du tableau (genre × constitution) sont bien qualitatives.
+-Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
 
 <!--% Interprétation statistique et biologique -->
 
 La valeur p est supérieure au seuil alpha de 5% dans les deux test, donc nous ne rejetons pas l'hypothèse nulle H0. Il n'y a pas de preuve suffisante pour une dépendance entre les genres et la constitution osseuse. On détermine donc que la répartition des morphotypes osseux (Fine, Moyenne, Large) ne varie pas significativement selon le genre dans notre échantillon.
+
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -724,6 +722,13 @@ t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0
 
 <!--% Interprétation statistique et biologique -->
 
+La valeur p étant supérieure au seuil α = 0.05, H0 n'est pas rejetée. On conclut qu'il n'y a pas de différence statistiquement significative du WHR moyen entre les deux groupes (avec ou sans cortisone).
+
+Bien que la cortisone soit connue pour favoriser l'accumulation de graisse abdominale (et donc potentiellement augmenter le WHR), nos résultats ne montrent pas d'effet significatif dans cet échantillon. Cela pourrait s'expliquer par plusieurs facteurs : Durée et dose de prise de cortisone non précisées. Taille modérée de l'échantillon, surtout pour le groupe O (n = 9). Difference élevée naturelle entre les individus des profils métaboliques.
+
+En moyenne, les individus sous cortisone présentent un WHR plus élevé (0.9185) que ceux sans cortisone (0.8749), mais l'écart n'est pas suffisant pour être significatif statistiquement.
+
+
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
 
 ### ANOVA à un facteur 1
@@ -785,6 +790,7 @@ kruskal.test(data = biometry4, bmi ~ alimentation)
 
 <!--% Interprétation statistique et biologique -->
 
+Le test de Kruskal-Wallis a donné une valeur p supérieure au seuil alpha de 5 %, ce qui signifie que nous ne rejetons pas H0. Ainsi, il n'y a pas de différence significative dans les distributions de bmi entre les différents groupes d'alimentation. Cela suggère que le type d'alimentation étudié n'a pas un effet significatif sur l'indice de masse corporelle (bmi) dans cet échantillon.
 
 ### ANOVA à un facteur 2 by IDE
 
@@ -854,6 +860,7 @@ L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avo
 
 <!--% Interprétation statistique et biologique -->
 
+<<<<<<< HEAD
 La valeur de p étant supérieure au seuil aplha de 5 %, on ne rejette pas H0. Il n'y a pas de différence significative entre les moyennes d'ITP et les types d'alimentation. Ainsi, d'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
 
 Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
@@ -864,6 +871,8 @@ Afin de confirmer cette tendance sans supposer la normalité, nous avons réalis
 
 Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
 
+=======
+>>>>>>> b62b76dfbbe83303cfa97537e680adb8fc40ca5c
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
 ### ANOVA à deux facteurs 1 by Ide
@@ -928,10 +937,13 @@ qqline(residus, col = "red")
 
 <!--% Interprétation statistique et biologique -->
 
+<<<<<<< HEAD
 L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p < 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p > 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
 
 Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
+=======
+>>>>>>> b62b76dfbbe83303cfa97537e680adb8fc40ca5c
 ### ANOVA à deux facteurs 2 by Christelle
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
@@ -1004,7 +1016,7 @@ Les résultats montrent un effet significatif du risque IC (p < 0.001) et du gen
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   Nos résultats soulignent l\'importance de facteurs modifiables comme l\'alimentation, l\'activité physique, le sommeil et notamment la **consommation de sucre**, dans la prévention des risques cardiovasculaires. L\'âge et le genre influencent également certains indicateurs comme le WHR et l\'IC. La surveillance de ces variables peut contribuer à une meilleure évaluation du risque et à la mise en place de **stratégies de prévention ciblées et personnalisées**.
+-   Nos résultats soulignent l'importance de facteurs modifiables comme l'alimentation, l'activité physique, le sommeil et notamment la **consommation de sucre**, dans la prévention des risques cardiovasculaires. L'âge et le genre influencent également certains indicateurs comme le WHR et l'IC. La surveillance de ces variables peut contribuer à une meilleure évaluation du risque et à la mise en place de **stratégies de prévention ciblées et personnalisées**.
 
 -   ...
 
