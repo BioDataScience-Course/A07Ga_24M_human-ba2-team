@@ -197,7 +197,7 @@ t.test (data=biometry4, rfm ~ cortisone, alternative = "two.sided", con.level = 
 
 ```
 
-Test t de Student -- Effet de la cortisone sur le rfm. La cortisone est connue pour favoriser l'accumulation de graisse abdominale. Un test t de Student a été réalisé pour comparer les valeurs moyennes de WHR entre les individus prenant de la cortisone et ceux qui n'en prennent pas. Les conditions d'application du test sont remplies (normalité des résidus et homogénéité des variances confirmées par le Q-Q plot et le test de Bartlett). Les résultats montrent une différence moyenne non significative entre les deux groupes (p = 0.221). Bien que le WHR soit légèrement plus élevé chez les utilisateurs de cortisone (0.9185 contre 0.8749), cette différence n'est pas statistiquement significative.
+Test t de Student
 
 L'analyse de l'impact de la cortisone a révélé une différence statistiquement significative du RFM moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas prise (test t bilatéral, t = -2.7661, ddl = 141, valeur p = 0.006433). Cette association suggère que la cortisone pourrait influencer la répartition des graisses corporelles, un facteur pertinent dans le contexte de l'obésité. Toutefois, il est important de considérer d'autres facteurs, tels que la taille de l'échantillon, ainsi que des variations dans la durée et la dose de cortisone administrée, qui pourraient affecter l'interprétation de ces résultats. Ces éléments soulignent la nécessité d'études plus approfondies pour évaluer avec précision l'impact de la cortisone sur l'obésité et la distribution des graisses corporelles.
 
