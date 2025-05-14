@@ -226,12 +226,15 @@ Enfin, un autre test du chi² a révélé un lien significatif entre la consomma
 ```{r}
 biometry <- biometry %>.%
   smutate(.,
-    ic = tour_taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
+    ic = taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
   ) %>.%
   smutate(.,
     risque_ic = case_when(
       ic < 1.25 ~ "modéré",
       ic >= 1.25 ~ "élevé"))
+biometry_chi1 <- biometry %>.% sfilter(., !is.na(age_cat), !is.na(risque_ic))
+biometry_chi2 <- biometry %>.% sfilter(., !is.na(sommeil_cat), !is.na(risque_ic))
+biometry_chi3 <- biometry %>.% sfilter(., !is.na(sucre_cat), !is.na(risque_ic))
 
 biometry <- biometry %>.%
   smutate(.,sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
