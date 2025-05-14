@@ -78,9 +78,9 @@ skimr::skim(biometry)
 IC=tour de taille (m)0,109×masse (kg)taille (m)IC = \frac{\text{tour de taille (m)}}{0{,}109 \times \sqrt{\frac{\text{masse (kg)}}{\text{taille (m)}}}}IC=0,109×taille (m)masse (kg)​​tour de taille (m)​
 ```
 
--   **RFM (Relative Fat Mass)** : calculé à partir de la taille et du tour de taille, le RFM permet d\'estimer la masse grasse corporelle sans nécessiter de pesée.
+-   **RFM (Relative Fat Mass)** : calculé à partir de la taille et du tour de taille, le RFM permet d'estimer la masse grasse corporelle sans nécessiter de pesée.
 
-    RFM (homme) = 64 - (20 \*(taille (cm)/tour de taille (cm))
+    RFM (homme) = 64 - (20 \*(taille (cm)/tour de taille (cm))\$\$
 
     RFM (femme)= 76 - (20 \*(taille (cm)/tour de taille (cm))
 
@@ -182,7 +182,7 @@ Dans l'ensemble, ces descriptions suggèrent que des facteurs **directs** tels q
 
 <!--% Sélectionnez les 3 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
 
-À partir des mesures precedentes, plusieurs indices corporels ont été calculés, tels que l'IMC, l'indice de conicité (IC), le WHR, le RFM et l'indice taille/poignet (ITP).
+À partir des mesures précédentes, plusieurs indices corporels ont été calculés, tels que l'IMC, l'indice de conicité (IC), le WHR, le RFM et l'indice taille/poignet (ITP).
 
 1_Test t de student
 
