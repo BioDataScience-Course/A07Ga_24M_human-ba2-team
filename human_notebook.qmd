@@ -531,7 +531,7 @@ qqline(observes, col = "blue")
 
 ```
 
-Les conditions du test du Chi² sont respectées : les variables sont catégorielles, les observations sont indépendantes, aucun effectif attendu n'est inférieur à 1, et tous les effectifs attendus sont supérieurs ou égaux à 5. Le test peut être réalisé.
+Les conditions du test du Chi² sont respectées : - les variables sont catégorielles - les individus sont indépendants les uns des autres - aucun effectif théorique n'est nul - tous les effectifs observés sont supérieurs ou égaux à 5. Le test peut être réalisé.
 
 ```{r test_chi2_1}
 chisq.test(table_age_ic)
@@ -543,15 +543,15 @@ chisq.test(table_sucre_ic)
 
 **Âge et le risque caridovasculaire**
 
-La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Il n'y a pas indépendance entre les variables âge et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus de moins de 25 ans ont un risque plus faible de maladies cardiovasculaires, tandis que ceux de plus de 40 ans ont un risque plus élevé. L'âge semble donc avoir un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (X\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11).
 
 **Sommeil et risque cardiovasculaire**
 
-La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
+La valeur p étant supérieure au seuil alpha de 5 %, nous ne rejetons pas H0. Il y a indépendance entre les variables sommeil et risque cardiovasculaire. Les effectifs observés étant proches des effectifs théoriques, cela montre que la qualité du sommeil n'a pas d'effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (X\^2 d'indépendance = 0,454, ddl = 1, valeur p = 0,5004).
 
 **Consommation de sucre et risque cardiovasculaire**
 
-La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (χ\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
+La valeur p est inférieure au seuil alpha de 5 %. Nous rejetons donc H0. Il n'y a pas indépendance entre les variables consommation de sucre et risque cardiovasculaire. En comparant les effectifs observés avec les effectifs théoriques, on voit que les individus ayant une consommation faible de sucre ont un risque faible d'avoir des maladies cardiovasculaires, tandis que ceux consommant régulièrement ou fréquemment du sucre ont un risque plus élévé. Ainsi, la consommation de sucre a un effet significatif sur le risque cardiovasculaire au seuil alpha de 5 % (X\^2 d'indépendance = 11,89, ddl = 2, valeur p = 0,0026).
 
 ### Test de Chi^2^ by Ide
 
@@ -571,29 +571,34 @@ test_itp$expected
 
 ```
 
+R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
+
+Nous décidons donc de compléter l'analyse par un test exact plus fiable: le test de Fisher.
+
+```{r}
+# Test exact de Fisher 
+fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
+fisher_test
+```
+
 <!--% Hypothèse nulle et alternative -->
 
 H0: Il n'y a pas de lien entre le genre (H/F) et la constitution osseuse (Fine, Moyenne, Large) → les deux variables sont indépendantes.
 
 H1: Il existe une dépendance entre le genre et la constitution osseuse → la répartition des types osseux varie selon le genre.
 
-R émet l'avertissement : "L'approximation du Chi-2 est peut-être incorrecte"
-
-Nous décidons donc de compléter l'analyse par un test exact plus fiable: le test de Fisher.
-
-```{r test_chi2_2}
-# Test exact de Fisher 
-fisher_test <- fisher.test(tableau_itp, simulate.p.value = TRUE, B = 10000)
-fisher_test
-```
-
 <!--% Vérification des conditions d'application -->
 
--L'échantillon est constitué d'individus indépendants (étudiants mesurés individuellement). -Les modalités du tableau (genre × constitution) sont bien qualitatives. -Les effectifs théoriques sont tous non nuls et en majorité ≥ 5
+-   L'échantillon est constitué d'individus indépendants les uns des autre
+-   Les modalités du tableau (genre × constitution) sont bien qualitatives.
+-   Les effectifs théoriques sont tous non nuls
+-   Les effectif observé sont supérieurs ou égaux à 5.
 
 <!--% Interprétation statistique et biologique -->
 
-La valeur p est supérieure au seuil alpha de 5 % dans les deux tests ; nous ne rejetons donc pas l'hypothèse nulle (H₀). Il n'y a pas de preuve suffisante d'une dépendance entre le genre et la constitution osseuse. Ainsi, la répartition des morphotypes osseux (fin, moyen, large) ne varie pas significativement selon le genre dans notre échantillon.
+La valeur p est supérieure au seuil alpha de 5 % dans les deux tests (Chi carré : p = 0.4844, test exact de Fisher : p = 0.4887), nous ne rejetons donc pas l'hypothèse nulle (H0). Il n'y a pas de preuve suffisante pour établir une dépendance entre le genre et la constitution osseuse.
+
+Ainsi, la répartition des morphotypes osseux (fin, moyen, large) ne varie pas significativement selon le genre dans notre échantillon (X\^2 d'indépendance = 2.4497, ddl = 3, p = 0.4844).
 
 <!--# Travaillez jusqu'ici pour le module 7. -->
 
@@ -625,97 +630,114 @@ Un WHR plus élevé chez les hommes (0.91) que chez les femmes (0.85) est confor
 
 H0 : Il n'y a pas de différence significative entre les moyennes de WHR des hommes et des femmes.
 
-H1 : Il existe une différence significative entre les moyennes de WHR \# QQ plot pour activité physique élevée
+H1 : Il existe une différence significative entre les moyennes de WHR
 
 <!-- Vérification des conditions d'application -->
 
-Les deux échantillons sont indépendants et mesurent une variable quantitative (WHR).
+-   Les deux échantillons sont indépendants.
 
-```{r test_t_1 Christelle}
-# Test de Bartlett pour vérifier l'homogénéité des variances
-bartlett.test(data = biometry, whr ~ genre)
+-   Vérification de la normalité de la variable "whr":
 
+```{r}
+qqnorm(biometry$whr[biometry$genre == "H"], main = "QQ plot pour les Hommes")
+qqline(biometry$whr[biometry$genre == "H"], col = "orange")   # Ligne de référence
+
+qqnorm(biometry$whr[biometry$genre == "F"], main = "QQ plot pour les Femmes")
+qqline(biometry$whr[biometry$genre == "F"], col = "lightgreen")  # Ligne de référence
 ```
 
-Hypotheses test de bartlett Hypothèse nulle (H₀) : Les variances des groupes sont égales. Hypothèse alternative (H₁) : Les variances des groupes sont différentes.
+Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation étant relativement faible, cela n'empêche pas l'utilisation du test t de Student, qui est robuste aux petites violations de normalité.
 
-Les QQ plots montrent que les données du groupe des femmes suivent bien une distribution normale, tandis que celles du groupe des hommes montrent une légère déviation de la normalité. Cependant, cette déviation est relativement faible.
+-   Test de Bartlett afin de vérifier l'homoscédasticité:
 
-Nous rejetons H0 au seuil alpha de 5%, les variances de deux groupes ne sont pas égales.
+H0: Les variances des groupes sont égales (homoscèdasticité) H1: Les variances des groupes ne sont pas toutes égales (heteroscèdasticité).
 
-En raison de l'inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
+```{r}
+bartlett.test(data = biometry, whr ~ genre)
+```
 
+La valeur p étant inférieure au seuil alpha de 5 %, nous rejetons H0. Les variances des deux groupes ne sont pas égales, il y a hétéroscédasticité (test de Bartlett, K-squared = 5.1601, ddl = 1, valeur p = 0.02311).
+
+En raison de cette inégalité des variances, le test t de Welch a été choisi, car il est robuste aux violations de normalité et aux variances inégales.
+
+-   Réalisation Test de Welch:
+
+```{r test_t_1 Christelle}
+t.test(data = biometry, whr ~ genre, 
+  alternative = "two.sided", var.equal = FALSE)
+```
 
 <!-- Interprétation statistique et biologique -->
 
-La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,32, ddl = 141,13, p \< 0,001).
+La valeur p étant inférieure au seuil α de 5 %, H0 est rejeté. Ainsi, le rapport taille-hanche (WHR) diffère de manière significative entre les hommes et les femmes au seuil α de 5 % (test t de Welch bilatéral, t = 5,3249, ddl = 141,13, valeur p = 3.891E-07).
 
 ### Test t de Student 2
 
-La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses abdominales lorsqu'elle est administrée sur le long terme. Sachant que le Waist-to-Hip Ratio (WHR) est un indicateur utilisé pour évaluer la répartition des graisses corporelles et le risque métabolique associé, il est pertinent de se demander si la prise de cortisone influence significativement le WHR. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
+La cortisone est une hormone stéroïdienne souvent prescrite pour des effets anti-inflammatoires. Elle est connue pour favoriser l'accumulation de graisses corporelle lorsqu'elle est administrée sur le long terme. Sachant que le Relative Fat Mass (RFM) est un indicateur utilisé pour estimer la masse grasse corporelle totale, il est pertinent de se demander si la prise de cortisone influence significativement le RFM. Nous avons donc réalisé un test t de Student afin de comparer le WHR moyen entre les individus ayant pris de la cortisone et ceux n'en ayant pas pris.
 
 [@corbaz2024]
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_t_2}
+biometry4 <- biometry %>%
+  smutate(., rfm = case_when(
+    genre == "F" ~ 76 - 20 * (taille / tour_taille),
+    genre == "H" ~ 64 - 20 * (taille / tour_taille))) %>.%
+  sselect(., genre, rfm, cortisone)
 
-# La variable WHR a déjà été céer dans le test t de Student précedent.
-
-# Réalisation graphique:
-chart(data = biometry, cortisone ~ whr %fill=% genre) +
+chart(data = biometry4, cortisone ~ rfm %fill=% genre) +
   geom_boxplot() +
   labs(title = "WHR selon la prise de cortisone",
        x = "Prise de cortisone",
        y = "Waist-to-Hip Ratio") + 
   coord_flip ()
-
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H0 : Il n'y a pas de différence significative du WHR moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas prise.
+H0 : Il n'y a pas de différence significative du RFM moyen entre les individus ayant pris de la cortisone et ceux ne l'ayant pas prise.
 
-H1 : Il existe une différence significative du WHR moyen selon la prise de cortisone.
+H1 : Il existe une différence significative du RFM moyen selon la prise de cortisone.
 
 <!--% Vérification des conditions d'application -->
 
-La variable dépendante est quantitative. La variable explicative est qualitative binaire (deux groupes). Les deux échantillons sont indépendants. Les données suivent une distribution normale dans chaque groupe (vérifiée par un test de normalité ou supposée si n \> 30). Les variances des deux groupes sont égales.
+-   Test de Bartlett pour vérifier l'homoscedasticité:
 
-```{r test_t_2}
-# Test de Bartlett pour vérifier l'homoscedasticité:
-# H0: Les variances des échantillons comparés sont égales (homoscèdasticité)
-# H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
+H0 : Les variances des échantillons comparés sont égales (homoscèdasticité) H1 : Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
 
-bartlett.test (data=biometry, whr ~cortisone)
+```{r}
+bartlett.test (data=biometry4, rfm ~cortisone)
+```
 
-# La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
+La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité (test de Bartlett, K-squared = 0.10207, ddl = 1, valeur p = 0.7494).
 
-# Vérification de la distribution de la variable quantitative "whr":
+-   Vérification de la distribution de la variable quantitative "whr":
 
-car::qqPlot(biometry[["whr"]], distribution = "norm",
+```{r}
+car::qqPlot(biometry4[["rfm"]], distribution = "norm",
   envelope = 0.95, col = "Black", ylab = "whr (cm)")
+```
 
-# Les points se rapprochent de la droite de normalité, indiquant que la distribution suit une loi normale.
+Le Q-Q plot des résidus montre une distribution globalement linéaire, avec de légères déviations, suggérant une normalité approximative mais acceptable. Étant donné que le test t de Student est robuste aux petites violations de normalité, cette légère déviation n'entrave pas l'utilisation du test.
 
-# Les conditions du test t de Student étant vérifiés, on réalise le test t de Student bilatéral.
+Les conditions du test t de Student sont verifiés.
 
-# Réalisation du test t de Student:
-t.test (data=biometry, whr ~ cortisone, alternative = "two.sided", con.level = 0.95, var.equal= TRUE)
+-   Réalisation du test t de Student:
 
+```{r}
+t.test (data=biometry4, rfm ~ cortisone, alternative = "two.sided", con.level = 0.95, var.equal= TRUE)
 ```
 
 <!--% Interprétation statistique et biologique -->
 
-La valeur p étant supérieure au seuil α = 0.05, H0 n'est pas rejetée. On conclut qu'il n'y a pas de différence statistiquement significative du WHR moyen entre les deux groupes (avec ou sans cortisone).
+La valeur p étant inférieure au seuil alpha de 5 %, H0 est rejetée. Nous concluons qu'il existe une différence statistiquement significative du RFM moyen entre les deux groupes (avec ou sans cortisone) (test t bilatéral, t = -2.7661, ddl = 141, valeur p = 0.006433).
 
-Bien que la cortisone soit connue pour favoriser l'accumulation de graisse abdominale (et donc potentiellement augmenter le WHR), nos résultats ne montrent pas d'effet significatif dans cet échantillon. Cela pourrait s'expliquer par plusieurs facteurs : Durée et dose de prise de cortisone non précisées. Taille modérée de l'échantillon, surtout pour le groupe O (n = 9). Difference élevée naturelle entre les individus des profils métaboliques.
-
-En moyenne, les individus sous cortisone présentent un WHR plus élevé (0.9185) que ceux sans cortisone (0.8749), mais l'écart n'est pas suffisant pour être significatif statistiquement.
+La prise de cortisone semble être associée à une augmentation du RFM, suggérant un effet potentiel de la cortisone sur la composition corporelle. Toutefois, il est important de considérer d'autres facteurs, tels que la taille de l'échantillon ou des variations dans la durée et la dose de cortisone administrée, qui pourraient influencer l'interprétation des résultats.
 
 <!--# Travaillez jusqu'ici pour le module 8. Commencez à travailler sur le rapport (intro, mat&met). -->
 
-### ANOVA à un facteur 1
+### ANOVA à un facteur 1 by Nefise
 
 Les habitudes alimentaires jouent un rôle crucial dans la variation de l'IMC, et différents types de régimes peuvent influencer cette mesure de manière significative. Par exemple, les individus suivant un régime carnivore peuvent présenter un IMC différent de ceux adoptant un régime herbivore ou mixte, en raison des variations dans la densité calorique, la composition nutritionnelle et les habitudes de consommation alimentaire. Ainsi, cette analyse vise à déterminer si le type de régime alimentaire influence l'IMC.
 
@@ -724,54 +746,55 @@ Les habitudes alimentaires jouent un rôle crucial dans la variation de l'IMC, e
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
 ```{r plot_anova1_1}
-biometry4 <- biometry %>.%
+biometry5 <- biometry %>.%
   smutate(., bmi = masse / (taille/100)^2) %>.%
   sselect(., genre, bmi, alimentation)
 
-chart(data=biometry4, bmi ~ alimentation %fill=% alimentation) +
+chart(data=biometry5, bmi ~ alimentation %fill=% alimentation) +
   geom_boxplot()
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
-H0: Il n'y a pas de différence significative entre les moyennes de bmi et les différents groupes de alimentation.
+H0: Il n'y a pas de différence significative entre les moyennes de bmi et les différents groupes d'alimentation.
 
-H1: Il existe au moins une différence significative entre les moyennes de bmi pour les groupes de alimentation.
+H1: Il existe au moins une différence significative entre les moyennes de bmi pour les groupes d'alimentation.
 
 <!--% Vérification des conditions d'application -->
 
-```{r test_anova1_1}
+-   Réalisation du Test de Bartlett afin de vérifier l'homoscèdasticité:
 
-# Test de Bartlett pour vérifier l'homoscèdasticité: 
+H0: Les variances des échantillons comparés sont égales (homoscèdasticité) H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
 
-# H0: Les variances des échantillons comparés sont égales (homoscèdasticité)
-# H1: Les variances des échantillons comparés ne sont pas toutes égales (heteroscèdasticité).
+```{r}
+bartlett.test (data=biometry5, bmi ~ alimentation )
+```
 
-bartlett.test (data=biometry4, bmi ~ alimentation )
+La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité (test de Bartlett, K-squared = 5.0246, ddl = 2, valeur p = 0.08108).
 
-# La valeur de p est supérieure au seuil alpha de 5%. On ne rejette donc pas H0 et il y a homoscedasticité.
+-   Vérification de la distribution de la variable quantitative "bmi":
 
-# Vérification de la distribution de la variable quantitative "bmi":
-
-car::qqPlot(biometry4[["bmi"]], distribution = "norm",
+```{r}
+car::qqPlot(biometry5[["bmi"]], distribution = "norm",
   envelope = 0.95, col = "Black", ylab = "bmi)")
+```
 
-# La distribution s’éloigne un peu aux extrêmes de la distribution normale. Nous sommes dans un cas un peu limite. Nous effectuons donc un test non paramétrique: le test de Kruskal-Wallis, plutôt que le test d'Anova.
+La distribution s'éloigne un peu aux extrêmes de la distribution normale. Nous sommes dans un cas un peu limite. Nous effectuons donc un test non paramétrique: le test de Kruskal-Wallis, plutôt que le test d'Anova.
 
-# Test de Kruskal-Wallis: 
+-   Test de Kruskal-Wallis:
 
-# H0: Les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
-# H1: Au moins une des distributions des rangs est différente entre les groupes.
- 
-kruskal.test(data = biometry4, bmi ~ alimentation)
+H0: Les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés. H1: Au moins une des distributions des rangs est différente entre les groupes.
 
-# La valeur de p est supérieur au seuil alpha de 5 %. On ne rejette donc pas H0 et les distributions des rangs de la variable étudiée sont identiques entre les différents groupes comparés.
+```{r}
+kruskal.test(data = biometry5, bmi ~ alimentation)
 ```
 
 <!--% Interprétation statistique et biologique -->
 
-Le test de Kruskal-Wallis a donné une valeur p supérieure au seuil alpha de 5 %, ce qui signifie que nous ne rejetons pas H0. Ainsi, il n'y a pas de différence significative dans les distributions de bmi entre les différents groupes d'alimentation. Cela suggère que le type d'alimentation étudié n'a pas un effet significatif sur l'indice de masse corporelle (bmi) dans cet échantillon.
+La distribution des résidus s'éloignant de la normalité, nous avons appliqué le test non paramétrique de Kruskal-Wallis.
+
+Le test a donné une valeur p supérieure au seuil de 5 %, ce qui conduit à ne pas rejeter H0. Les distributions des rangs de BMI sont donc identiques entre les groupes d'alimentation. En conséquence, le type d'alimentation n'a pas d'effet significatif sur le BMI dans cet échantillon (test Kruskal-Wallis, X\^2= 3.0983, ddl = 2, valeur p = 0.2124)
 
 ### ANOVA à un facteur 2 by IDE
 
@@ -785,20 +808,21 @@ Dans ce contexte, il est pertinent de s'interroger sur une possible différence 
 
 <!--% Graphique ou tableau présentant les données par rapport au test à réaliser. -->
 
-> Le test de Shapiro-Wilk appliqué aux résidus du modèle ANOVA indique une valeur p très inférieure à 0.05 (p = 4.92e-06), ce qui signifie que la condition de normalité des résidus n'est pas respectée. Cette violation fragilise la validité des résultats de l'ANOVA, notamment la fiabilité de la statistique F et de la p-value associée.
->
+> Le test de Shapiro-Wilk appliqué aux résidus du modèle ANOVA indique une valeur p très inférieure au seuil alpha de 5 % (p = 4.92e-06), ce qui signifie que la condition de normalité des résidus n'est pas respectée. Cette violation fragilise la validité des résultats de l'ANOVA, notamment la fiabilité de la statistique F et de la p-value associée.
+
 > Afin de tenir compte de cette non-normalité, nous avons effectué en complément un test non paramétrique de Kruskal-Wallis, qui compare les distributions des groupes sans supposer leur forme.
 
 ```{r plot_anova1_2}
 # Supprimer les lignes avec des NA dans les colonnes utiles
 biometry_clean <- biometry1[!is.na(biometry1$itp) & !is.na(biometry1$alimentation), ]
 
+# Réalisation test Anova facteur 1
 modele_anova <- lm(itp ~ alimentation, data = biometry_clean)
 shapiro.test(residuals(modele_anova))
 anova_resultats <- anova(modele_anova)
 tabularise(anova_resultats)
 
-#visualisation des résultats
+# Visualisation des résultats
 chart(data = biometry1, itp ~ alimentation %fill=% alimentation) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, color = "black") +
@@ -809,16 +833,16 @@ chart(data = biometry1, itp ~ alimentation %fill=% alimentation) +
     y = "Indice Taille / Poignet (ITP)"
   ) 
 
-# test kruskal-wallis car la normalité des résidus n’est pas respectée
+# Test kruskal-wallis car la normalité des résidus n’est pas respectée
 kruskal.test(itp ~ alimentation, data = biometry_clean)
 
 ```
 
 <!--% Hypothèse nulle et alternative -->
 
--   H0 (hypothèse nulle) : les moyennes de l'indice ITP sont égales entre les groupes d'alimentation (omnivore, carnivore, végétarien).
+-   H0 (hypothèse nulle) : les distributions des rangs de l'ITP sont identiques entre les groupes d'alimentation (omnivore, carnivore, végétarien).
 
--   H1 (hypothèse alternative) : au moins une moyenne diffère des autres.
+-   H1 (hypothèse alternative) : les distributions des rangs de l'ITP diffèrent entre au moins deux groupes d'alimentation.
 
 <!--% Vérification des conditions d'application -->
 
@@ -833,7 +857,7 @@ qqline(residuals(modele_anova), col = "blue", lwd = 2)
 
 ```
 
-Le test de Bartlett (p = 0.582) indique que l'hypothèse d'homogénéité des variances est respectée: il y a homoscédasticité.
+D'après le résultat du test de Bartlett, la valeur p est supérieure au seuil alpha de 5 %. Ainsi, on ne rejette pas H0 et l'hypothèse d'homogénéité des variances est vérifiée: il y a homoscédasticité (test de Bartlett, K-squared = 1.0827, ddl = 2, valeur p = 0.582).
 
 Le Q-Q plot des résidus montre une distribution globalement linéaire, avec de légères déviations aux extrémités, ce qui suggère une normalité approximative mais acceptable, d'autant que l'ANOVA est un test robuste à ce type de légère déviation.
 
@@ -841,19 +865,11 @@ L'ensemble des conditions nécessaires étant raisonnablement remplies, nous avo
 
 <!--% Interprétation statistique et biologique -->
 
-La valeur de p étant supérieure au seuil aplha de 5 %, on ne rejette pas H0. Il n'y a pas de différence significative entre les moyennes d'ITP et les types d'alimentation. Ainsi, d'après notre échantillon, le type d'alimentation (omnivore, carnivore, végétarien) n'a pas d'influence significative sur l'indice taille-poignet (ITP). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas sensiblement en fonction du régime alimentaire déclaré.
-
 Le test de Shapiro-Wilk a révélé une violation de la normalité des résidus (p = 4.92e-06), ce qui fragilise l'usage de l'ANOVA dans ce contexte.
 
-Malgré cela, l'ANOVA à un facteur appliquée à notre modèle a donné une valeur p = 0.355, indiquant l'absence de différence significative des moyennes d'ITP selon le type d'alimentation.
+Pour contourner cette limite, nous avons réalisé un test non paramétrique de Kruskal-Wallis qui a également donné une valeur p supérieure au seuil alpha de 5 %. On ne rejette donc pas H0, ce qui indique qu'il n'y a pas de différence significative des distributions de l'ITP entre les groupes d'alimentation (omnivore, carnivore, végétarien) (test Kruskal-Wallis,χ2 = 2.9259, df = 2, p-value = 0.2315).
 
-Afin de confirmer cette tendance sans supposer la normalité, nous avons réalisé un test non paramétrique de Kruskal-Wallis, qui a lui aussi conduit à une valeur p = 0.2315.
-
-Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
-
-<!--% Interprétation statistique et biologique -->
-
-Ce second test confirme l'absence de lien statistiquement significatif entre l'alimentation et l'indice taille/poignet (ITP).
+Ainsi l'ANOVA et le test de Kruskal-Wallis confirment qu'il n'y a pas de différence significative entre les moyennes d'ITP et les groupes d'alimentation (omnivore, carnivore, végétarien). Cela suggère que la constitution osseuse relative, telle qu'estimée par l'ITP, ne varie pas en fonction du régime alimentaire déclaré.
 
 <!--# Travaillez jusqu'ici pour le module 9. Commencez à rédiger la partie résultats avec la description des données. -->
 
@@ -884,25 +900,23 @@ biometry_clean %>.%
 
 <!--% Hypothèse nulle et alternative -->
 
-H0 (hypothèse nulle) : Il n'y a pas d'effet significatif ni du genre, ni de la catégorie d'âge, ni de leur interaction sur l'ITP (indice taille/poignet).
+H0 (hypothèse nulle) : Les moyennes de l'ITP sont égales entre tous les niveaux du facteur genre et entre toutes les catégories du facteur âge, sans interaction significative entre les deux. Autrement dit, genre, âge et leur interaction n'ont aucun effet significatif sur l'ITP.
 
-H1 (hypothèse alternative) : Il y a au moins un effet significatif (genre, âge ou interaction des deux) sur l'ITP.
+H1 (hypothèse alternative) : Au moins une moyenne de l'ITP diffère selon le genre, l'âge, ou leur interaction, indiquant un effet significatif d'au moins un de ces facteurs sur l'ITP.
 
 <!--% Vérification des conditions d'application -->
 
-Variable réponse quantitative : ITP est une variable numérique continue.
+-   Variable réponse quantitative : ITP est une variable numérique continue.
 
-Facteurs explicatifs (age_cat, genre) :
+-   Variables explicatives (age_cat, genre) : .`age_cat` possède 3 niveaux : \< 25 ans, 25--40 ans, \> 40 ans
 
--   `age_cat` possède 3 modalités : \< 25 ans, 25--40 ans, \> 40 ans
+    .`genre` possède 3 niveaux : H et F
 
--   `genre` possède 2 modalités : H et F
+-   Indépendance des observations : Les données proviennent de personnes différentes, donc on suppose que cette condition est respectée.
 
-Indépendance des observations : Les données proviennent de personnes différentes, donc on suppose que cette condition est respectée.
+-   Homogénéité des variances : Le test de Bartlett : H0: Les variances des groupes sont égales (homoscédasticité). H1: au moins une des variances est différente (hétéroscédasticité). La valeur p est supérieure au seuil aplha de 5 %, nous ne rejetons pas H0. Condition d'homoscédasticité respectée pour le test Anova (test de Bartlett, K-squared = 8.7186, ddl = 5, valeur p = 0.1208).
 
-Homogénéité des variances : Le test de Bartlett donne p = 0.1208 \> 0.05 → la condition est respectée.
-
-Normalité des résidus : Le QQ-plot montre une distribution globalement linéaire, avec de légers écarts en extrémités. C'est acceptable, surtout que l'ANOVA est robuste aux petites déviations de normalité.
+-   Normalité des résidus : Le QQ-plot montre une distribution globalement linéaire, avec de légers écarts en extrémités. C'est acceptable, surtout que l'ANOVA est robuste aux petites déviations de normalité.
 
 ```{r test_anova2_1}
 
@@ -919,7 +933,7 @@ qqline(residus, col = "red")
 
 <!--% Interprétation statistique et biologique -->
 
-L'analyse de la variance à deux facteurs a révélé un effet significatif de la catégorie d'âge (`age_cat`) sur l'indice taille/poignet (ITP) (F(2,137) = 9.299, p \< 0.001). En revanche, le genre (`genre`) ainsi que l'interaction entre l'âge et le genre (`age_cat:genre`) n'ont pas d'effet significatif sur l'ITP (p \> 0.05). Cela suggère que les différences d'ITP sont principalement liées à l'âge, et non au genre ou à l'interaction entre les deux.
+À un seuil alpha de 5 %, l'analyse de la variance à deux facteurs a révélé que l'effet de la catégorie d'âge (`age_cat`) est significatif sur l'indice taille/poignet(ITP) (F(2,137) = 9.299, valeur p = 0.000163). En revanche, les effets du genre (`genre`) (F(1,137) = 1.091, valeur p = 0.297992) et de l'interaction entre l'âge et le genre (`age_cat:genre`) (F(2,137) = 1.109, valeur p = 0.332717) ne sont pas significatifs. Cela indique que les variations de l'ITP sont principalement dues à l'âge, sans influence significative du genre ou de leur interaction.
 
 Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativement selon la catégorie d'âge, ce qui pourrait refléter des changements physiologiques ou morphologiques liés au vieillissement, comme la masse osseuse ou la distribution corporelle. En revanche, l'absence d'effet du genre et de l'interaction suggère que, dans cette population, les différences morphométriques entre hommes et femmes n'influencent pas significativement l'ITP, ou le font de manière homogène à travers les âges.
 
@@ -929,7 +943,7 @@ Ces résultats indiquent que l'indice taille/poignet (ITP) varie significativeme
 
 Le **rapport taille-hanches (WHR)** reflète la répartition de la graisse corporelle et est lié au risque de maladies cardiovasculaires. Un WHR élevé indique une accumulation de graisse abdominale, facteur de risque important pour la santé.
 
-Ce risque, évalué par le WHR, peut varier selon le **genre**, en raison de différences biologiques dans le stockage des graisses.
+Ce risque peut varier selon le **genre** en raison de différences biologiques dans le stockage des graisses.
 
 Dans cette analyse, nous cherchons à savoir si le **WHR moyen diffère selon le niveau de risque IC**, le **genre**, et s'il existe une **interaction** entre ces deux facteurs.
 
@@ -948,22 +962,31 @@ chart(data = biometry_clean, whr ~ interaction(risque_ic, genre)) +
 
 ```
 
-Le whr augmente avec le risque ic pour les deux genres.
+D'après le graphique, le WHR augmente avec le risque ic pour les deux genres.
+
+<!--% Hypothèses -->
+
+Hypothèse nulle (H0) : Les moyennes du WHR sont égales pour toutes les catégories du facteur risque_ic et pour tous les niveaux du facteur genre, sans interaction significative entre les deux. Autrement dit, risque_ic, genre, et leur interaction n'ont aucun effet significatif sur le WHR.
+
+Hypothèse alternative (H1) : Au moins une moyenne du WHR diffère entre les catégories du facteur risque_ic, entre les niveaux du facteur genre, ou l'effet de risque_ic sur le WHR varie en fonction du genre. Cela signifie qu'il existe un effet significatif parmi les facteurs risque_ic, genre, ou leur interaction sur le WHR.
 
 <!--% Vérification des conditions d'application -->
 
-Hypothèses test de Bartlett
+-   Réalisation du test de Bartlett afin de vérifier l'homoscédasticité:
 
-H0: Les variances des groupes sont égales. H1: au moins une des variances est différente.
+H0: Les variances des groupes sont égales (homoscédasticité). H1: au moins une des variances est différente (hétéroscédasticité).
 
 ```{r bartlett anova2}
 bartlett.test(data = biometry, whr ~ interaction(risque_ic, genre))
 ```
 
-Nous ne rejetons pas H0 au seuil alpha de 5 % (p-value = 0.2677). Les variances sont homogènes entre les 4 groupes (modéré.H, élevé.H, modéré.F, élevé.F). Condition respectée pour le test Anova.
+La valeur p étant supérieure au seuil aplha de 5 %, nous ne rejetons pas H0 au seuil alpha de 5 % (p-value = 0.2677). Les variances sont donc homogènes entre les 4 groupes (modéré.H, élevé.H, modéré.F, élevé.F). Condition d'homoscédasticité respectée pour le test Anova (test de Bartlett, K-squared = 3.9431, ddl = 3, valeur p = 0.2677).
+
+-   Vérification de la normalité:
 
 ```{r qqplot}
 modele <- aov(data = biometry, whr ~ interaction(risque_ic, genre))
+summary(modele)
 
 biometry_clean %>.%
   sgroup_by(., risque_ic, genre) %>.%
@@ -991,6 +1014,8 @@ Hypothèse nulle (H₀) : Il n'y a pas d'effet significatif du facteur risque_ic
 
 Hypothèse alternative (H₁) : Il existe au moins un effet significatif parmi les facteurs risque_ic, genre ou leur interaction sur le WHR. Cela signifie que les moyennes du WHR diffèrent selon les catégories de risque_ic, les genres, ou que l'effet de risque_ic sur le WHR dépend du genre.
 
+-   Réalisation du test Anova facteur 2:
+
 ```{r test_anova2_2}
 anova_model <- lm(data = biometry, whr ~ risque_ic + genre)
 
@@ -999,22 +1024,20 @@ anova(anova_model) %>.% tabularise(.)
 
 <!--% Interprétation statistique et biologique -->
 
-Les résultats montrent un effet significatif du risque IC (p \< 0.001) et du genre (p \< 0.001) sur le WHR. En revanche, l'interaction entre le risque IC et le genre n'est pas significative (p = 0.13), ce qui suggère que l'effet du risque IC sur le WHR ne dépend pas du sexe (test d'interaction, p = 0.13).
+À un seuil alpha de 5 %, nous rejetons H0 pour les deux facteurs, risque IC (F(1,140) = 79.3, valeur p = 2.54E-15) et genre (F(1,140) = 42.5, valeur p = 1.19E-9). Cela indique que le risque IC et le genre ont un effet significatif sur le WHR. En revanche, l'interaction entre le risque IC et le genre est significative (F(3,139) = 41.74, valeur p \< 2E-16), ce qui suggère que l'effet du risque IC sur le WHR varie selon le genre.
 
 # Discussion et conclusions
 
 <!--% Reprenez ci-dessous sous forme d'éléments de listes brefs les résultats les plus importants que vous retirez de votre analyse. Ils doivent vous guider pour décider quels tests (les plus intéressants) vous allez conserver dans le rapport. -->
 
--   La consommation de cigarettes semble avoir un lien avec la masse corporelle. Bien que la nicotine puisse influencer temporairement le poids, cette relation diffère en fonction du genre et du niveau de masse corporelle. Cela indique que l'impact du tabagisme sur l'obésité nécessite des recherches supplémentaires pour mieux comprendre ces effets et leur évolution au fil du temps.
+-   Le lien entre tabagisme et poids est intéressant, car il varie selon le genre et la masse corporelle.
 
--   La consommation de sucre ajouté est fortement associée à un tour de taille élevé, favorisant l'accumulation de graisse abdominale, un facteur clé dans le développement de l'obésité et des maladies métaboliques. Cette relation est également liée à un risque accru de maladies cardiovasculaires. Ainsi, réduire l'apport en sucre est essentiel pour limiter la graisse viscérale et prévenir les risques de santé associés, notamment l'obésité et les troubles cardiaques.
+-   L'association entre la consommation de sucre ajouté et le tour de taille élevé est préoccupante, surtout en ce qui concerne les risques cardiovasculaires.
 
--   Une consommation élevée de fast food semble perturber la qualité du sommeil, particulièrement chez les hommes, ce qui pourrait être un facteur indirect influençant la prise de poids et l'obésité.
+-   L'impact de la consommation de fast food sur la qualité du sommeil et la prise de poids est préoccupante également, notamment chez les hommes.
 
--   Le Waist-to-Hip Ratio (WHR), indicateur clé de la distribution de la graisse corporelle, révèle des différences significatives entre les sexes, avec les hommes présentant généralement un WHR plus élevé que les femmes. Ce ratio est également influencé par le risque cardiovasculaire (IC), les individus à risque élevé affichant généralement un WHR plus important. Ces résultats soulignent l'importance de prendre en compte à la fois le sexe et le risque IC dans l'évaluation du risque métabolique et la prévention des complications associées.
+-   Le Waist-to-Hip Ratio (WHR) montre des différences intéressantes entre les sexes et son lien avec le risque cardiovasculaire mérite une attention particulière.
 
-<!--# Important : ce document doit compiler SANS ERREURS avec le bouton 'Rendu' sinon le travail sera sanctionné lourdement. La compilation du document Quarto est maintenant considérée comme acquise. -->
+-   L'impact de la cortisone sur la composition corporelle est intéressant, car la prise de cortisone entraîne une augmentation du Relative Fat Mass (RFM) moyen.
 
-# Référence
-
-<!--% N'indiquez rien ci-dessous. Quarto se chargera de rajouter vos références bibliographiques automatiquement. -->
+-   L'indice taille/poignet (ITP) varie avec l'âge, ce qui soulève des questions intéressantes sur les transformations physiques liées au vieillissement.
