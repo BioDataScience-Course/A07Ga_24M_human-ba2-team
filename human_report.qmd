@@ -184,9 +184,7 @@ Dans l'ensemble, ces descriptions suggèrent que des facteurs **directs** tels q
 
 À partir des mesures précédentes, plusieurs indices corporels ont été calculés, tels que l'IMC, l'indice de conicité (IC), le WHR, le RFM et l'indice taille/poignet (ITP).
 
-1_Test t de student
-
-Des différences significatives apparaissent selon les catégories d'âge ou de sexe pour certains paramètres, comme le tour de poignet ou le WHR. En revanche, certaines sous-catégories comme les végétariens sont très peu représentées, ce qui limite la portée des comparaisons entre groupes. $$RFM (homme) = 64 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$ Test d'hypothèse afin d'évaluer l'impact des comportements de vie sur les risques métaboliques et la morphologie corporelle :
+1_Test t de student: $$RFM (homme) = 64 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$ Test d'hypothèse afin d'évaluer l'impact des comportements de vie sur les risques métaboliques et la morphologie corporelle :
 
 ```{r}
 
