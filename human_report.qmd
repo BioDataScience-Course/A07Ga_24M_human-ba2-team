@@ -204,7 +204,7 @@ biometry1 <- biometry %>%
     )
 
 biometry_clean <- biometry1 %>.%
-  sfilter(.,!is.na(itp), !is.na(alimentation)) %>%
+  sfilter(.,!is.na(itp), !is.na(alimentation)) %>.%
   smutate(., age_cat = case_when(
     age < 25 ~ "< 25 ans",
     age >= 25 & age <= 40 ~ "25-40 ans",
@@ -226,30 +226,37 @@ Enfin, un autre test du chi² a révélé un lien significatif entre la consomma
 ```{r}
 biometry <- biometry %>.%
   smutate(.,
-    ic = taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100)))
-  ) %>.%
-  smutate(.,
+    ic = taille / 100 / (0.109 * sqrt(masse_corr / (taille / 100))),
     risque_ic = case_when(
       ic < 1.25 ~ "modéré",
-      ic >= 1.25 ~ "élevé"))
+      ic >= 1.25 ~ "élevé"
+    ),
+    sommeil_cat = case_when(
+      sommeil < 7 ~ "Insuffisant",
+      sommeil >= 7 & sommeil <= 8 ~ "Modéré",
+      sommeil > 8 ~ "Suffisant"
+    ),
+    sucre_cat = case_when(
+      sucre %in% c("jamais", "rarement") ~ "Faible",
+      sucre == "régulièrement" ~ "Régulièrement",
+      sucre == "souvent" ~ "Souvent"
+    ),
+    age_cat = case_when(
+      age < 25 ~ "< 25 ans",
+      age >= 25 & age <= 40 ~ "25-40 ans",
+      age > 40 ~ "> 40 ans"
+    )
+  )
+
 biometry_chi1 <- biometry %>.% sfilter(., !is.na(age_cat), !is.na(risque_ic))
 biometry_chi2 <- biometry %>.% sfilter(., !is.na(sommeil_cat), !is.na(risque_ic))
 biometry_chi3 <- biometry %>.% sfilter(., !is.na(sucre_cat), !is.na(risque_ic))
 
-biometry <- biometry %>.%
-  smutate(.,sommeil_cat = case_when(sommeil < 7 ~ "Insuffisant",
-      sommeil >= 7 & sommeil > 8 ~ "Modéré",
-      sommeil > 8 ~ "Suffisant"), sucre_cat = case_when(
-      sucre %in% c("jamais", "rarement") ~ "Faible",
-      sucre == "régulièrement" ~ "Régulièrement",
-      sucre == "souvent" ~ "Souvent"))
+table_age_ic <- table(biometry_chi1$age_cat, biometry_chi1$risque_ic)
+table_sommeil_ic <- table(biometry_chi2$sommeil_cat, biometry_chi2$risque_ic)
+table_sucre_ic <- table(biometry_chi3$sucre_cat, biometry_chi3$risque_ic)
 
-table_age_ic <- table(biometry$age_cat, biometry$risque_ic)
-table_sommeil_ic <-table(biometry$sommeil_cat, biometry$risque_ic)
-table_sucre_ic <- table(biometry$sucre_cat, biometry$risque_ic)
-
-
-
+# Tests du Chi²
 chisq.test(table_age_ic)
 chisq.test(table_sommeil_ic)
 chisq.test(table_sucre_ic)
