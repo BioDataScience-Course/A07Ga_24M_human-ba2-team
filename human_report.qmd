@@ -123,46 +123,35 @@ Dans l'ensemble, ces descriptions suggèrent que des comportements tels que l'ac
 
 <!--% Sélectionnez les 3 tests d'hypothèses les plus pertinents depuis `human_notebook.qmd`, ainsi bien sûr que les calculs des indices nécessaires que vous placerez juste au-dessus de vos tests. Ces tests doivent répondre à votre question de recherche (le but). Reformulez les interprétations pour former un texte qui se lit en continu. -->
 
- À partir des mesures precedentes, plusieurs indices corporels ont été calculés, tels que l’IMC, l’indice de conicité (IC), le WHR, le RFM et l’indice taille/poignet (ITP).
+À partir des mesures precedentes, plusieurs indices corporels ont été calculés, tels que l'IMC, l'indice de conicité (IC), le WHR, le RFM et l'indice taille/poignet (ITP).
 
-   1_Test t de student 
+1_Test t de student
 
-Des différences significatives apparaissent selon les catégories d’âge ou de sexe pour certains paramètres, comme le tour de poignet ou le WHR. En revanche, certaines sous-catégories comme les végétariens sont très peu représentées, ce qui limite la portée des comparaisons entre groupes.
-$$RFM (homme) = 64 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$
-Test d'hypothèse afin d’évaluer l’impact des comportements de vie sur les risques métaboliques et la morphologie corporelle :
+Des différences significatives apparaissent selon les catégories d'âge ou de sexe pour certains paramètres, comme le tour de poignet ou le WHR. En revanche, certaines sous-catégories comme les végétariens sont très peu représentées, ce qui limite la portée des comparaisons entre groupes. $$RFM (homme) = 64 - (20 \times \frac{\text{taille (cm)}}{\text{tour de taille (cm)}})$$ Test d'hypothèse afin d'évaluer l'impact des comportements de vie sur les risques métaboliques et la morphologie corporelle :
 
-Test t de Student – Effet de la cortisone sur le WHR
-La cortisone est connue pour favoriser l’accumulation de graisse abdominale. Un test t de Student a été réalisé pour comparer les valeurs moyennes de WHR entre les individus prenant de la cortisone et ceux qui n’en prennent pas. Les conditions d’application du test sont remplies (normalité des résidus et homogénéité des variances confirmées par le Q-Q plot et le test de Bartlett). Les résultats montrent une différence moyenne non significative entre les deux groupes (p = 0.221). Bien que le WHR soit légèrement plus élevé chez les utilisateurs de cortisone (0.9185 contre 0.8749), cette différence n’est pas statistiquement significative.
+Test t de Student -- Effet de la cortisone sur le WHR La cortisone est connue pour favoriser l'accumulation de graisse abdominale. Un test t de Student a été réalisé pour comparer les valeurs moyennes de WHR entre les individus prenant de la cortisone et ceux qui n'en prennent pas. Les conditions d'application du test sont remplies (normalité des résidus et homogénéité des variances confirmées par le Q-Q plot et le test de Bartlett). Les résultats montrent une différence moyenne non significative entre les deux groupes (p = 0.221). Bien que le WHR soit légèrement plus élevé chez les utilisateurs de cortisone (0.9185 contre 0.8749), cette différence n'est pas statistiquement significative.
 
+2_Test chi carre
 
-   2_Test chi carre 
- 
- Une consommation fréquente de sucre est associée à une augmentation du tour de taille, ce qui souligne un lien entre les sucres ajoutés et l’accumulation de graisse abdominale. Chez les hommes, on observe une tendance à un sommeil plus court quand la consommation de fast food est élevée. Chez les femmes, la tendance est inverse mais le nombre d’observations est limité, donc ces résultats doivent être interprétés avec prudence.
- 
- $$IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}$$
+Une consommation fréquente de sucre est associée à une augmentation du tour de taille, ce qui souligne un lien entre les sucres ajoutés et l'accumulation de graisse abdominale. Chez les hommes, on observe une tendance à un sommeil plus court quand la consommation de fast food est élevée. Chez les femmes, la tendance est inverse mais le nombre d'observations est limité, donc ces résultats doivent être interprétés avec prudence.
 
-Âge, sucre, sommeil et risque cardiovasculaire (IC)
-Trois variables qualitatives ont été croisées avec le risque IC :
+$$IC = \frac{\text{Tour de taille (m)}}{0.109 \times \sqrt{\text{Masse (kg)} / \text{Taille (m)}}}$$
+
+Âge, sucre, sommeil et risque cardiovasculaire (IC) Trois variables qualitatives ont été croisées avec le risque IC :
 
 Âge : test très significatif (p = 1.792e-11). Les personnes âgées de plus de 40 ans sont sur-représentées dans le groupe à risque élevé. L'âge influence donc fortement l'IC.
 
 Sucre : test également significatif (p = 0.0026). Une consommation fréquente de sucre est associée à un risque cardiovasculaire accru.
 
-Sommeil : le test n’est pas significatif (p = 0.5004), on conclut donc à une absence d’effet du sommeil sur le risque IC dans notre échantillon.
+Sommeil : le test n'est pas significatif (p = 0.5004), on conclut donc à une absence d'effet du sommeil sur le risque IC dans notre échantillon.
 
-Tous les effectifs attendus étant > 5, les conditions du test sont respectées.
+Tous les effectifs attendus étant \> 5, les conditions du test sont respectées.
 
-Les résultats globaux suggèrent que certains comportements (comme le sucre ou l’âge) sont associés à un risque métabolique plus élevé. D’autres, comme le sommeil ou la prise de cortisone, n’ont pas montré de lien statistiquement significatif dans notre échantillon. Ces tendances mériteraient d’être explorées avec des échantillons plus larges ou avec des variables plus précises (durée de traitement, quantité exacte consommée, etc.).
+Les résultats globaux suggèrent que certains comportements (comme le sucre ou l'âge) sont associés à un risque métabolique plus élevé. D'autres, comme le sommeil ou la prise de cortisone, n'ont pas montré de lien statistiquement significatif dans notre échantillon. Ces tendances mériteraient d'être explorées avec des échantillons plus larges ou avec des variables plus précises (durée de traitement, quantité exacte consommée, etc.).
 
+3_Test Anova facteur 2
 
-   3_Test Anova facteur 2 
-
-Dans le but d’examiner l’influence conjointe de l’âge et du sexe sur la morphologie corporelle, nous avons testé si l’indice taille/poignet (ITP) varie de manière significative en fonction de la catégorie d’âge, du genre, ou de leur interaction. 
-$$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
-Effet de l’âge et du genre sur l’ITP
-Ce test visait à évaluer si l’indice ITP est influencé par l’âge, le genre ou leur interaction. Les résidus sont normalement distribués et les variances sont homogènes (test de Bartlett p = 0.12). L’effet de l’âge est significatif (p < 0.001), mais pas celui du genre ni leur interaction. Cela suggère que l’ITP évolue avec l’âge mais ne diffère pas selon le sexe.
-
-
+Dans le but d'examiner l'influence conjointe de l'âge et du sexe sur la morphologie corporelle, nous avons testé si l'indice taille/poignet (ITP) varie de manière significative en fonction de la catégorie d'âge, du genre, ou de leur interaction. $$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$ Effet de l'âge et du genre sur l'ITP Ce test visait à évaluer si l'indice ITP est influencé par l'âge, le genre ou leur interaction. Les résidus sont normalement distribués et les variances sont homogènes (test de Bartlett p = 0.12). L'effet de l'âge est significatif (p \< 0.001), mais pas celui du genre ni leur interaction. Cela suggère que l'ITP évolue avec l'âge mais ne diffère pas selon le sexe.
 
 # Discussion et conclusions
 
