@@ -78,6 +78,12 @@ skimr::skim(biometry)
 IC=tour de taille (m)0,109×masse (kg)taille (m)IC = \frac{\text{tour de taille (m)}}{0{,}109 \times \sqrt{\frac{\text{masse (kg)}}{\text{taille (m)}}}}IC=0,109×taille (m)masse (kg)​​tour de taille (m)​
 ```
 
+-   **RFM (Relative Fat Mass)** : calculé à partir de la taille et du tour de taille, le RFM permet d\'estimer la masse grasse corporelle sans nécessiter de pesée.
+
+    RFM (homme) = 64 - (20 \*(taille (cm)/tour de taille (cm))
+
+    RFM (femme)= 76 - (20 \*(taille (cm)/tour de taille (cm))
+
 -   **Indice Taille/Poignet (ITP)** : défini comme le rapport entre la taille (cm) et le tour de poignet (cm), il est utilisé comme indicateur de corpulence en lien avec la masse osseuse.
 
 Ces indices sont reconnus dans la littérature scientifique comme des marqueurs pertinents pour évaluer le risque de maladies métaboliques et cardiovasculaires.
