@@ -247,15 +247,15 @@ chisq.test(table_sucre_ic)
 
 ```
 
-Âge, sucre, sommeil et risque cardiovasculaire (IC) Trois variables qualitatives ont été croisées avec le risque IC :
+Trois variables qualitatives ont été croisées avec le risque IC : Âge, sucre, sommeil et risque cardiovasculaire (IC)
+
+Tous les effectifs attendus étant \> 5, les conditions du test sont respectées
 
 Âge : test très significatif (p = 1.792e-11). Les personnes âgées de plus de 40 ans sont sur-représentées dans le groupe à risque élevé. L'âge influence donc fortement l'IC.
 
 Sucre : test également significatif (p = 0.0026). Une consommation fréquente de sucre est associée à un risque cardiovasculaire accru.
 
-Sommeil : le test n'est pas significatif (p = 0.5004), on conclut donc à une absence d'effet du sommeil sur le risque IC dans notre échantillon.
-
-Tous les effectifs attendus étant \> 5, les conditions du test sont respectées.
+Sommeil : le test n'est pas significatif (p = 0.5004), on conclut donc à une absence d'effet du sommeil sur le risque IC dans notre échantillon..
 
 Ce test du chi² a également permis de mieux comprendre les relations entre l'âge et le risque cardiovasculaire (X\^2 d'indépendance = 49,49, ddl = 2, valeur p = 1,792e-11). Il montre clairement que le risque augmente avec l'âge : les plus jeunes sont globalement moins exposés, tandis que les plus de 40 ans présentent un risque accru. Cette tendance met en lumière l'importance de la prévention dès l'entrée dans l'âge adulte. Les résultats globaux suggèrent que certains comportements (comme le sucre ou l'âge) sont associés à un risque métabolique plus élevé. D'autres, comme le sommeil ou la prise de cortisone, n'ont pas montré de lien statistiquement significatif dans notre échantillon. Ces tendances mériteraient d'être explorées avec des échantillons plus larges ou avec des variables plus précises (durée de traitement, quantité exacte consommée, etc.).
 
@@ -264,8 +264,6 @@ Ce test du chi² a également permis de mieux comprendre les relations entre l'�
 Dans le but d'examiner l'influence conjointe de l'âge et du sexe sur la morphologie corporelle, nous avons testé si l'indice taille/poignet (ITP) varie de manière significative en fonction de la catégorie d'âge, du genre, ou de leur interaction.
 
 $$ITP = \frac{\text{Taille (cm)}}{\text{Tour de poignet(cm)}}$$
-
-Effet de l'âge et du genre sur l'ITP Ce test visait à évaluer si l'indice ITP est influencé par l'âge, le genre ou leur interaction. Les résidus sont normalement distribués et les variances sont homogènes (test de Bartlett p = 0.12). L'effet de l'âge est significatif (p \< 0.001), mais pas celui du genre ni leur interaction. Cela suggère que l'ITP évolue avec l'âge mais ne diffère pas selon le sexe.
 
 ```{r}
 
@@ -297,7 +295,7 @@ biometry_clean %>.%
 summary(aov(itp ~ age_cat * genre, data = biometry_clean))
 ```
 
-L'analyse de l'indice taille/poignet (ITP) via une ANOVA à deux facteurs a ensuite mis en évidence une influence significative de l'âge sur cet indicateur morphologique (F(2,137) = 9.299, valeur p = 0.000163). En revanche, ni le genre ni l'interaction entre l'âge et le genre n'ont pas eu d'impact notable ( respectivement F(1,137) = 1.091, valeur p = 0.297992 et F(2,137) = 1.109, valeur p = 0.332717). Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
+L'analyse de l'indice taille/poignet (ITP) via une ANOVA à deux facteurs a mis en évidence une influence significative de l'âge sur cet indicateur morphologique (F(2,137) = 9.299, valeur p = 0.000163). En revanche, ni le genre ni l'interaction entre l'âge et le genre n'ont pas eu d'impact notable ( respectivement F(1,137) = 1.091, valeur p = 0.297992 et F(2,137) = 1.109, valeur p = 0.332717). Ces résultats suggèrent que les variations de l'ITP sont principalement liées aux changements physiologiques associés au vieillissement, sans différence marquée entre les sexes. Une meilleure compréhension de ces changements pourrait améliorer l'évaluation des risques métaboliques associés au vieillissement.
 
 En somme, cette étude souligne l'importance de la prise en compte des habitudes de vie, de l'âge et des traitements comme la cortisone dans la gestion des risques métaboliques liés à l'obésité.
 
